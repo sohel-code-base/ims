@@ -1,0 +1,53 @@
+html, body{
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+}
+
+li.dropdown:hover li.dropdown>ul.dropdown-menu{
+    display: block !important;
+}
+#login-page{
+    background-image: url(../images/544750.jpg);
+    background-size: cover;
+    background-position: center;
+}
+
+#login-page .card{
+    background-color: rgba(0,0,0,0.5) !important;
+    border: 0 !important;
+    /*border-radius: 10px !important;*/
+    box-shadow: inset 0px 0px 20px 0px #fff;
+}
+#login-page .card-header{
+    background: #03045e91;
+    /*border-radius: 10px 10px 0px 0px;*/
+}
+
+#login-page .input-group-prepend span{
+    width: 50px;
+    background-color: #D4F1F4;
+    color: black;
+    border: 0 !important;
+}
+
+#login-page .avater{
+    font-size: 90px;
+    width: 150px;
+    height: 150px;
+    top: -120px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+#login-page input.form-control{
+    border: none !important;
+}
+#login-page input.form-control:focus{
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+#login-page span.input-group-text{
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
