@@ -3,10 +3,61 @@ html, body{
     width: 100%;
     margin: 0 auto;
 }
-
-li.dropdown:hover li.dropdown>ul.dropdown-menu{
-    display: block !important;
+.navigation-bar{
+    box-shadow: 0 -3px 15px 0px #000000fa;
+    background: #03045e;
+    color: #FFFFFF;
 }
+.navigation-bar a{
+    color: #FFFFFF;
+}
+.navigation-bar a:hover{
+    /*color: #ffc107;*/
+}
+
+.navbar ul li a{
+    color: #FFFFFF !important;
+}
+.navbar .nav-item .nav-link:hover, .navbar .nav-item .nav-link.active{
+    background: #ffc107;
+    color: #03045e !important;
+}
+.navbar-nav .nav-link {
+    padding: 13px 30px !important;
+}
+.navbar .nav-item.dropdown:hover .sub-menu{
+    display: block;
+}
+.sub-menu{
+    display: none;
+    background: #03045e;
+    color: #FFFFFF !important;
+    width: 400px;
+    top: 48px;
+    border-radius: 0;
+    border: 0;
+    border-bottom: 3px solid #ffc107;
+    transition: all 2s !important;
+}
+.sub-menu .dropdown-item:hover{
+    background: #ffc107;
+    color: #03045e !important;
+}
+/*.dd-list-item a {
+    color: #fff !important;
+}
+.dd-list-item{
+    transition: 2s !important;
+    width: 800px !important;
+    background: #03045e !important;
+    margin-top: 10px !important;
+}
+nav ul li.dd-list{
+    transition: 2s !important;
+}
+nav ul li.dd-list:hover .dd-list-item{
+    display: block !important;
+}*/
 #login-page{
     background-image: url(../images/544750.jpg);
     background-size: cover;

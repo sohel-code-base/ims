@@ -24,4 +24,5 @@ class DefaultController extends AbstractController
     {
         return $this->render('pages/dashboard.html.twig');
     }
+
 }
