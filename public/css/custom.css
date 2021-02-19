@@ -3,18 +3,6 @@ html, body{
     width: 100%;
     margin: 0 auto;
 }
-.navigation-bar{
-    box-shadow: 0 -3px 15px 0px #000000fa;
-    background: #03045e;
-    color: #FFFFFF;
-}
-.navigation-bar a{
-    color: #FFFFFF;
-}
-.navigation-bar a:hover{
-    /*color: #ffc107;*/
-}
-
 .navbar ul li a{
     color: #FFFFFF !important;
 }
@@ -24,6 +12,7 @@ html, body{
 }
 .navbar-nav .nav-link {
     padding: 13px 30px !important;
+
 }
 .navbar .nav-item.dropdown:hover .sub-menu{
     display: block;
