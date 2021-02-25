@@ -10,36 +10,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class ProductController
- * @package App\Controller
- * @Route("/product", name="product")
- */
-class ProductController extends AbstractController
+class DashboardController extends AbstractController
 {
     /**
-     * @Route("/", name="_index")
+     * @Route("/", name="app_index")
+     * @param Request $request
      * @param ProductRepository $productRepository
      * @return Response
      */
-    public function index(ProductRepository $productRepository): Response
+    public function index(Request $request,ProductRepository $productRepository): Response
     {
         $products = $productRepository->findAll();
 
-        return $this->render('pages/index.html.twig', [
-            'products' => $products,
-        ]);
-    }
-
-    /**
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
-     * @Route("/create", name="_create")
-     */
-    public function addProduct(Request $request)
-    {
-        /*$product = new Product();
-
+        $product = new Product();
         $form = $this->createForm(ProductFormType::class, $product);
         $form->handleRequest($request);
 
@@ -49,12 +32,14 @@ class ProductController extends AbstractController
             $em->flush();
             $this->addFlash('success', 'Product added successfully into Database!');
 
-            return $this->redirectToRoute('/');
+            return $this->redirectToRoute('app_index');
 
         }
-        return $this->render('product/modal-create.html.twig',[
-            'form' => $form->createView()
-        ]);*/
-
+        return $this->render('pages/index.html.twig',[
+            'products' => $products,
+            'form' => $form->createView(),
+        ]);
     }
+
+
 }

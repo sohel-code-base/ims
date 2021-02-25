@@ -38,7 +38,7 @@ class Product
     private $productType;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $purchaseDate;
 
@@ -96,12 +96,12 @@ class Product
         return $this;
     }
 
-    public function getPurchaseDate(): ?\DateTimeInterface
+    public function getPurchaseDate()
     {
         return $this->purchaseDate;
     }
 
-    public function setPurchaseDate(?\DateTimeInterface $purchaseDate): self
+    public function setPurchaseDate($purchaseDate): self
     {
         $this->purchaseDate = $purchaseDate;
 
