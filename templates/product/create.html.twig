@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add New Product!{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/jquery-ui.min.css') }} ">
+    <link rel="stylesheet" href="{{ asset('css/jquery-ui.theme.min.css') }} ">
+{#    <link rel="stylesheet" href="{{ asset('css/jquery-ui.structure.css') }} ">#}
+
+{% endblock %}
+{% block body %}
+    {% include 'inc/nav.html.twig' %}
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-md-8 offset-2 border-warning border-bottom border-3 text-white" style="background: #03045e">
+                <div class="card-header text-center text-warning">
+                    <h2 class="h2">Add New Product!</h2>
+                    <hr>
+                </div>
+                {{ form_start(form) }}
+
+                {{ form_label(form.name,'Product Name:') }}
+                {{ form_widget(form.name,{'attr':{'style': 'background: #03045e; color: #fff'}}) }}
+
+                <div class="row g-3 my-2">
+                    <div class="col-md-6">
+                        {{ form_label(form.quantity,'Quantity:') }}
+                        {{ form_widget(form.quantity,{'attr':{'style': 'background: #03045e; color: #fff'},'type': 'number'}) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_label(form.purchaseDate,'Purchase Date:') }}
+                        {{ form_widget(form.purchaseDate,{'id':'datepicker','attr':{'style': 'background: #03045e; color: #fff'}}) }}
+                    </div>
+                </div>
+                <div class="row g-3 my-2">
+                    <div class="col-md-6">
+                        {{ form_label(form.category,'Category:') }}
+                        {{ form_widget(form.category,{'attr':{'style': 'background: #03045e; color: #fff'}}) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_label(form.productType,'Type:') }}
+                        {{ form_widget(form.productType,{'attr':{'style': 'background: #03045e; color: #fff'}}) }}
+                    </div>
+                </div>
+
+                <div class="row my-3">
+                    <div class="col-md-4 offset-4">
+                        {{ form_widget(form.save,{'attr':{'class': 'btn-lg btn-warning'}}) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        select {
+            background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='white' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right .75rem center/8px 10px !important;
+        }
+        select option{
+            background: #03045e;
+        }
+    </style>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
+    <script>
+        $( function() {
+            $( "#datepicker" ).datepicker({
+                dateFormat: 'dd-mm-yy',
+                "lengthChange": false,
+            });
+            $("#datepicker").datepicker("option", "showAnim", 'blind');
+        } );
+    </script>
+{% endblock %}
