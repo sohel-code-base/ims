@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="{{ asset('css/jquery-ui.theme.min.css') }} ">
   <style>
     select {
-      background: #03045e url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='white' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right .75rem center/8px 10px !important;
+      background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='blue' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right .75rem center/8px 10px !important;
     }
 /*    select option{
       background: #03045e;
@@ -28,13 +28,13 @@
     <div class="row">
       <div class="col-md-8">
         <div class="card">
-          <div class="card-header bg-success">
-            <h3 class="card-title"><i class="fas fa-th-list mr-1"></i>All Products</h3>
+          <div class="card-header bg-primary bg-gradient-primary text-white border-bottom border-3 border-warning">
+            <h5 class="card-title mb-0"><i class="fas fa-th-list" style="margin-right: 5px"></i>All Products</h5>
           </div>
           <!-- /.card-header -->
           <div class="card-body">
-            <table id="productTable" class="table table-dark table-bordered">
-              <thead class="table-dark">
+            <table id="productTable" class="table table-bordered table-striped">
+              <thead class="text-white" style="background: #03045e">
               <tr>
                 <th>{{ 'S/N'|trans }}</th>
                 <th>{{ 'Products Name'|trans }}</th>
@@ -60,15 +60,6 @@
                 </tr>
               {% endfor %}
               </tbody>
-              <tfoot>
-              <tr>
-                <th>{{ 'S/N'|trans }}</th>
-                <th>{{ 'Products Name'|trans }}</th>
-                <th>{{ 'Quantity'|trans }}</th>
-                <th>{{ 'Purchase Date'|trans }}</th>
-                <th>{{ 'Action'|trans }}</th>
-              </tr>
-              </tfoot>
             </table>
           </div>
           <!-- /.card-body -->
@@ -76,8 +67,8 @@
       </div>
       <div class="col-md-4">
         <div class="card">
-          <div class="card-header bg-success">
-            <h3 class="card-title"><i class="fas fa-plus-square mr-1"></i>Add Products</h3>
+          <div class="card-header bg-primary bg-gradient-primary text-white border-bottom border-3 border-warning">
+            <h5 class="card-title mb-0"><i class="fas fa-plus-square" style="margin-right: 5px"></i>Add Products</h5>
           </div>
           <!-- /.card-header -->
           <div class="card-body">
@@ -92,38 +83,34 @@
             {{ form_start(form) }}
 
             {{ form_label(form.name,  'Name :') }}
-            {{ form_widget(form.name,{'attr':{'style': 'background: #03045e; color: #fff'}}) }}
+            {{ form_widget(form.name) }}
             {{ form_help(form.name) }}
 
             <div class="row g-3 mt-2 mb-3">
               <div class="col-md-6">
                 {{ form_label(form.quantity,'Quantity :') }}
-                {{ form_widget(form.quantity,{'attr':{'style': 'background: #03045e; color: #fff'},'type': 'number'}) }}
+                {{ form_widget(form.quantity,{'attr':{'type': 'number'}}) }}
                 {{ form_help(form.quantity) }}
               </div>
               <div class="col-md-6">
                 {{ form_label(form.purchaseDate, 'Purchase Date:') }}
-                {{ form_widget(form.purchaseDate,{'id':'datepicker','attr':{'style': 'background: #03045e; color: #fff','class':'fas fa-calendar-alt'}}) }}
+                {{ form_widget(form.purchaseDate,{'id':'datepicker'}) }}
                 {{ form_help(form.purchaseDate) }}
               </div>
             </div>
             <div class="row g-3 mb-3">
               <div class="col-md-6">
                 {{ form_label(form.category, 'Category :') }}
-                {{ form_widget(form.category,{'attr':{'class':'form-select','style': 'background: #03045e; color: #fff'}}) }}
+                {{ form_widget(form.category) }}
               </div>
               <div class="col-md-6">
                 {{ form_label(form.productType, 'Type:') }}
-                {{ form_widget(form.productType,{'attr':{'class':'form-select','style': 'background: #03045e; color: #fff'}}) }}
+                {{ form_widget(form.productType,{'attr':{'class':'form-select'}}) }}
               </div>
             </div>
-            <div class="row g-3 mb-3">
-              <div class="col-md-6">
-                <img src="" alt="ProductImage">
-              </div>
-              <div class="col-md-6">
+            <div class="row g-3 mb-lg-5">
+              <div class="col">
                 {{ form_widget(form.image) }}
-                {{ form_help(form.image) }}
               </div>
             </div>
             <div class="d-grid gap-2 mb-1">
@@ -134,18 +121,7 @@
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col">
-        <!-- Main Footer -->
-        <footer class="main-footer ml-0">
-          <strong>Copyright &copy; {{ 'now'|date('Y') }}.</strong>
-          All rights reserved.
-          <div class="float-right d-none d-sm-inline-block">
-            <b>Developed By</b> <a href="https://www.linkedin.com/in/md-sohel-rana-8202a4134/">Sohel</a>
-          </div>
-        </footer>
-      </div>
-    </div>
+
   </div>
 
 {% endblock %}
@@ -161,7 +137,7 @@
   <script src="{{ asset('js/datatable/vfs_fonts.js') }}"></script>
   <script src="{{ asset('js/datatable/buttons.html5.min.js') }}"></script>
   <script src="{{ asset('js/datatable/buttons.print.min.js') }}"></script>
-  <script src="{{ asset('js/datatable/buttons.colVis.min.js') }}"></script>
+{#  <script src="{{ asset('js/datatable/buttons.colVis.min.js') }}"></script>#}
   
 
   <!-- Page specific script -->
@@ -169,7 +145,7 @@
     $(function () {
       $("#productTable").DataTable({
         "responsive": false, "lengthChange": false, "autoWidth": true,
-        "buttons": ["copy", "csv", "excel", "pdf", "print"]
+        "buttons": ["excel", "pdf"]
       }).buttons().container().appendTo('#productTable_wrapper .col-md-6:eq(0)');
     });
   </script>

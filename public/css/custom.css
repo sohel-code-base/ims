@@ -6,12 +6,19 @@ html, body{
 .navbar ul li a{
     color: #FFFFFF !important;
 }
+.form-control{
+    border: 1px solid #03045e;
+}
+.form-control:focus {
+    border-color: #03045e;
+    box-shadow: 0 0 0 1px #03045e;
+}
 .navbar .nav-item .nav-link:hover, .navbar .nav-item .nav-link.active{
     background: #ffc107;
     color: #03045e !important;
 }
 .navbar-nav .nav-link {
-    padding: 13px 30px !important;
+    padding: 13px 15px !important;
 
 }
 .navbar .nav-item.dropdown:hover .sub-menu{
