@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/datatable/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/datatable/buttons.bootstrap4.min.css') }}">
+
+{% endblock %}
+{% block body %}
+    {% include 'inc/nav.html.twig' %}
+    <div class="container-fluid pt-2">
+        <div class="row">
+            <div class="col-md-8">
+                {% for messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="alert alert-primary alert-dismissible fade show p-2" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close p-2" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                <div class="card rounded-0 shadow">
+                    <div class="card-header rounded-0 bg-primary bg-gradient-primary text-white border-bottom border-3 border-warning">
+                        <h5 class="card-title mb-0"><i class="fas fa-th-list" style="margin-right: 5px"></i>All Categories</h5>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body p-1 pt-2">
+                        <table id="categoryTable" class="table table-bordered table-striped table-hover">
+                            <thead class="text-white" style="background: #03045e">
+                            <tr>
+                                <th>{{ 'S/N'|trans }}</th>
+                                <th>{{ 'Category Name'|trans }}</th>
+                                <th>{{ 'Create Date'|trans }}</th>
+                                <th>{{ 'Action'|trans }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for category in categories %}
+                                <tr>
+                                    <td class="p-0 text-center" width="50">{{ loop.index|trans }}</td>
+                                    <td class="p-0">{{ category.name }}</td>
+                                    <td class="p-0">{{ category.createdAt|date('d/m/Y') }}</td>
+                                    <td class="p-0">
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="{{ path('category_edit',{'id':category.id}) }}" class="btn btn-sm"><i class="fas fa-edit text-warning"></i></a>
+                                            <a href="{{ path('category_delete',{'id':category.id}) }}" class="btn btn-sm" onclick="alert('Are you sure to delete the category?')"><i class="fas fa-trash text-danger"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow">
+                    <div class="card-header bg-primary bg-gradient-primary text-white border-bottom border-3 border-warning">
+                        <h5 class="card-title mb-0"><i class="fas fa-plus-square" style="margin-right: 5px"></i>Add Category</h5>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        {{ form_start(form) }}
+
+                        {{ form_label(form.name,  'Category Name :') }}
+                        {{ form_widget(form.name) }}
+
+                        <div class="d-grid gap-2 mb-1 mt-3">
+                            {{ form_widget(form.save,{'attr':{'class': 'btn-warning bg-gradient'}}) }}
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <!-- DataTables  & Plugins -->
+    <script src="{{ asset('js/datatable/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('js/datatable/dataTables.bootstrap4.min.js') }}"></script>
+
+
+    <!-- Page specific script -->
+    <script>
+        $(function () {
+            $("#categoryTable").DataTable({
+                "responsive": false, "lengthChange": false, "autoWidth": true,
+                "buttons": []
+            }).buttons().container().appendTo('#categoryTable_wrapper .col-md-6:eq(0)');
+        });
+    </script>
+{% endblock %}

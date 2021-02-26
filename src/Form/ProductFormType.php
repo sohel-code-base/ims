@@ -55,11 +55,6 @@ class ProductFormType extends AbstractType
                 },
                 'placeholder' => 'Product Type'
             ])
-            ->add('image', FileType::class,[
-//                'help' => 'Product Image',
-                'mapped' => false,
-                'required' =>false
-            ])
             ->add('save', SubmitType::class)
         ;
     }

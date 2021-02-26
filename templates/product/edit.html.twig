@@ -7,7 +7,7 @@
             <div class="col-md-6 offset-3">
                 <div class="card">
                     <div class="card-header bg-primary bg-gradient-primary text-white border-bottom border-3 border-warning">
-                        <h5 class="card-title mb-0"><i class="fas fa-plus-square" style="margin-right: 5px"></i>Add Products</h5>
+                        <h5 class="card-title mb-0"><i class="fas fa-edit" style="margin-right: 5px"></i>Edit Product</h5>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -39,13 +39,8 @@
                                 {{ form_widget(form.productType,{'attr':{'class':'form-select'}}) }}
                             </div>
                         </div>
-                        <div class="row g-3 mb-lg-5">
-                            <div class="col">
-                                {{ form_widget(form.image) }}
-                            </div>
-                        </div>
                         <div class="d-grid gap-2 mb-1">
-                            {{ form_widget(form.save,{'attr':{'class': 'btn-warning bg-gradient'}}) }}
+                            {{ form_widget(form.save,{'label':'Update','attr':{'class': 'btn-warning bg-gradient'}}) }}
                         </div>
                     </div>
                     <!-- /.card-body -->
@@ -56,7 +51,5 @@
 
 {% endblock %}
 
-{% block title %}
-
-{% endblock %}
+{% block title %}Update Product!{% endblock %}
 
