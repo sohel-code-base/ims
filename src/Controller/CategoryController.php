@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Category;
-use App\Entity\Product;
 use App\Form\CategoryFormType;
 use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,10 +10,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class CategoryController
+ * @package App\Controller
+ * @Route("/category", name="category")
+ */
 class CategoryController extends AbstractController
 {
     /**
-     * @Route("/category", name="category")
+     * @Route("/", name="_index")
+     * @param Request $request
+     * @param CategoryRepository $repository
+     * @return Response
      */
     public function index(Request $request, CategoryRepository $repository): Response
     {
@@ -29,7 +36,7 @@ class CategoryController extends AbstractController
             $em->flush();
             $this->addFlash('success', 'New category added!');
 
-            return $this->redirectToRoute('category');
+            return $this->redirectToRoute('category_index');
         }
         return $this->render('category/index.html.twig', [
             'form' => $form->createView(),
@@ -38,7 +45,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="category_edit")
+     * @Route("/{id}/edit", name="_edit")
      */
     public function editCategory($id, Request $request, CategoryRepository $repository)
     {
@@ -51,7 +58,7 @@ class CategoryController extends AbstractController
             $em->flush();
             $this->addFlash('success', 'Category has been updated!');
 
-            return $this->redirectToRoute('category');
+            return $this->redirectToRoute('category_index');
         }
         return $this->render('category/edit.html.twig',[
             'form' => $form->createView(),
@@ -59,7 +66,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/delete", name="category_delete")
+     * @Route("/{id}/delete", name="_delete")
      */
     public function deleteCategory($id, CategoryRepository $repository)
     {
@@ -70,10 +77,10 @@ class CategoryController extends AbstractController
             $em->flush();
             $this->addFlash('success', 'Category deleted successfully!');
 
-            return $this->redirectToRoute('category');
+            return $this->redirectToRoute('category_index');
         }else{
             $this->addFlash('error', 'Category not found!');
-            return $this->redirectToRoute('category');
+            return $this->redirectToRoute('category_index');
         }
     }
 }

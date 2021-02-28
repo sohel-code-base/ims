@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
@@ -36,6 +37,12 @@ class Product
      * @ORM\ManyToOne(targetEntity=ProductType::class, inversedBy="products")
      */
     private $productType;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     * @Gedmo\Slug(fields={"name"})
+     */
+    private $slug;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -95,6 +102,23 @@ class Product
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param mixed $slug
+     */
+    public function setSlug($slug): void
+    {
+        $this->slug = $slug;
+    }
+
 
     public function getPurchaseDate()
     {

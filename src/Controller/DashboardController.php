@@ -10,10 +10,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class DashboardController
+ * @package App\Controller
+ * @Route("/product", name="product")
+ */
 class DashboardController extends AbstractController
 {
     /**
-     * @Route("/", name="app_index")
+     * @Route("/", name="_index")
      * @param Request $request
      * @param ProductRepository $productRepository
      * @return Response
@@ -32,7 +37,7 @@ class DashboardController extends AbstractController
             $em->flush();
             $this->addFlash('success', 'Product added successfully into Database!');
 
-            return $this->redirectToRoute('app_index');
+            return $this->redirectToRoute('product_index');
 
         }
         return $this->render('pages/index.html.twig',[
@@ -42,7 +47,7 @@ class DashboardController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="product_edit")
+     * @Route("/{id}/edit", name="_edit")
      * @param $id
      * @param Request $request
      * @param ProductRepository $repository
@@ -61,7 +66,7 @@ class DashboardController extends AbstractController
             $em->flush();
             $this->addFlash('success', 'Product updated successfully!');
 
-            return $this->redirectToRoute('app_index');
+            return $this->redirectToRoute('product_index');
 
         }
         return $this->render('product/edit.html.twig',[
@@ -73,7 +78,7 @@ class DashboardController extends AbstractController
      * @param $id
      * @param ProductRepository $repository
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * @Route("/{id}/delete", name="product_delete")
+     * @Route("/{id}/delete", name="_delete")
      */
     public  function deleteProduct($id, ProductRepository $repository)
     {
@@ -84,10 +89,10 @@ class DashboardController extends AbstractController
             $em->flush();
             $this->addFlash('success', 'Product deleted successfully!');
 
-            return $this->redirectToRoute('app_index');
+            return $this->redirectToRoute('product_index');
         }else{
             $this->addFlash('error', 'Product not found!');
-            return $this->redirectToRoute('app_index');
+            return $this->redirectToRoute('product_index');
         }
     }
 
