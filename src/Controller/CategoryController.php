@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Form\CategoryFormType;
 use App\Repository\CategoryRepository;
+use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -67,12 +68,22 @@ class CategoryController extends AbstractController
 
     /**
      * @Route("/{id}/delete", name="_delete")
+     * @param $id
+     * @param CategoryRepository $categoryRepository
+     * @param ProductRepository $productRepository
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteCategory($id, CategoryRepository $repository)
+    public function deleteCategory($id, CategoryRepository $categoryRepository, ProductRepository $productRepository)
     {
-        $category = $repository->find($id);
+        $category = $categoryRepository->find($id);
+        $findProducts = $productRepository->findBy(['category' => $category]);
         if ($category){
             $em = $this->getDoctrine()->getManager();
+            foreach ($findProducts as $product){
+                $product->setCategory(null);
+                $em->persist($product);
+                $em->flush();
+            }
             $em->remove($category);
             $em->flush();
             $this->addFlash('success', 'Category deleted successfully!');
