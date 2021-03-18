@@ -43,7 +43,7 @@
                                     <td class="p-0">
                                         <div class="btn-group btn-group-sm">
                                             <a href="{{ path('category_edit',{'id':category.id}) }}" class="btn btn-sm"><i class="fas fa-edit text-warning"></i></a>
-                                            <a href="{{ path('category_delete',{'id':category.id}) }}" class="btn btn-sm" onclick="confirm('Are you sure to delete the category?')"><i class="fas fa-trash text-danger"></i></a>
+                                            <a href="{{ path('category_delete',{'id':category.id}) }}" class="btn btn-sm" onclick="return confirm('Are you sure to delete the category?')"><i class="fas fa-trash text-danger"></i></a>
                                         </div>
                                     </td>
                                 </tr>

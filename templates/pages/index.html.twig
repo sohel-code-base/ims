@@ -14,6 +14,14 @@
 /*    select option{
       background: #03045e;
     }*/
+
+    table.dataTable {
+      border-collapse: collapse !important;
+    }
+    table.table-bordered.dataTable{
+      border-right: 1px solid #dee2e6 !important;
+
+    }
   </style>
 
 {% endblock %}
@@ -41,8 +49,8 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body p-1 pt-2">
-            <table id="productTable" class="table table-hover table-bordered table-striped">
-              <thead class="text-white" style="background: #03045e">
+            <table id="productTable" class="table table-bordered">
+              <thead class="bg-light">
               <tr>
                 <th>{{ 'S/N'|trans }}</th>
                 <th>{{ 'Products Name'|trans }}</th>
@@ -59,9 +67,9 @@
                   <td class="p-0 text-center">{{ product.quantity }}</td>
                   <td class="p-0">{{ product.purchaseDate|date('d/m/Y') }}</td>
                   <td class="p-0">
-                    <div class="btn-group btn-group-sm">
-                      <a href="{{ path('product_edit',{'id':product.id}) }}" class="btn btn-sm"><i class="fas fa-edit text-warning"></i></a>
-                      <a href="{{ path('product_delete',{'id':product.id}) }}" class="btn btn-sm" onclick="confirm('Are you sure to delete the product?')"><i class="fas fa-trash text-danger"></i></a>
+                    <div class="btn-group btn-group-sm" style="float: right">
+                      <a href="{{ path('product_edit',{'id':product.id}) }}" class="btn-sm"><i class="fas fa-edit text-dark"></i></a>
+                      <a href="{{ path('product_delete',{'id':product.id}) }}" class="btn-sm" onclick="return confirm('Are you sure to delete the product?')"><i class="fas fa-trash text-dark"></i></a>
                     </div>
                   </td>
                 </tr>
