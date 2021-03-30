@@ -1,0 +1,148 @@
+{% extends 'base.html.twig' %}
+{% block title %}Add New Product{% endblock %}
+{% block stylesheet %}
+    <!-- bootstrap datepicker -->
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-datepicker.min.css') }}">
+    <!-- iCheck for checkboxes and radio inputs -->
+    <link rel="stylesheet" href="{{ asset('/css/iCheck.css') }}">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
+{% endblock %}
+{% block body %}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Add New Product
+        <small>This is the location where you are able to add new product in your store!</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Layout</a></li>
+        <li class="active">Fixed</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="box box-primary">
+        <div class="box-header with-border">
+{#            <h3 class="box-title">General Elements</h3>#}
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            {{ form_start(form) }}
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form_label(form.proName, 'Product Name:') }}
+                        {{ form_widget(form.proName) }}
+                        {{ form_errors(form.proName, {'attr': {'class':'help-block'}}) }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form_label(form.proCategory, 'Product Category:') }}
+                        {{ form_widget((form.proCategory)) }}
+                        {{ form_errors(form.proCategory, {'attr': {'class':'help-block'}}) }}
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form_label(form.proSubCategory, 'Sub-Category:') }}
+                        {{ form_widget(form.proSubCategory) }}
+                        {{ form_errors(form.proSubCategory, {'attr': {'class':'help-block'}}) }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form_label(form.proPower, 'Watt:') }}
+                        {{ form_widget(form.proPower) }}
+                        {{ form_errors(form.proPower, {'attr': {'class':'help-block'}}) }}
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form_label(form.purchasePrice, 'Purchase Price:') }}
+                        {{ form_widget(form.purchasePrice) }}
+                        {{ form_errors(form.purchasePrice, {'attr': {'class':'help-block'}}) }}
+                        </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form_label(form.salePrice, 'Sale Price:') }}
+                        {{ form_widget(form.salePrice) }}
+                        {{ form_errors(form.salePrice, {'attr': {'class':'help-block'}}) }}
+                        </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form_label(form.quantity, 'Quantity:') }}
+                        {{ form_widget(form.quantity) }}
+                        {{ form_errors(form.quantity, {'attr': {'class':'help-block'}}) }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form_label(form.purchaseDate, 'Purchase Date:') }}
+                        {{ form_widget(form.purchaseDate, {'id': 'datepicker'}) }}
+                        {{ form_errors(form.purchaseDate, {'attr': {'class':'help-block'}}) }}
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-2 col-md-offset-5">
+                    <div class="form-group">
+                    {{ form_label(form.status, '') }}
+                    {{ form_widget(form.status,{'attr':{
+                        'data-toggle': 'toggle',
+                        'data-on': 'Status On',
+                        'data-off': 'Status Off',
+                        'data-onstyle': 'success',
+                        'data-offstyle': 'danger',
+                        'data-width': '200',
+                    }}) }}
+{#                    <input type="checkbox" checked data-toggle="toggle" data-on="Ready" data-off="Not Ready" data-onstyle="success" data-offstyle="danger">#}
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-2 col-md-offset-5">
+                        {{ form_widget(form.Submit, {'label': 'Save'}) }}
+                </div>
+            </div>
+
+{#            {{ form_end(form) }}#}
+        </div>
+        <!-- /.box-body -->
+    </div>
+
+</section>
+{% endblock %}
+{% block javascripts %}
+    <!-- bootstrap datepicker -->
+    <script src="{{ asset('/js/bootstrap-datepicker.min.js') }}"></script>
+    <!-- iCheck 1.0.1 -->
+    <script src="{{ asset('/js/icheck.min.js') }}"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <script>
+        //Date picker
+        $('#datepicker').datepicker({
+            autoclose: true
+        });
+
+        //Flat red color scheme for iCheck
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+            checkboxClass: 'icheckbox_flat-green',
+            radioClass   : 'iradio_flat-green'
+        });
+    </script>
+{% endblock %}
+
+
+
