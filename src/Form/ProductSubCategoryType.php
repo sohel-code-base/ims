@@ -29,6 +29,7 @@ class ProductSubCategoryType extends AbstractType
                 'choice_label' => 'catName',
                 'query_builder' => function(EntityRepository $repository){
                 return $repository->createQueryBuilder('e')
+                    ->where('e.status = 1')
                     ->orderBy('e.catName', 'ASC');
                 }
             ])

@@ -2,6 +2,22 @@
     color: #fff;
 }
 
+.alert-error{
+    color: #842029 !important;
+    background-color: #f8d7da !important;
+    border-color: #f5c2c7 !important;
+}
+.alert-success{
+    color: #0f5132 !important;
+    background-color: #d1e7dd !important;
+    border-color: #badbcc !important;
+}
+.alert-update{
+    color: #084298 !important;
+    background-color: #cfe2ff !important;
+    border-color: #b6d4fe !important;
+}
+
 .w-10{
     width: 10%;
 }

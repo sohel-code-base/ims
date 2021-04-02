@@ -47,8 +47,9 @@ class ProductType extends AbstractType
                 'placeholder' => 'Select a Category',
                 'choice_label' => 'catName',
                 'query_builder' => function(EntityRepository $repository){
-                return $repository->createQueryBuilder('category')
-                    ->orderBy('category.catName','ASC');
+                return $repository->createQueryBuilder('e')
+                    ->where('e.status = 1')
+                    ->orderBy('e.catName','ASC');
                 }
             ])
             ->add('proSubCategory', EntityType::class,[
@@ -59,6 +60,7 @@ class ProductType extends AbstractType
                 'group_by' => 'category.catName',
                 'query_builder' => function(EntityRepository $repository){
                     return $repository->createQueryBuilder('e')
+                        ->where('e.status = 1')
                         ->orderBy('e.subCatName','ASC');
                 }
             ])

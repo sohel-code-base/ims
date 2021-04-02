@@ -49,6 +49,7 @@ class ProductPurchaseType extends AbstractType
                 'choice_label' => 'proName',
                 'query_builder' => function(EntityRepository $repository){
                     return $repository->createQueryBuilder('e')
+                        ->where('e.status = 1')
                         ->orderBy('e.proName','ASC');
                 }
             ])
@@ -59,6 +60,7 @@ class ProductPurchaseType extends AbstractType
                 'choice_label' => 'watt',
                 'query_builder' => function(EntityRepository $repository){
                     return $repository->createQueryBuilder('e')
+                        ->where('e.status = 1')
                         ->orderBy('e.watt','ASC');
                 }
             ])

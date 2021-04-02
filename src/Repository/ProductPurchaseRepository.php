@@ -19,32 +19,15 @@ class ProductPurchaseRepository extends ServiceEntityRepository
         parent::__construct($registry, ProductPurchase::class);
     }
 
-    // /**
-    //  * @return ProductPurchase[] Returns an array of ProductPurchase objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getTotalProduct()
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $qb = $this->createQueryBuilder('e');
+        $qb->join('e.product','product');
+        $qb->select('product.proName AS productName');
+        $qb->addSelect('e.quantity','e.purchasePrice','e.salePrice','e.purchaseDate');
+        $qb->groupBy('product.id');
+        $results = $qb->getQuery()->getArrayResult();
+        return $results;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?ProductPurchase
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

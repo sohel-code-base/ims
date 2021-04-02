@@ -23,7 +23,7 @@ class ProductController extends AbstractController
      */
     public function index(ProductPurchaseRepository $repository): Response
     {
-        $allProducts = $repository->findAll();
+        $allProducts = $repository->getTotalProduct();
         return $this->render('product/index.html.twig',[
             'allProducts' => $allProducts,
         ]);
@@ -60,7 +60,7 @@ class ProductController extends AbstractController
             $em->persist($product);
             $em->flush();
             $this->addFlash('success', 'Product added!');
-            return $this->redirectToRoute('all_product');
+            return $this->redirectToRoute('product_info');
         }
 
         return $this->render('product/addProduct.html.twig',[
@@ -71,24 +71,47 @@ class ProductController extends AbstractController
     /**
      * @Route("/product/purchase", name="product_purchase")
      * @param Request $request
+     * @param ProductPurchaseRepository $purchaseRepository
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      * @throws \Exception
      */
-    public function productPurchase(Request $request)
+    public function productPurchase(Request $request, ProductPurchaseRepository $purchaseRepository)
     {
         $productPurchase = new ProductPurchase();
         $form = $this->createForm(ProductPurchaseType::class, $productPurchase);
         $form->handleRequest($request);
 
         if($form->isSubmitted()){
-            $purchaseDate = new \DateTime($form->get('purchaseDate')->getData());
-
             $em = $this->getDoctrine()->getManager();
+            $purchaseDate = new \DateTime($form->get('purchaseDate')->getData());
+            $product = $form->get('product')->getData();
+            $findExistingProduct = $purchaseRepository->findOneBy(['product' => $product]);
+
+            if ($findExistingProduct){
+                $preQuantity = $findExistingProduct->getQuantity();
+
+                $purchaseQuantity = $form->get('quantity')->getData();
+                $purchasePrice = $form->get('purchasePrice')->getData();
+                $salePrice = $form->get('salePrice')->getData();
+                $power = $form->get('proPower')->getData();
+
+
+                $findExistingProduct->setPurchasePrice($purchasePrice);
+                $findExistingProduct->setSalePrice($salePrice);
+                $findExistingProduct->setQuantity($preQuantity + $purchaseQuantity);
+                $findExistingProduct->setPurchaseDate($purchaseDate);
+                $findExistingProduct->setProPower($power ? $power: null);
+                $findExistingProduct->setCreatedAt(new \DateTime('now'));
+                $em->persist($findExistingProduct);
+                $em->flush();
+                $this->addFlash('update', 'Quantity Increased!');
+                return $this->redirectToRoute('all_product');
+            }
             $productPurchase->setPurchaseDate($purchaseDate);
             $productPurchase->setCreatedAt(new \DateTime('now'));
             $em->persist($productPurchase);
             $em->flush();
-            $this->addFlash('success', 'Product added into Database!');
+            $this->addFlash('success', 'New Product added into Database!');
             return $this->redirectToRoute('all_product');
         }
         return $this->render('product/purchaseProduct.html.twig',[
