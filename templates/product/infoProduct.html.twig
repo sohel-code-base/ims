@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Islamia Enterprise!{% endblock %}
+
+{% block stylesheet %}
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{{ asset('/css/dataTables.bootstrap.min.css') }}">
+{% endblock %}
+
+{% block contentTitle %}
+    All Products <small>Product Information with category/sub-category</small>
+{% endblock %}
+{% block body %}
+
+    <!-- Main content -->
+    <section class="content">
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type }}-disabled alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <i class="icon fa fa-check"></i>{{ message|trans }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        <!-- /.box -->
+
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title"><i class="fa fa-th-list" style="margin-right: 5px;"></i>Product Information </h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                            title="Collapse">
+                        <i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip"
+                            title="Remove">
+                        <i class="fa fa-times"></i></button>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table id="productTable" class="table">
+                    <thead>
+                    <tr>
+                        <th width="10" class="text-center">{{ 'S/N'|trans }}</th>
+                        <th>{{ 'Name'|trans }}</th>
+                        <th>{{ 'Sub-Category'|trans }}</th>
+                        <th>{{ 'Category'|trans }}</th>
+                        <th width="20%"><i class="fa fa-gear"></i></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if productInfo is not empty and productInfo is iterable %}
+                        {% for info in productInfo %}
+                            <tr>
+                                <td align="center">{{ loop.index }}</td>
+                                <td>{{ info.proName|default('N/A') }}</td>
+                                <td>{{ info.proSubCategory.subCatName|default('N/A') }}</td>
+                                <td>{{ info.proCategory.catName|default('N/A') }}</td>
+                                <td>
+                                    <div class="btn-group pull-right">
+                                        <a href="javascript:" class="btn btn-sm bg-navy btn-flat"><i class="fa fa-edit"><span style="margin-left: 3px;">Edit</span></i></a>
+                                        <a href="javascript:" onclick="return confirm('Are you sure to delete this product?')" class="btn btn-sm bg-maroon btn-flat"><i class="fa fa-trash"><span style="margin-left: 3px;">Delete</span></i></a>
+                                    </div>
+
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="10">{{ 'Information not found!' }}</td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                    {#                    <tfoot>
+                                        <tr>
+                                            <th>{{ 'S/N'|trans }}</th>
+                                            <th>{{ 'Product Name'|trans }}</th>
+                                            <th>{{ 'Purchase Price'|trans }}</th>
+                                            <th>{{ 'Sale Price'|trans }}</th>
+                                            <th>{{ 'Purchase Date'|trans }}</th>
+                                            <th><i class="fa fa-gear"></i></th>
+                                        </tr>
+                                        </tfoot>#}
+                </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+    </section>
+    <!-- /.content -->
+{% endblock %}
+
+{% block javascripts %}
+    <!-- DataTables -->
+    <script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('/js/dataTables.bootstrap.min.js') }}"></script>
+    <!-- page script -->
+    <script>
+        $(function () {
+            $('#productTable').DataTable({
+                "columnDefs":[{
+                    "targets": -1,
+                    "orderable": false
+                }]
+            })
+        })
+    </script>
+{% endblock %}

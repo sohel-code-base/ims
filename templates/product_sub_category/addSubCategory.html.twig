@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+{% block title %}Add New Sub-Category{% endblock %}
+{% block stylesheet %}
+    <link href="{{ asset('css/bootstrap-toggle.min.css') }}" rel="stylesheet">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+{% endblock %}
+{% block contentTitle %}
+    Add New Sub-Category <small>This is the location where you are able to add new category!</small>
+{% endblock %}
+{% block body %}
+    <!-- Main content -->
+    <section class="content">
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type }}-disabled alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <i class="icon fa fa-check"></i>{{ message|trans }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                {#            <h3 class="box-title">General Elements</h3>#}
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                {{ form_start(form,{'attr':{'id':'addNewSubCategoryForm'}}) }}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.subCatName, 'Sub-Category Name:') }}
+                            {{ form_widget(form.subCatName) }}
+                            {{ form_errors(form.subCatName, {'attr': {'class':'help-block'}}) }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.category, 'Category Name:') }}
+                            {{ form_widget(form.category,{'attr':{'class':'select2'}}) }}
+                            {{ form_errors(form.category, {'attr': {'class':'help-block'}}) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2 col-md-offset-5 ">
+                        <div class="form-group">
+                            {{ form_widget(form.status) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 pull-right">
+                        <div class="form-group">
+                            {{ form_widget(form.Submit, {'label': 'Save', 'attr':{'class': 'btn-flat btn-primary pull-right text-white w-10'}}) }}
+                        </div>
+                    </div>
+                </div>
+
+                {#            {{ form_end(form) }}#}
+            </div>
+            <!-- /.box-body -->
+        </div>
+
+    </section>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/bootstrap-toggle.min.js') }}"></script>
+    <!-- Select2 -->
+    <script src="{{ asset('js/select2.full.min.js') }}"></script>
+    <script>
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2()
+        })
+    </script>
+{% endblock %}
+
+
+
