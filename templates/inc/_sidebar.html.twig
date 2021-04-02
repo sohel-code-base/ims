@@ -1,3 +1,8 @@
+<style>
+    .sidebar .sidebar-menu .active .treeview-menu {
+        display: block;
+    }
+</style>
 <!-- Left side column. contains the sidebar -->
 <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
@@ -11,40 +16,54 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MAIN NAVIGATION</li>
-            <li class="treeview active">
-                <a href="javascript:">
-                    <i class="fa fa-database"></i> <span>Products</span>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-th"></i> <span>Products</span>
                     <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="{{ path('all_product') }}"><i class="fa fa-list"></i>All Products</a></li>
-                    <li><a href="{{ path('new_product') }}"><i class="fa fa-plus-square"></i>New Product</a></li>
+                    <li><a href="{{ path('product_info') }}"><i class="fa fa-info-circle"></i>Product Info</a></li>
+                    <li><a href="{{ path('new_product') }}"><i class="fa fa-plus-square"></i>New Product Info</a></li>
+                    <li><a href="{{ path('product_purchase') }}"><i class="fa fa-database"></i>Purchase Product</a></li>
                 </ul>
             </li>
             <li class="treeview">
-                <a href="javascript:">
+                <a href="#">
                     <i class="fa fa-th-large"></i> <span>Categories</span>
                     <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="javascript:"><i class="fa fa-list"></i>All Categories</a></li>
-                    <li><a href="javascript:"><i class="fa fa-plus-square"></i>New Category</a></li>
+                    <li><a href="{{ path('all_category') }}"><i class="fa fa-list"></i>All Categories</a></li>
+                    <li><a href="{{ path('product_new_category') }}"><i class="fa fa-plus-square"></i>New Category</a></li>
                 </ul>
             </li>
             <li class="treeview">
-                <a href="javascript:">
+                <a href="#">
                     <i class="fa fa-th-large"></i> <span>Sub-Categories</span>
                     <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="javascript:"><i class="fa fa-list"></i>All Sub-Categories</a></li>
-                    <li><a href="javascript:"><i class="fa fa-plus-square"></i>New Sub-Category</a></li>
+                    <li><a href="{{ path('all_sub_category') }}"><i class="fa fa-list"></i>All Sub-Categories</a></li>
+                    <li><a href="{{ path('product_new_sub_category') }}"><i class="fa fa-plus-square"></i>New Sub-Category</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-flash"></i> <span>Power</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="{{ path('all_power') }}"><i class="fa fa-list"></i>All Power</a></li>
+                    <li><a href="{{ path('product_new_power') }}"><i class="fa fa-plus-square"></i>New Power(watt)</a></li>
                 </ul>
             </li>
         </ul>

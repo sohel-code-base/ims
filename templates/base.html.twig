@@ -26,8 +26,8 @@
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-{#    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>#}
-{#    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>#}
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
     <!-- Google Font -->
@@ -48,6 +48,15 @@
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>{% block contentTitle %}{% endblock %}</h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="#">Layout</a></li>
+                <li class="active">Fixed</li>
+            </ol>
+        </section>
         {% block body %}
 
         {% endblock %}
@@ -71,6 +80,24 @@
 <script src="{{ asset('/js/adminlte.min.js') }}"></script>
 <!-- AdminLTE for demo purposes -->
 {#<script src="dist/js/demo.js"></script>#}
+
+<script>
+    $(function(){
+        /** add active class and stay opened when selected */
+        var url = window.location;
+
+        // for sidebar menu entirely but not cover treeview
+        $('ul.sidebar-menu a').filter(function() {
+            return this.href == url;
+        }).parent().addClass('active');
+
+        // for treeview
+        $('ul.treeview-menu a').filter(function() {
+            return this.href == url;
+        }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
+
+    });
+</script>
 {% block javascripts %}
 
 {% endblock %}

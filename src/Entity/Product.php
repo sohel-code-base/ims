@@ -3,7 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
@@ -23,26 +26,6 @@ class Product
     private $proName;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $purchasePrice;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $quantity;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $salePrice;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $purchaseDate;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
      */
     private $proCategory;
@@ -53,24 +36,30 @@ class Product
     private $proSubCategory;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Power::class, inversedBy="products")
-     */
-    private $proPower;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $status;
 
     /**
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $updatedAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ProductPurchase::class, mappedBy="product")
+     */
+    private $productPurchases;
+
+    public function __construct()
+    {
+        $this->productPurchases = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -87,58 +76,6 @@ class Product
         $this->proName = $proName;
 
         return $this;
-    }
-
-    public function getPurchasePrice(): ?int
-    {
-        return $this->purchasePrice;
-    }
-
-    public function setPurchasePrice(int $purchasePrice): self
-    {
-        $this->purchasePrice = $purchasePrice;
-
-        return $this;
-    }
-
-    public function getQuantity(): ?int
-    {
-        return $this->quantity;
-    }
-
-    public function setQuantity(?int $quantity): self
-    {
-        $this->quantity = $quantity;
-
-        return $this;
-    }
-
-    public function getSalePrice(): ?int
-    {
-        return $this->salePrice;
-    }
-
-    public function setSalePrice(?int $salePrice): self
-    {
-        $this->salePrice = $salePrice;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPurchaseDate()
-    {
-        return $this->purchaseDate;
-    }
-
-    /**
-     * @param mixed $purchaseDate
-     */
-    public function setPurchaseDate($purchaseDate): void
-    {
-        $this->purchaseDate = $purchaseDate;
     }
 
     /**
@@ -173,22 +110,6 @@ class Product
         $this->proSubCategory = $proSubCategory;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getProPower()
-    {
-        return $this->proPower;
-    }
-
-    /**
-     * @param mixed $proPower
-     */
-    public function setProPower($proPower): void
-    {
-        $this->proPower = $proPower;
-    }
-
     public function getStatus(): ?bool
     {
         return $this->status;
@@ -206,23 +127,58 @@ class Product
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCreatedAt($createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    /**
+     * @param mixed $updatedAt
+     */
+    public function setUpdatedAt($updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * @return Collection|ProductPurchase[]
+     */
+    public function getProductPurchases(): Collection
+    {
+        return $this->productPurchases;
+    }
+
+    public function addProductPurchase(ProductPurchase $productPurchase): self
+    {
+        if (!$this->productPurchases->contains($productPurchase)) {
+            $this->productPurchases[] = $productPurchase;
+            $productPurchase->setProduct($this);
+        }
 
         return $this;
     }
+
+    public function removeProductPurchase(ProductPurchase $productPurchase): self
+    {
+        if ($this->productPurchases->removeElement($productPurchase)) {
+            // set the owning side to null (unless already changed)
+            if ($productPurchase->getProduct() === $this) {
+                $productPurchase->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
 
 }

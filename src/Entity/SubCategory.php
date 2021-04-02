@@ -6,6 +6,7 @@ use App\Repository\SubCategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=SubCategoryRepository::class)
@@ -30,7 +31,7 @@ class SubCategory
     private $createdAt;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $updatedAt;
 
@@ -43,6 +44,17 @@ class SubCategory
      * @ORM\OneToMany(targetEntity=Product::class, mappedBy="proSubCategory")
      */
     private $products;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Gedmo\Slug(fields={"subCatName"}, updatable=false)
+     */
+    private $subCatSlug;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="subCategories")
+     */
+    private $category;
 
     public function __construct()
     {
@@ -71,23 +83,27 @@ class SubCategory
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCreatedAt($createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    /**
+     * @param mixed $updatedAt
+     */
+    public function setUpdatedAt($updatedAt): void
     {
         $this->updatedAt = $updatedAt;
-
-        return $this;
     }
 
     public function getStatus(): ?bool
@@ -128,6 +144,30 @@ class SubCategory
                 $product->setProSubCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSubCatSlug(): ?string
+    {
+        return $this->subCatSlug;
+    }
+
+    public function setSubCatSlug(string $subCatSlug): self
+    {
+        $this->subCatSlug = $subCatSlug;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

@@ -2,8 +2,15 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
+use App\Entity\Power;
 use App\Entity\Product;
+use App\Entity\SubCategory;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,22 +21,48 @@ class ProductType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('proName')
-            ->add('purchasePrice')
-            ->add('quantity')
-            ->add('salePrice')
-            ->add('purchaseDate', TextType::class)
-            ->add('status')
-            ->add('createdAt')
-            ->add('updatedAt')
-            ->add('proCategory')
-            ->add('proSubCategory')
-            ->add('proPower')
-            ->add('Submit', SubmitType::class,[
+            ->add('proName',TextType::class,[
                 'attr' => [
-                    'class' => 'btn-block btn-flat btn-success'
+                    'autocomplete' => 'off'
                 ]
             ])
+            ->add('status', CheckboxType::class,[
+                'required' => false,
+                'attr' => [
+                    'data-toggle' => 'toggle',
+                    'data-style' => 'slow',
+                    'data-offstyle' => 'danger',
+                    'data-onstyle'=> 'success',
+                    'data-on' => 'Enabled',
+                    'data-off'=> 'Disabled',
+                    'data-width'=> '150',
+                    'checked' => 'checked'
+                ],
+                'label' => false,
+            ])
+            ->add('createdAt', DateTimeType::class)
+            ->add('updatedAt', DateTimeType::class)
+            ->add('proCategory', EntityType::class,[
+                'class' => Category::class,
+                'placeholder' => 'Select a Category',
+                'choice_label' => 'catName',
+                'query_builder' => function(EntityRepository $repository){
+                return $repository->createQueryBuilder('category')
+                    ->orderBy('category.catName','ASC');
+                }
+            ])
+            ->add('proSubCategory', EntityType::class,[
+                'required' => false,
+                'class' => SubCategory::class,
+                'placeholder' => 'Select a Sub-Category',
+                'choice_label' => 'subCatName',
+                'group_by' => 'category.catName',
+                'query_builder' => function(EntityRepository $repository){
+                    return $repository->createQueryBuilder('e')
+                        ->orderBy('e.subCatName','ASC');
+                }
+            ])
+            ->add('Submit', SubmitType::class)
         ;
     }
 

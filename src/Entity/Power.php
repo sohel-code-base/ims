@@ -30,13 +30,24 @@ class Power
     private $status;
 
     /**
-     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="proPower")
+     * @ORM\Column(type="datetime")
      */
-    private $products;
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updatedAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ProductPurchase::class, mappedBy="proPower")
+     */
+    private $productPurchases;
 
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->productPurchases = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -92,6 +103,60 @@ class Power
             // set the owning side to null (unless already changed)
             if ($product->getProPower() === $this) {
                 $product->setProPower(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt($createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProductPurchase[]
+     */
+    public function getProductPurchases(): Collection
+    {
+        return $this->productPurchases;
+    }
+
+    public function addProductPurchase(ProductPurchase $productPurchase): self
+    {
+        if (!$this->productPurchases->contains($productPurchase)) {
+            $this->productPurchases[] = $productPurchase;
+            $productPurchase->setProPower($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductPurchase(ProductPurchase $productPurchase): self
+    {
+        if ($this->productPurchases->removeElement($productPurchase)) {
+            // set the owning side to null (unless already changed)
+            if ($productPurchase->getProPower() === $this) {
+                $productPurchase->setProPower(null);
             }
         }
 
