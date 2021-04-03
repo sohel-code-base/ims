@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+{% block title %}Add New Product{% endblock %}
+{% block stylesheet %}
+    <link href="{{ asset('css/bootstrap-toggle.min.css') }}" rel="stylesheet">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
+
+{% endblock %}
+{% block contentTitle %}
+    Sale! <small>This is the location where you can sale!</small>
+{% endblock %}
+{% block body %}
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                {#            <h3 class="box-title">General Elements</h3>#}
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                {{ form_start(form,{'attr':{'id':'productSaleForm'}}) }}
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            {{ form_label(form.customer, 'Customer Name:') }}
+                            {{ form_widget(form.customer,{'attr':{'class':'select2'}}) }}
+                            {{ form_errors(form.customer, {'attr': {'class':'help-block'}}) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.product, 'Product Name:') }}
+                            {{ form_widget(form.product,{'attr':{'class':'select2'}}) }}
+                            {{ form_errors(form.product, {'attr': {'class':'help-block'}}) }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.quantity, 'Quantity:') }}
+                            {{ form_widget(form.quantity) }}
+                            {{ form_errors(form.quantity, {'attr': {'class':'help-block'}}) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 col-md-offset-5 ">
+                        <div class="form-group">
+                            {{ form_widget(form.status) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 pull-right">
+                        <div class="form-group">
+                            {{ form_widget(form.Submit, {'label': 'Save', 'attr':{'class': 'btn-flat btn-primary pull-right text-white w-10'}}) }}
+                        </div>
+                    </div>
+                </div>
+
+                {#            {{ form_end(form) }}#}
+            </div>
+            <!-- /.box-body -->
+        </div>
+
+    </section>
+{% endblock %}
+{% block javascripts %}
+
+    <script src="{{ asset('js/bootstrap-toggle.min.js') }}"></script>
+    <!-- Select2 -->
+    <script src="{{ asset('js/select2.full.min.js') }}"></script>
+    <script>
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2()
+        })
+
+    </script>
+{% endblock %}
+
+
+

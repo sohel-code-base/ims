@@ -1,7 +1,9 @@
 .text-white{
-    color: #fff;
+    color: #fff !important;
 }
-
+.btn-success {
+    background-color: #009000 !important;
+}
 .alert-error{
     color: #842029 !important;
     background-color: #f8d7da !important;
@@ -44,6 +46,18 @@
     background-color: transparent;
     color: #f56954;
 }
+
+.sidebar-menu > li.sale-btn:hover > a{
+    background-color: #00c0ef !important;
+}
+
+.sidebar-menu>li.sale-btn.active>a{
+    background-color: #337ab7 !important;
+}
+
+.select2-container--default .select2-results__group {
+    background: #a5a5a5;
+}
 /*DataTable*/
 table.dataTable{
     box-shadow: 0 7px 14px 0 rgba(59,64,94,0.1),0 3px 6px 0 rgba(0,0,0,0.07);
@@ -67,7 +81,7 @@ table.dataTable thead{
  .slow .toggle-group { transition: left 0.7s; -webkit-transition: left 0.7s; }
 
 
-#addNewProductForm .select2-container--default .select2-selection--single, #addNewSubCategoryForm .select2-container--default .select2-selection--single, #purchaseProductForm  .select2-container--default .select2-selection--single{
+#addNewProductForm .select2-container--default .select2-selection--single, #addNewSubCategoryForm .select2-container--default .select2-selection--single, #purchaseProductForm .select2-container--default .select2-selection--single, #productSaleForm .select2-container--default .select2-selection--single{
     border-color: #d2d6de !important;
     border-radius: 0 !important;
     height: 34px !important;

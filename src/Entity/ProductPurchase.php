@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductPurchaseRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -62,6 +64,16 @@ class ProductPurchase
      * @ORM\ManyToOne(targetEntity=Power::class, inversedBy="productPurchases")
      */
     private $proPower;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ProductSale::class, mappedBy="product")
+     */
+    private $productSales;
+
+    public function __construct()
+    {
+        $this->productSales = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -172,6 +184,36 @@ class ProductPurchase
     public function setProPower(?Power $proPower): self
     {
         $this->proPower = $proPower;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProductSale[]
+     */
+    public function getProductSales(): Collection
+    {
+        return $this->productSales;
+    }
+
+    public function addProductSale(ProductSale $productSale): self
+    {
+        if (!$this->productSales->contains($productSale)) {
+            $this->productSales[] = $productSale;
+            $productSale->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductSale(ProductSale $productSale): self
+    {
+        if ($this->productSales->removeElement($productSale)) {
+            // set the owning side to null (unless already changed)
+            if ($productSale->getProduct() === $this) {
+                $productSale->setProduct(null);
+            }
+        }
 
         return $this;
     }

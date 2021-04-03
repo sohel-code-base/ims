@@ -26,6 +26,7 @@ class ProductPurchaseRepository extends ServiceEntityRepository
         $qb->select('product.proName AS productName');
         $qb->addSelect('e.quantity','e.purchasePrice','e.salePrice','e.purchaseDate');
         $qb->groupBy('product.id');
+        $qb->addGroupBy('e.id');
         $results = $qb->getQuery()->getArrayResult();
         return $results;
     }

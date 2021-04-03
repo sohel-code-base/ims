@@ -101,10 +101,10 @@ class ProductController extends AbstractController
                 $findExistingProduct->setQuantity($preQuantity + $purchaseQuantity);
                 $findExistingProduct->setPurchaseDate($purchaseDate);
                 $findExistingProduct->setProPower($power ? $power: null);
-                $findExistingProduct->setCreatedAt(new \DateTime('now'));
+                $findExistingProduct->setUpdatedAt(new \DateTime('now'));
                 $em->persist($findExistingProduct);
                 $em->flush();
-                $this->addFlash('update', 'Quantity Increased!');
+                $this->addFlash('update', 'Product Quantity Updated!');
                 return $this->redirectToRoute('all_product');
             }
             $productPurchase->setPurchaseDate($purchaseDate);

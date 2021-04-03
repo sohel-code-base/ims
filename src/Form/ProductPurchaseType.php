@@ -50,7 +50,7 @@ class ProductPurchaseType extends AbstractType
                 'query_builder' => function(EntityRepository $repository){
                     return $repository->createQueryBuilder('e')
                         ->where('e.status = 1')
-                        ->orderBy('e.proName','ASC');
+                        ->orderBy('e.id','DESC');
                 }
             ])
             ->add('proPower', EntityType::class,[
