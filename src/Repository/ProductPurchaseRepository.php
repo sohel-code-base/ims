@@ -23,12 +23,23 @@ class ProductPurchaseRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('e');
         $qb->join('e.product','product');
+        $qb->join('product.proCategory','category');
+        $qb->join('category.subCategories','subCat');
         $qb->select('product.proName AS productName');
-        $qb->addSelect('e.quantity','e.purchasePrice','e.salePrice','e.purchaseDate');
+        $qb->addSelect('category.catName');
+        $qb->addSelect('subCat.subCatName');
+        $qb->addSelect('e.id','e.quantity','e.purchasePrice','e.salePrice','e.purchaseDate');
         $qb->groupBy('product.id');
+        $qb->addGroupBy('category.id');
+        $qb->addGroupBy('subCat.id');
         $qb->addGroupBy('e.id');
         $results = $qb->getQuery()->getArrayResult();
-        return $results;
+        $items = [];
+        foreach ($results as $result){
+            $items[$result['productName']] = $result;
+        }
+//        dd($items);
+        return $items;
     }
 
 }

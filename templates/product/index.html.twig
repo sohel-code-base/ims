@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block contentTitle %}
-    Available Products <small>Available products on the store!</small>
+    Item <small>Product Information with category/sub-category</small>
 {% endblock %}
 {% block body %}
 
@@ -16,7 +16,7 @@
     <section class="content">
         {% for type, messages in app.flashes %}
             {% for message in messages %}
-                <div class="alert alert-{{ type }} alert-dismissible">
+                <div class="alert alert-{{ type }}-disabled alert-dismissible">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     <i class="icon fa fa-check"></i>{{ message|trans }}
                 </div>
@@ -39,34 +39,24 @@
                     <thead>
                     <tr>
                         <th width="10" class="text-center">{{ 'S/N'|trans }}</th>
-                        <th>{{ 'Product Name'|trans }}</th>
-                        <th>{{ 'Purchase Price'|trans }}</th>
-                        <th>{{ 'Sale Price'|trans }}</th>
-                        <th class="text-center">{{ 'Quantity'|trans }}</th>
-                        <th>{{ 'Purchase Date'|trans }}</th>
+                        <th>{{ 'Name'|trans }}</th>
+                        <th>{{ 'Sub-Category'|trans }}</th>
+                        <th>{{ 'Category'|trans }}</th>
                         <th width="20%"><i class="fa fa-gear"></i></th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% if allProducts is not empty %}
-                        {% for allProduct in allProducts %}
+                    {% if productInfo is not empty and productInfo is iterable %}
+                        {% for info in productInfo %}
                             <tr>
                                 <td align="center">{{ loop.index }}</td>
-                                <td>{{ allProduct.productName|default('') }}</td>
-                                <td>{{ allProduct.salePrice|default(0) }}</td>
-                                <td>{{ allProduct.purchasePrice|default(0) }}</td>
-                                <td align="center">
-                                    {{ allProduct.quantity|default(0) }}
-                                    {% if(allProduct.quantity < 100) %}
-                                        <p style="display: block" class="badge bg-red">Need to purchase!</p>
-                                    {% endif %}
-                                </td>
-                                <td>{{ allProduct.purchaseDate|date('d-m-Y')|default('N/A') }}</td>
+                                <td>{{ info.proName|default('N/A') }} {{ info.status == 0 ? "<span class='bg-orange btn-flat text-white btn-xs'>Currently Unavailable!" : ""}}</td>
+                                <td>{{ info.proSubCategory.subCatName|default('N/A') }}</td>
+                                <td>{{ info.proCategory.catName|default('N/A') }}</td>
                                 <td>
                                     <div class="btn-group pull-right">
-                                        <a href="javascript:" class="btn btn-sm bg-purple btn-flat"><i class="fa fa-eye"><span style="margin-left: 3px;">Show</span></i></a>
                                         <a href="javascript:" class="btn btn-sm bg-navy btn-flat"><i class="fa fa-edit"><span style="margin-left: 3px;">Edit</span></i></a>
-                                        <a href="javascript:" onclick="return confirm('Are you sure to delete this product?')" class="btn btn-sm bg-maroon btn-flat"><i class="fa fa-trash"><span style="margin-left: 3px;">Delete</span></i></a>
+{#                                        <a href="javascript:" onclick="return confirm('Are you sure to delete this product?')" class="btn btn-sm bg-maroon btn-flat"><i class="fa fa-trash"><span style="margin-left: 3px;">Delete</span></i></a>#}
                                     </div>
 
                                 </td>
@@ -74,20 +64,20 @@
                         {% endfor %}
                     {% else %}
                         <tr>
-                            <td colspan="10">{{ 'No Product Found!' }}</td>
+                            <td colspan="10">{{ 'Information not found!' }}</td>
                         </tr>
                     {% endif %}
                     </tbody>
-{#                    <tfoot>
-                    <tr>
-                        <th>{{ 'S/N'|trans }}</th>
-                        <th>{{ 'Product Name'|trans }}</th>
-                        <th>{{ 'Purchase Price'|trans }}</th>
-                        <th>{{ 'Sale Price'|trans }}</th>
-                        <th>{{ 'Purchase Date'|trans }}</th>
-                        <th><i class="fa fa-gear"></i></th>
-                    </tr>
-                    </tfoot>#}
+                    {#                    <tfoot>
+                                        <tr>
+                                            <th>{{ 'S/N'|trans }}</th>
+                                            <th>{{ 'Product Name'|trans }}</th>
+                                            <th>{{ 'Purchase Price'|trans }}</th>
+                                            <th>{{ 'Sale Price'|trans }}</th>
+                                            <th>{{ 'Purchase Date'|trans }}</th>
+                                            <th><i class="fa fa-gear"></i></th>
+                                        </tr>
+                                        </tfoot>#}
                 </table>
             </div>
             <!-- /.box-body -->

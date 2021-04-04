@@ -29,10 +29,20 @@
             </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="{{ path('all_product') }}"><i class="fa fa-list"></i>All Products</a></li>
-                    <li><a href="{{ path('product_info') }}"><i class="fa fa-info-circle"></i>Product Info</a></li>
-                    <li><a href="{{ path('new_product') }}"><i class="fa fa-plus-square"></i>New Product Info</a></li>
-                    <li><a href="{{ path('product_purchase') }}"><i class="fa fa-database"></i>Purchase Product</a></li>
+                    <li><a href="{{ path('all_purchase_product') }}"><i class="fa fa-list"></i>All Products</a></li>
+                    <li><a href="{{ path('product_purchase') }}"><i class="fa fa-database"></i>Store Product</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-info-circle"></i> <span>Item</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="{{ path('product_info') }}"><i class="fa fa-list"></i>Item Info</a></li>
+                    <li><a href="{{ path('new_product') }}"><i class="fa fa-database"></i>New Item</a></li>
                 </ul>
             </li>
             <li class="treeview">
@@ -49,7 +59,7 @@
             </li>
             <li class="treeview">
                 <a href="#">
-                    <i class="fa fa-th-large"></i> <span>Sub-Categories</span>
+                    <i class="fa fa-th-list"></i> <span>Sub-Categories</span>
                     <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -91,7 +101,7 @@
             </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="{{ path('all_product_sale') }}"><i class="fa fa-send"></i>Previous Sales</a></li>
+                    <li><a href="{{ path('all_product_sale') }}"><i class="fa fa-send"></i>Sales Archive</a></li>
                     <li><a href="{{ path('new_sale') }}"><i class="fa fa-share-square"></i>New Sale</a></li>
                 </ul>
             </li>
