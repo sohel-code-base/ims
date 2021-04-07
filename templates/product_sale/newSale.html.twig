@@ -43,6 +43,16 @@
                             {{ form_widget(form.quantity) }}
                             {{ form_errors(form.quantity, {'attr': {'class':'help-block'}}) }}
                         </div>
+                        <div class="form-group">
+                            {{ form_label(form.perPcsPrice, 'Sale Price(1pcs):') }}
+                            {{ form_widget(form.perPcsPrice,{'attr':{'autocomplete':'off'}}) }}
+                            {{ form_errors(form.perPcsPrice, {'attr': {'class':'help-block'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.watt, 'Watt:') }}
+                            {{ form_widget(form.watt) }}
+                            {{ form_errors(form.watt, {'attr': {'class':'help-block'}}) }}
+                        </div>
                     </div>
                 </div>
                 <div class="row">

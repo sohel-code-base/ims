@@ -38,7 +38,7 @@ class ProductSale
     private $status;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      */
     private $createdAt;
 
@@ -46,6 +46,21 @@ class ProductSale
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $updatedAt;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $perPcsPrice;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $totalPrice;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Power::class, inversedBy="productSales")
+     */
+    private $watt;
 
     public function getId(): ?int
     {
@@ -100,16 +115,20 @@ class ProductSale
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt( $createdAt): self
+    /**
+     * @param mixed $createdAt
+     */
+    public function setCreatedAt($createdAt): void
     {
         $this->createdAt = $createdAt;
-
-        return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
@@ -120,6 +139,42 @@ class ProductSale
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getPerPcsPrice(): ?float
+    {
+        return $this->perPcsPrice;
+    }
+
+    public function setPerPcsPrice(float $perPcsPrice): self
+    {
+        $this->perPcsPrice = $perPcsPrice;
+
+        return $this;
+    }
+
+    public function getTotalPrice(): ?float
+    {
+        return $this->totalPrice;
+    }
+
+    public function setTotalPrice(?float $totalPrice): self
+    {
+        $this->totalPrice = $totalPrice;
+
+        return $this;
+    }
+
+    public function getWatt(): ?Power
+    {
+        return $this->watt;
+    }
+
+    public function setWatt(?Power $watt): self
+    {
+        $this->watt = $watt;
 
         return $this;
     }

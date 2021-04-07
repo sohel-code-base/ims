@@ -15,7 +15,7 @@
     <section class="content">
         {% for type, messages in app.flashes %}
             {% for message in messages %}
-                <div class="alert alert-{{ type }}-disabled alert-dismissible">
+                <div class="alert alert-{{ type }} alert-dismissible">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     <i class="icon fa fa-check"></i>{{ message|trans }}
                 </div>
@@ -38,6 +38,7 @@
                     <tr>
                         <th width="10" class="text-center">{{ 'S/N'|trans }}</th>
                         <th>{{ 'Sub-Category'|trans }}</th>
+                        <th>{{ 'Category'|trans }}</th>
                         <th width="20%"><i class="fa fa-gear"></i></th>
                     </tr>
                     </thead>
@@ -47,6 +48,7 @@
                             <tr>
                                 <td class="text-center">{{ loop.index }}</td>
                                 <td>{{ subCategory.subCatName|default('') }} {{ subCategory.status == 0 ? "<span class='badge bg-red'>Currently Unavailable!" : ""}}</td>
+                                <td>{{ subCategory.category.catName|default('') }}</td>
                                 <td>
                                     <div class="btn-group pull-right">
                                         <a href="javascript:" class="btn btn-sm bg-navy btn-flat"><i class="fa fa-edit"><span style="margin-left: 3px;">Edit</span></i></a>

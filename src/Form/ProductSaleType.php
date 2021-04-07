@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Customer;
+use App\Entity\Power;
 use App\Entity\ProductPurchase;
 use App\Entity\ProductSale;
 use Doctrine\ORM\EntityRepository;
@@ -19,6 +20,17 @@ class ProductSaleType extends AbstractType
     {
         $builder
             ->add('quantity')
+            ->add('perPcsPrice')
+            ->add('watt',EntityType::class,[
+                'required' => false,
+                'class' => Power::class,
+                'placeholder' => 'Select watt',
+                'choice_label' => 'watt',
+                'query_builder' => function(EntityRepository $repository){
+                return $repository->createQueryBuilder('e')
+                    ->orderBy('e.watt', 'ASC');
+                }
+            ])
             ->add('customer',EntityType::class,[
                 'class' => Customer::class,
                 'placeholder' => 'Select Customer',

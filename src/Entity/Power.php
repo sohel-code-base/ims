@@ -44,10 +44,16 @@ class Power
      */
     private $productPurchases;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ProductSale::class, mappedBy="watt")
+     */
+    private $productSales;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
         $this->productPurchases = new ArrayCollection();
+        $this->productSales = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -157,6 +163,36 @@ class Power
             // set the owning side to null (unless already changed)
             if ($productPurchase->getProPower() === $this) {
                 $productPurchase->setProPower(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProductSale[]
+     */
+    public function getProductSales(): Collection
+    {
+        return $this->productSales;
+    }
+
+    public function addProductSale(ProductSale $productSale): self
+    {
+        if (!$this->productSales->contains($productSale)) {
+            $this->productSales[] = $productSale;
+            $productSale->setWatt($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductSale(ProductSale $productSale): self
+    {
+        if ($this->productSales->removeElement($productSale)) {
+            // set the owning side to null (unless already changed)
+            if ($productSale->getWatt() === $this) {
+                $productSale->setWatt(null);
             }
         }
 

@@ -19,32 +19,41 @@ class ProductSaleRepository extends ServiceEntityRepository
         parent::__construct($registry, ProductSale::class);
     }
 
-    // /**
-    //  * @return ProductSale[] Returns an array of ProductSale objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getSaleRecords()
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $qb = $this->createQueryBuilder('e');
+        $qb->join('e.customer', 'customer');
+        $qb->select('e.createdAt AS orderDate', 'e.status', 'SUM(e.totalPrice) AS orderTotalPrice');
+        $qb->addSelect('customer.cusName AS customerName','customer.id AS customerId');
+        $qb->orderBy('e.createdAt', 'DESC');
+        $qb->groupBy('customer.id');
+        $qb->addGroupBy('e.createdAt');
+        $results = $qb->getQuery()->getArrayResult();
+//        $data = [];
+//        foreach ($results as $result){
+//            $orderDate = $result['orderDate']->format('d-m-Y');
+//            $data[$result['customerId']]['product'][$orderDate] = [
+//                'orderTotalPrice' => $result['orderTotalPrice'],
+//            ];
+//        }
+//        dd($results);
+        return $results;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?ProductSale
+    public function getSalesRecordByCustomerAndDate($filterBy)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $qb = $this->createQueryBuilder('e');
+        $qb->join('e.customer', 'customer');
+        $qb->join('e.product', 'productPurchase');
+        $qb->join('productPurchase.product', 'product');
+        $qb->leftJoin('e.watt', 'watt');
+        $qb->select('e.quantity','e.perPcsPrice', 'e.totalPrice');
+        $qb->addSelect('product.proName AS productName');
+        $qb->addSelect('watt.watt');
+        $qb->where('e.createdAt = :orderDate')->setParameter('orderDate', $filterBy['orderDate']);
+        $qb->andWhere('customer.id = :customerId')->setParameter('customerId', $filterBy['customerId']);
+        $results = $qb->getQuery()->getArrayResult();
+
+        return $results;
     }
-    */
 }
