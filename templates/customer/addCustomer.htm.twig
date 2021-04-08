@@ -22,14 +22,14 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             {{ form_label(form.cusName, 'Customer Name:') }}
-                            {{ form_widget(form.cusName,{'attr':{'autocomplete':'off'}}) }}
+                            {{ form_widget(form.cusName,{'attr':{'autocomplete':'off','placeholder':'e.g. Mr. Sajib'}}) }}
                             {{ form_errors(form.cusName, {'attr': {'class':'help-block'}}) }}
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             {{ form_label(form.cusPhone, 'Customer Phone:') }}
-                            {{ form_widget(form.cusPhone,{'attr':{'autocomplete':'off'}}) }}
+                            {{ form_widget(form.cusPhone,{'attr':{'autocomplete':'off','placeholder':'e.g. 0123456789'}}) }}
                             {{ form_errors(form.cusPhone, {'attr': {'class':'help-block'}}) }}
                         </div>
                     </div>
@@ -38,7 +38,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             {{ form_label(form.cusAddress, 'Address:') }}
-                            {{ form_widget(form.cusAddress) }}
+                            {{ form_widget(form.cusAddress,{'attr':{'placeholder': 'e.g. Rajendrapur Cantt.'}}) }}
                             {{ form_errors(form.cusAddress, {'attr': {'class':'help-block'}}) }}
                         </div>
                     </div>

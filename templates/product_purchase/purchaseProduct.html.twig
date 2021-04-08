@@ -34,7 +34,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             {{ form_label(form.quantity, 'Quantity:') }}
-                            {{ form_widget(form.quantity) }}
+                            {{ form_widget(form.quantity,{'attr':{'placeholder':'e.g. 10'}}) }}
                             {{ form_errors(form.quantity, {'attr': {'class':'help-block'}}) }}
                         </div>
                     </div>
@@ -43,14 +43,14 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             {{ form_label(form.purchasePrice, 'Purchase Price(1pcs):') }}
-                            {{ form_widget(form.purchasePrice) }}
+                            {{ form_widget(form.purchasePrice,{'attr':{'placeholder':'e.g. 100'}}) }}
                             {{ form_errors(form.purchasePrice, {'attr': {'class':'help-block'}}) }}
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             {{ form_label(form.salePrice, 'Sale Price(1pcs):') }}
-                            {{ form_widget(form.salePrice) }}
+                            {{ form_widget(form.salePrice,{'attr':{'placeholder':'e.g. 100'}}) }}
                             {{ form_errors(form.salePrice, {'attr': {'class':'help-block'}}) }}
                         </div>
                     </div>
@@ -66,7 +66,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             {{ form_label(form.purchaseDate, 'Purchase Date:') }}
-                            {{ form_widget(form.purchaseDate,{'id': 'datepicker'}) }}
+                            {{ form_widget(form.purchaseDate,{'attr':{'id': 'datepicker','placeholder':'e.g. YYYY-mm-dd'}}) }}
                             {{ form_errors(form.purchaseDate, {'attr': {'class':'help-block'}}) }}
                         </div>
                     </div>

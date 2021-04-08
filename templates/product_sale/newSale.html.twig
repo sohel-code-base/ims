@@ -40,12 +40,12 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             {{ form_label(form.quantity, 'Quantity:') }}
-                            {{ form_widget(form.quantity) }}
+                            {{ form_widget(form.quantity,{'attr':{'placeholder': 'e.g. 10'}}) }}
                             {{ form_errors(form.quantity, {'attr': {'class':'help-block'}}) }}
                         </div>
                         <div class="form-group">
                             {{ form_label(form.perPcsPrice, 'Sale Price(1pcs):') }}
-                            {{ form_widget(form.perPcsPrice,{'attr':{'autocomplete':'off'}}) }}
+                            {{ form_widget(form.perPcsPrice,{'attr':{'autocomplete':'off','placeholder': 'e.g. 100'}}) }}
                             {{ form_errors(form.perPcsPrice, {'attr': {'class':'help-block'}}) }}
                         </div>
                         <div class="form-group">

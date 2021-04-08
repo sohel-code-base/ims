@@ -20,7 +20,7 @@
                     <div class="col-md-6 col-md-offset-3">
                         <div class="form-group">
                             {{ form_label(form.watt, 'Watt:') }}
-                            {{ form_widget(form.watt) }}
+                            {{ form_widget(form.watt,{'attr': {'placeholder': 'e.g. 5'}}) }}
                             {{ form_errors(form.watt, {'attr': {'class':'help-block'}}) }}
                         </div>
                     </div>

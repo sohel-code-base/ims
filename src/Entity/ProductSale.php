@@ -53,7 +53,7 @@ class ProductSale
     private $perPcsPrice;
 
     /**
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="float")
      */
     private $totalPrice;
 
