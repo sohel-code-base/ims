@@ -50,6 +50,7 @@ class ProductSaleRepository extends ServiceEntityRepository
         $qb->select('e.quantity','e.perPcsPrice', 'e.totalPrice');
         $qb->addSelect('product.proName AS productName');
         $qb->addSelect('watt.watt');
+        $qb->addSelect('customer.cusName AS customerName', 'customer.cusAddress AS customerAddress', 'customer.cusPhone AS customerPhone');
         $qb->where('e.createdAt = :orderDate')->setParameter('orderDate', $filterBy['orderDate']);
         $qb->andWhere('customer.id = :customerId')->setParameter('customerId', $filterBy['customerId']);
         $results = $qb->getQuery()->getArrayResult();

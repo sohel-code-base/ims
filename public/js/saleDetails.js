@@ -12,10 +12,25 @@ $(document).ready(function () {
             data: {'customerId':cId, 'orderDate':oDate},
             success: function (response) {
                 let detailsModal = $('#saleDetails');
-                let trHtml = '';
+                let productDetails = '';
+                let customerDetails = '';
                 let totalAmount = 0;
-                let lastTr = '';
+                let productTotalAmount = '';
+                let date = new Date(oDate);
+                let formattedDate = ('0' + date.getDate()).slice(-2) + "-" + ('0' + (date.getMonth()+1)).slice(-2) + "-" + date.getFullYear(); // add '0' on single digit date and remove '0' from double digit date like '011' with slice(-2)
                 detailsModal.find('.modal-body tbody').empty();
+                detailsModal.find('.modal-body thead.customerDetails').empty();
+
+                // console.log(response[0].orderDate);
+
+                customerDetails = "<tr>" +
+                    "<td colspan= 3 style='text-align: right'>" + "<strong>Date: </strong>" + formattedDate + "</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                    "<td>" + "<strong>Name: </strong>" + response[0].customerName + "</td>" +
+                    "<td>" + "<strong>Address: </strong>" + response[0].customerAddress + "</td>" +
+                    "<td>" + "<strong>Phone: </strong>" + response[0].customerPhone + "</td>" +
+                    "</tr>";
 
                 $.each(response, function(key, value) {
                     if(!$.trim(response[key].watt)){
@@ -25,21 +40,23 @@ $(document).ready(function () {
                     }
 
                     totalAmount = totalAmount + response[key].totalPrice;
-                    trHtml = "<tr>" +
+                    productDetails = "<tr>" +
+                        "<td>" + (key+1) + "</td>" +
                         "<td>" + response[key].productName + response[key].watt + "</td>" +
-                        "<td>" + response[key].quantity + " pcs" + "</td>" +
-                        "<td>" + response[key].perPcsPrice + " tk" + "</td>" +
-                        "<td>" + response[key].totalPrice + " tk" + "</td>" +
+                        "<td align='center'>" + response[key].quantity + " pcs" + "</td>" +
+                        "<td align='center'>" + response[key].perPcsPrice + " tk" + "</td>" +
+                        "<td align='right'>" + response[key].totalPrice + " tk" + "</td>" +
                         "</tr>";
-                    detailsModal.find('.modal-body tbody').append(trHtml);
-                    // console.log(totalAmount);
+                    detailsModal.find('.modal-body tbody.productDetails').append(productDetails);
+                    // console.log(response[key]);
 
                 })
-                lastTr = "<tr>" +
-                    "<td colspan=3 style='font-weight: bold'> Total </td>" +
-                    "<td style='font-weight: bold'>" + totalAmount + " tk" + "</td>" +
+                productTotalAmount = "<tr>" +
+                    "<td colspan=4 style='font-weight: bold' align='center'> Total </td>" +
+                    "<td style='font-weight: bold' align='right'>" + totalAmount + " tk" + "</td>" +
                     "</tr>";
-                detailsModal.find('.modal-body tbody').append(lastTr);
+                detailsModal.find('.modal-body tbody.productDetails').append(productTotalAmount);
+                detailsModal.find('.modal-body tbody.customerDetails').append(customerDetails);
 
                 detailsModal.modal('show');
             }

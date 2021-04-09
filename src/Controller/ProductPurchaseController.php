@@ -81,10 +81,30 @@ class ProductPurchaseController extends AbstractController
     /**
      * @Route("/product/{id}/edit", name="edit_purchase_product")
      */
-    public function editPurchaseProduct(ProductPurchase $purchase)
+    public function editPurchaseProduct(Request $request, ProductPurchaseRepository $repository, $id)
     {
-        $purchaseId = $purchase->getId();
+        $findProduct = $repository->findOneBy(['id' => $id]);
+        $form = $this->createForm(ProductPurchaseType::class, $findProduct);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted()){
+            $em = $this->getDoctrine()->getManager();
+            $purchaseDateStringToDate = $form->get('purchaseDate')->getData();
+
+            $findProduct->setUpdatedAt(new \DateTime('now'));
+            $findProduct->setPurchaseDate(new \DateTime($purchaseDateStringToDate));
+            $em->persist($findProduct);
+            $em->flush();
+            $this->addFlash('update', 'Record has been updated successfully!');
+            return $this->redirectToRoute('all_purchase_product');
+        }
+
+        $purchaseDateToString = $form->get('purchaseDate')->getData()->format('Y-m-d');
+        $form->get('purchaseDate')->setData($purchaseDateToString);
+
+        return $this->render('product_purchase/edit.html.twig',[
+            'form' => $form->createView(),
+        ]);
     }
 
     /**

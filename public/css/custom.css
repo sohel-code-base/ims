@@ -114,6 +114,10 @@ table.dataTable thead{
     height: 34px !important;
 }
 
+.select2-container {
+    width: 100% !important;
+}
+
 .product-details .modal-dialog{
     margin: 13% auto !important;
     box-shadow: 0px 2px 4px #00000069;
@@ -129,4 +133,19 @@ table.dataTable thead{
 }
 .product-details button.close:focus, .product-details button.close:hover {
     outline: none;
+}
+
+/*Sale details Modal Table Customization*/
+.modal .modal-body table thead tr th,.modal .modal-body table tbody tr td{
+    padding: 3px !important;
+    line-height: 1 !important;
+}
+.modal .modal-body table tbody.customerDetails td{
+    border: 0px !important;
+}
+
+#saleDetails .modal-title{
+    font-weight: 700;
+    text-shadow: 0px 2px #ccc;
+    font-size: 35px;
 }

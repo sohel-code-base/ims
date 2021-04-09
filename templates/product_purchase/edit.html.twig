@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+{% block title %}Add New Product{% endblock %}
+{% block stylesheet %}
+    <!-- bootstrap datepicker -->
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-datepicker.min.css') }}">
+    <link href="{{ asset('css/bootstrap-toggle.min.css') }}" rel="stylesheet">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+
+{% endblock %}
+{% block contentTitle %}
+    Update Product! <small>This is the location where you are able to update product!</small>
+{% endblock %}
+{% block body %}
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                {#            <h3 class="box-title">General Elements</h3>#}
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                {{ form_start(form,{'attr':{'id':'purchaseProductForm'}}) }}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.product, 'Product Name:') }}
+                            {{ form_widget(form.product,{'attr':{'class':'select2'}}) }}
+                            {{ form_errors(form.product, {'attr': {'class':'help-block'}}) }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.quantity, 'Quantity:') }}
+                            {{ form_widget(form.quantity,{'attr':{'placeholder':'e.g. 10'}}) }}
+                            {{ form_errors(form.quantity, {'attr': {'class':'help-block'}}) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.purchasePrice, 'Purchase Price(1pcs):') }}
+                            {{ form_widget(form.purchasePrice,{'attr':{'placeholder':'e.g. 100'}}) }}
+                            {{ form_errors(form.purchasePrice, {'attr': {'class':'help-block'}}) }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.salePrice, 'Sale Price(1pcs):') }}
+                            {{ form_widget(form.salePrice,{'attr':{'placeholder':'e.g. 100'}}) }}
+                            {{ form_errors(form.salePrice, {'attr': {'class':'help-block'}}) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.proPower, 'Watt:') }}
+                            {{ form_widget(form.proPower) }}
+                            {{ form_errors(form.proPower, {'attr': {'class':'help-block'}}) }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.purchaseDate, 'Purchase Date:') }}
+                            {{ form_widget(form.purchaseDate,{'id': 'datepicker','attr':{'placeholder':'e.g. YYYY-mm-dd'}}) }}
+                            {{ form_errors(form.purchaseDate, {'attr': {'class':'help-block'}}) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 col-md-offset-5 ">
+                        <div class="form-group">
+                            {{ form_widget(form.status) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 pull-right">
+                        <div class="form-group">
+                            {{ form_widget(form.Submit, {'label': 'Save', 'attr':{'class': 'btn-flat btn-primary pull-right text-white w-10'}}) }}
+                        </div>
+                    </div>
+                </div>
+
+                {#            {{ form_end(form) }}#}
+            </div>
+            <!-- /.box-body -->
+        </div>
+
+    </section>
+{% endblock %}
+{% block javascripts %}
+    <!-- bootstrap datepicker -->
+    <script src="{{ asset('/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-toggle.min.js') }}"></script>
+
+    <!-- Select2 -->
+    <script src="{{ asset('js/select2.full.min.js') }}"></script>
+    <script>
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2()
+            //Date picker
+            $("#datepicker").datepicker({
+                autoclose: true,
+                todayHighlight: true,
+                format: 'yyyy-mm-dd',
+            });
+        })
+    </script>
+{% endblock %}
+
+
+

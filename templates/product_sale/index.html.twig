@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Islamia Enterprise!{% endblock %}
-
 {% block stylesheet %}
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('/css/dataTables.bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/animate.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/custom.css') }}">
     <style>
         @media print {
             body * {
@@ -15,10 +15,10 @@
                 visibility: visible;
                 overflow: visible;
             }
-            .modal-header button.close{
+
+            .modal-header button.close {
                 display: none;
             }
-
             .modal-footer {
                 /*visibility: hidden;*/
                 display: none;
@@ -55,7 +55,8 @@
             <div class="box-header">
                 <h3 class="box-title"><i class="fa fa-th-list" style="margin-right: 5px;"></i>List </h3>
                 <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                            title="Collapse"><i class="fa fa-minus"></i></button>
                     {#                    <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>#}
                 </div>
             </div>
@@ -83,11 +84,20 @@
                                 <td>{{ sale.orderDate|date('d-m-Y')|default('N/A') }}</td>
                                 <td>
                                     <div class="btn-group pull-right">
-{#                                        {{ path('show_sale_details',{'customerId': sale.customerId, 'orderDate':sale.orderDate|date('Y-m-d')}) }}#}
-                                        <a href="" class="btn btn-sm bg-purple btn-flat show-sale-details"  data-toggle="modal" data-target="" data-action="{{ path('show_sale_details') }}" data-customer-id="{{ sale.customerId }}" data-order-date="{{ sale.orderDate|date('Y-m-d') }}"><i class="fa fa-eye"><span style="margin-left: 3px;">Show</span></i></a>
+                                        {#                                        {{ path('show_sale_details',{'customerId': sale.customerId, 'orderDate':sale.orderDate|date('Y-m-d')}) }}#}
+                                        <a href="" class="btn btn-sm bg-purple btn-flat show-sale-details"
+                                           data-toggle="modal" data-target=""
+                                           data-action="{{ path('show_sale_details') }}"
+                                           data-customer-id="{{ sale.customerId }}"
+                                           data-order-date="{{ sale.orderDate|date('Y-m-d') }}"><i
+                                                    class="fa fa-eye"><span
+                                                        style="margin-left: 3px;">Show</span></i></a>
 
-                                        <a href="" class="btn btn-sm bg-navy btn-flat"><i class="fa fa-edit"><span style="margin-left: 3px;">Edit</span></i></a>
-                                        <a href="" class="btn btn-sm bg-maroon btn-flat delete-record"><i class="fa fa-trash"><span style="margin-left: 3px;">Delete</span></i></a>
+                                        <a href="" class="btn btn-sm bg-navy btn-flat"><i class="fa fa-edit"><span
+                                                        style="margin-left: 3px;">Edit</span></i></a>
+                                        <a href="" class="btn btn-sm bg-maroon btn-flat delete-record"><i
+                                                    class="fa fa-trash"><span
+                                                        style="margin-left: 3px;">Delete</span></i></a>
                                     </div>
 
                                 </td>
@@ -106,54 +116,78 @@
         </div>
         <!-- /.box -->
 
-          <!-- Modal for details view -->
-            <div class="modal fade sale-details" id="saleDetails">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span></button>
-                            <table width="100%">
-                                <thead>
-                                <tr>
-                                    <th colspan="2" style="text-align: center">
-                                        <h4>{{ 'ISLAMIA ENTERPRISE'|trans }}</h4>
-                                        <p><em>{{ 'Electrical appliances wholesale centre'|trans }}</em></p>
-                                        <p>{{ 'Hazi Mansion (2nd Floor), Salna Bazar, Gazipur-1700'|trans }}</p>
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td><p class="text-center">{{ 'Phone: 01996647842, 01408552205, 01915138563'|trans }}</p></td>
-                                    <td><p class="text-center">{{ 'Email: isenonline@gmail.com'|trans }}</p></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="modal-body">
-                            <table class="table table-bordered">
-                                <thead class="bg-primary">
-                                <tr>
-                                    <th>{{ 'Product'|trans }}</th>
-                                    <th>{{ 'Quantity'|trans }}</th>
-                                    <th>{{ 'Rate'|trans }}</th>
-                                    <th>{{ 'Total'|trans }}</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="modal-footer text-center">
-                            <a href="javascript:window.print()" class="btn bg-purple btn-flat">Print <i class="fa fa-print"></i></a>
-                        </div>
+        <!-- Modal for details view -->
+        <div class="modal fade sale-details" id="saleDetails">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                        <table width="100%">
+                            <thead>
+                            <tr>
+                                <th colspan="2" style="text-align: center">
+                                    <h2 class="modal-title">{{ 'Sun Electro Industries LTD'|upper|trans }}</h2>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td colspan="2" align="center">
+                                    <p style="margin: 0; font-weight: 700"><em>{{ 'Marketed By: M/S Islamia Traders'|trans }}</em></p>
+                                    <p style="margin: 0; font-weight: 600">{{ 'All types of electrical goods are sold wholesale and retail here'|trans }}</p>
+                                    <p style="margin: 0; font-weight: 600">{{ 'Rajendrapur Cantt. Gazipur Sadar, Gazipur'|trans }}</p>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-top: 10px"><strong>Phone:</strong> 01996647842, 01408552205, 01915138563</td>
+                                <td style="padding-top: 10px"><strong>Email: </strong>isenonline@gmail.com</td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <!-- /.modal-content -->
+                    <div class="modal-body">
+                        <table class="table">
+                            <thead>
+
+                            </thead>
+                            <tbody class="customerDetails">
+
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered">
+                            <thead class="bg-primary">
+                            <tr>
+                                <th>{{ 'S/N'|trans }}</th>
+                                <th>{{ 'Product'|trans }}</th>
+                                <th style="text-align: center">{{ 'Quantity'|trans }}</th>
+                                <th style="text-align: center">{{ 'U. Price'|trans }}</th>
+                                <th style="text-align: right">{{ 'Total'|trans }}</th>
+                            </tr>
+                            </thead>
+                            <tbody class="productDetails">
+
+                            </tbody>
+                        </table>
+                        <table width="100%" style="margin-top: 130px;">
+                            <thead>
+                            <tr>
+                                <th style="text-align: left">Customer's Signature</th>
+                                <th style="text-align: right">Seller's Signature</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="modal-footer text-center">
+                        <a href="javascript:window.print()" class="btn bg-purple btn-flat">Print <i class="fa fa-print"></i></a>
+                    </div>
                 </div>
-                <!-- /.modal-dialog -->
+                <!-- /.modal-content -->
             </div>
-            <!-- /.modal -->
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
 
     </section>
     <!-- /.content -->
@@ -164,21 +198,23 @@
     <script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('/js/dataTables.bootstrap.min.js') }}"></script>
     <script src="{{ asset('/js/saleDetails.js') }}"></script>
-    <!-- page script -->
+    <script src="{{ asset('/js/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('/js/deleteConfirmationAlert.js') }}"></script>
+    <!-- DataTable Activation script -->
     <script>
         $(function () {
             $('#productTable').DataTable({
-                "columnDefs":[{
+                "columnDefs": [{
                     "targets": -1,
                     "orderable": false
                 }]
             })
         });
 
-/*        if (typeof jQuery != 'undefined') {
-            // jQuery is loaded => print the version
-            alert(jQuery.fn.jquery);
-        }*/
+        /*        if (typeof jQuery != 'undefined') {
+                    // jQuery is loaded => print the version
+                    alert(jQuery.fn.jquery);
+                }*/
 
 
     </script>
