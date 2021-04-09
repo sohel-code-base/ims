@@ -19,10 +19,4 @@
         /*visibility: hidden;*/
         display: none;
     }
-
-    .modal-header h3 {
-        text-align: left !important;
-        background-color: red !important;
-        color: #fff !important;
-    }
 }
