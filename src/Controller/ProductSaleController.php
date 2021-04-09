@@ -78,4 +78,25 @@ class ProductSaleController extends AbstractController
 
         return new JsonResponse($saleDetails);
     }
+
+    /**
+     * @Route("/sale/{id}/delete", name="delete_sale_record")
+     * @param $id
+     * @param ProductSaleRepository $repository
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteRecord($id, ProductSaleRepository $repository)
+    {
+        $findRecord = $repository->find($id);
+        if ($findRecord){
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($findRecord);
+            $em->flush();
+            $this->addFlash('success', 'Record has been deleted successfully!');
+            return $this->redirectToRoute('all_product_sale');
+        }else{
+            $this->addFlash('error','Record not found!');
+            return $this->redirectToRoute('delete_sale_record');
+        }
+    }
 }

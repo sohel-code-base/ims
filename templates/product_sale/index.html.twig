@@ -19,6 +19,10 @@
             .modal-header button.close {
                 display: none;
             }
+            .modal .modal-body table thead tr th,.modal .modal-body table tbody tr td{
+                padding: 3px !important;
+                line-height: 1 !important;
+            }
             .modal-footer {
                 /*visibility: hidden;*/
                 display: none;
@@ -93,11 +97,8 @@
                                                     class="fa fa-eye"><span
                                                         style="margin-left: 3px;">Show</span></i></a>
 
-                                        <a href="" class="btn btn-sm bg-navy btn-flat"><i class="fa fa-edit"><span
-                                                        style="margin-left: 3px;">Edit</span></i></a>
-                                        <a href="" class="btn btn-sm bg-maroon btn-flat delete-record"><i
-                                                    class="fa fa-trash"><span
-                                                        style="margin-left: 3px;">Delete</span></i></a>
+                                        <a href="" class="btn btn-sm bg-navy btn-flat"><i class="fa fa-edit"><span style="margin-left: 3px;">Edit</span></i></a>
+                                        <a href="{{ path('delete_sale_record',{'id': sale.id}) }}" class="btn btn-sm bg-maroon btn-flat delete-record"><i class="fa fa-trash"><span style="margin-left: 3px;">Delete</span></i></a>
                                     </div>
 
                                 </td>

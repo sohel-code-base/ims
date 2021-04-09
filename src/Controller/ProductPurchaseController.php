@@ -123,7 +123,7 @@ class ProductPurchaseController extends AbstractController
             $this->addFlash('success','Product has been deleted!');
             return $this->redirectToRoute('all_purchase_product');
         }else{
-            $this->addFlash('error','Something wrong!');
+            $this->addFlash('error','Record not found!');
             return $this->redirectToRoute('all_purchase_product');
         }
     }
