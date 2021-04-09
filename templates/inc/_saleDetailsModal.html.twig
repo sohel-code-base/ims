@@ -1,0 +1,72 @@
+<!-- Modal for details view -->
+<div class="modal fade sale-details" id="saleDetails">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <table width="100%">
+                    <thead>
+                    <tr>
+                        <th colspan="2" style="text-align: center">
+                            <h2 class="modal-title">{{ 'Sun Electro Industries LTD'|upper|trans }}</h2>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td colspan="2" align="center">
+                            <p style="margin: 0; font-weight: 700"><em>{{ 'Marketed By: M/S Islamia Traders'|trans }}</em></p>
+                            <p style="margin: 0; font-weight: 600">{{ 'All types of electrical goods are sold wholesale and retail here'|trans }}</p>
+                            <p style="margin: 0; font-weight: 600">{{ 'Rajendrapur Cantt. Gazipur Sadar, Gazipur'|trans }}</p>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top: 10px"><strong>Phone:</strong> 01996647842, 01408552205, 01915138563</td>
+                        <td style="padding-top: 10px"><strong>Email: </strong>isenonline@gmail.com</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+
+                    </thead>
+                    <tbody class="customerDetails">
+
+                    </tbody>
+                </table>
+                <table class="table table-bordered">
+                    <thead class="bg-primary">
+                    <tr>
+                        <th>{{ 'S/N'|trans }}</th>
+                        <th>{{ 'Product'|trans }}</th>
+                        <th style="text-align: center">{{ 'Quantity'|trans }}</th>
+                        <th style="text-align: center">{{ 'U. Price'|trans }}</th>
+                        <th style="text-align: right">{{ 'Total'|trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody class="productDetails">
+
+                    </tbody>
+                </table>
+                <table width="100%" style="margin-top: 130px;">
+                    <thead>
+                    <tr>
+                        <th style="text-align: left">Customer's Signature</th>
+                        <th style="text-align: right">Seller's Signature</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="modal-footer text-center">
+                <a href="javascript:window.print()" class="btn bg-purple btn-flat">Print <i class="fa fa-print"></i></a>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

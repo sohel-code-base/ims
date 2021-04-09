@@ -1,0 +1,28 @@
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    .modal * {
+        visibility: visible;
+        overflow: visible;
+    }
+
+    .modal-header button.close {
+        display: none;
+    }
+    .modal .modal-body table thead tr th,.modal .modal-body table tbody tr td{
+        padding: 3px !important;
+        line-height: 1 !important;
+    }
+    .modal-footer {
+        /*visibility: hidden;*/
+        display: none;
+    }
+
+    .modal-header h3 {
+        text-align: left !important;
+        background-color: red !important;
+        color: #fff !important;
+    }
+}
