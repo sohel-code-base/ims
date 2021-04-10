@@ -77,7 +77,13 @@
                         {% for product in allProducts %}
                             <tr>
                                 <td align="center">{{ loop.index }}</td>
-                                <td>{{ product.productName|default('') }} {{ product.status == 0 ? "<span class='bg-orange btn-flat text-white btn-xs'>Currently Unavailable!" : "" }}</td>
+                                <td>
+                                    {{ product.productName|default('') }}
+                                    {% if product.watt is not empty %}
+                                        <strong>{{ '('~product.watt~'w)'|default('')}}</strong>
+                                    {% endif %}
+                                    {{ product.status == 0 ? "<span class='bg-orange btn-flat text-white btn-xs'>Currently Unavailable!" : "" }}
+                                </td>
                                 <td>{{ product.purchasePrice|default(0) }}</td>
                                 <td>{{ product.salePrice|default(0) }}</td>
                                 <td align="center">
@@ -107,7 +113,12 @@
                                             <h4 class="modal-title">{{ 'Product Details'|trans }}</h4>
                                         </div>
                                         <div class="modal-body">
-                                            <h3 class="text-center">{{ product.productName|default('N/A') }}</h3>
+                                            <h3 class="text-center">
+                                                {{ product.productName|default('N/A') }}
+                                                {% if product.watt is not empty %}
+                                                    <strong>{{ '('~product.watt~'w)'|default('')}}</strong>
+                                                {% endif %}
+                                            </h3>
 
                                             <dl class="dl-horizontal">
                                                 <dt>{{ 'Category'|trans }}:</dt>

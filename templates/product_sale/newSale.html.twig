@@ -1,10 +1,11 @@
 {% extends 'base.html.twig' %}
-{% block title %}Add New Product{% endblock %}
+{% block title %}Make a Order!{% endblock %}
 {% block stylesheet %}
     <link href="{{ asset('css/bootstrap-toggle.min.css') }}" rel="stylesheet">
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('/css/animate.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/toastr.css') }}">
 {% endblock %}
 {% block contentTitle %}
     Sale! <small>This is the location where you can sale!</small>
@@ -21,55 +22,79 @@
             <div class="box-body">
                 {{ form_start(form,{'attr':{'id':'productSaleForm'}}) }}
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-4">
                         <div class="form-group">
                             {{ form_label(form.customer, 'Customer Name:') }}
-                            {{ form_widget(form.customer,{'attr':{'class':'select2'}}) }}
+                            {{ form_widget(form.customer,{'id':'customer','attr':{'class':'select2'}}) }}
                             {{ form_errors(form.customer, {'attr': {'class':'help-block'}}) }}
                         </div>
                     </div>
-                </div>
-                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="">Phone</label>
+                            <input type="text" id="customerPhone" class="form-control" disabled>
+                        </div>
+                    </div>
                     <div class="col-md-6">
                         <div class="form-group">
+                            <label for="">Address</label>
+                            <textarea rows="1" id="customerAddress" class="form-control" disabled></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
                             {{ form_label(form.product, 'Product Name:') }}
-                            {{ form_widget(form.product,{'attr':{'class':'select2'}}) }}
+                            {{ form_widget(form.product,{'id':'newSaleSelectProduct','attr':{'class':'select2'}}) }}
                             {{ form_errors(form.product, {'attr': {'class':'help-block'}}) }}
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-2">
                         <div class="form-group">
-                            {{ form_label(form.quantity, 'Quantity:') }}
+                            <label for="">Purchase Price(1pcs)</label>
+                            <input id="purchasePrice" type="number" name="" value="" class="form-control" disabled>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="">Quantity</label>
+                            <input id="quantity" type="number" name="" value="" class="form-control">
+                            {#{{ form_label(form.quantity, 'Quantity:') }}
                             {{ form_widget(form.quantity,{'attr':{'placeholder': 'e.g. 10'}}) }}
-                            {{ form_errors(form.quantity, {'attr': {'class':'help-block'}}) }}
+                            {{ form_errors(form.quantity, {'attr': {'class':'help-block'}}) }}#}
                         </div>
+                    </div>
+                    <div class="col-md-2">
                         <div class="form-group">
-                            {{ form_label(form.perPcsPrice, 'Sale Price(1pcs):') }}
+                            <label for="">Sale Price(1pcs)</label>
+                            <input id="salePrice" type="number" name="" value="" class="form-control">
+                            {#{{ form_label(form.perPcsPrice, 'Sale Price(1pcs):') }}
                             {{ form_widget(form.perPcsPrice,{'attr':{'autocomplete':'off','placeholder': 'e.g. 100'}}) }}
-                            {{ form_errors(form.perPcsPrice, {'attr': {'class':'help-block'}}) }}
+                            {{ form_errors(form.perPcsPrice, {'attr': {'class':'help-block'}}) }}#}
                         </div>
+                    </div>
+                    <div class="col-md-2">
                         <div class="form-group">
-                            {{ form_label(form.watt, 'Watt:') }}
+                            <label for="">Watt</label>
+                            <input id="watt" type="number" name="" value="" class="form-control" disabled>
+{#                            {{ form_label(form.watt, 'Watt:') }}
                             {{ form_widget(form.watt) }}
-                            {{ form_errors(form.watt, {'attr': {'class':'help-block'}}) }}
+                            {{ form_errors(form.watt, {'attr': {'class':'help-block'}}) }}#}
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2 col-md-offset-5 ">
+{#                    <div class="col-md-1">
                         <div class="form-group">
-                            {{ form_widget(form.status) }}
+#}{#                            <input id="status" type="checkbox" data-toggle="toggle" data-style="slow" data-offstyle="danger" data-onstyle="success" data-on="Enabled" data-off="Disabled" data-width="" checked>#}{#
+                            {{ form_widget(form.status,{'id':'status'}) }}
                         </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 pull-right">
+                    </div>#}
+                    <div class="col-md-2">
                         <div class="form-group">
-                            {{ form_widget(form.Submit, {'label': 'Save', 'attr':{'class': 'btn-flat btn-primary pull-right text-white w-10'}}) }}
+                            {{ form_widget(form.Submit, {'label': 'Add','id':'addProduct', 'attr':{'class': 'fa fa-plus btn-flat btn-primary text-white pull-right','style':'padding: 9px 55px; margin-top: 25px;'}}) }}
                         </div>
                     </div>
                 </div>
-
                 {#            {{ form_end(form) }}#}
             </div>
             <!-- /.box-body -->
@@ -82,6 +107,9 @@
     <script src="{{ asset('js/bootstrap-toggle.min.js') }}"></script>
     <!-- Select2 -->
     <script src="{{ asset('js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('/js/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('/js/toastr.min.js') }}"></script>
+    <script src="{{ asset('js/newSale.js') }}"></script>
     <script>
         $(function () {
             //Initialize Select2 Elements

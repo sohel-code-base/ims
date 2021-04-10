@@ -43,7 +43,9 @@ class ProductPurchaseController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $purchaseDate = new \DateTime($form->get('purchaseDate')->getData());
             $product = $form->get('product')->getData();
-            $findExistingProduct = $purchaseRepository->findOneBy(['product' => $product]);
+            $watt = $form->get('proPower')->getData();
+
+            $findExistingProduct = $purchaseRepository->findOneBy(['product' => $product, 'proPower' => $watt]);
 
             if ($findExistingProduct){
                 $preQuantity = $findExistingProduct->getQuantity();

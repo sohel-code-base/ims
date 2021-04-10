@@ -62,7 +62,7 @@ class ProductSaleType extends AbstractType
                     'data-onstyle'=> 'success',
                     'data-on' => 'Enabled',
                     'data-off'=> 'Disabled',
-                    'data-width'=> '150',
+                    'data-width'=> '80',
                     'checked' => 'checked'
                 ],
                 'label' => false,
