@@ -56,9 +56,15 @@ class Product
      */
     private $productPurchases;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ProductPurchaseArchive::class, mappedBy="product")
+     */
+    private $productPurchaseArchives;
+
     public function __construct()
     {
         $this->productPurchases = new ArrayCollection();
+        $this->productPurchaseArchives = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -174,6 +180,36 @@ class Product
             // set the owning side to null (unless already changed)
             if ($productPurchase->getProduct() === $this) {
                 $productPurchase->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProductPurchaseArchive[]
+     */
+    public function getProductPurchaseArchives(): Collection
+    {
+        return $this->productPurchaseArchives;
+    }
+
+    public function addProductPurchaseArchive(ProductPurchaseArchive $productPurchaseArchive): self
+    {
+        if (!$this->productPurchaseArchives->contains($productPurchaseArchive)) {
+            $this->productPurchaseArchives[] = $productPurchaseArchive;
+            $productPurchaseArchive->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductPurchaseArchive(ProductPurchaseArchive $productPurchaseArchive): self
+    {
+        if ($this->productPurchaseArchives->removeElement($productPurchaseArchive)) {
+            // set the owning side to null (unless already changed)
+            if ($productPurchaseArchive->getProduct() === $this) {
+                $productPurchaseArchive->setProduct(null);
             }
         }
 

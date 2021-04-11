@@ -37,6 +37,7 @@ class ProductPurchaseRepository extends ServiceEntityRepository
         $qb->addGroupBy('category.id');
         $qb->addGroupBy('subCat.id');
         $qb->addGroupBy('e.id');
+        $qb->orderBy('e.quantity', 'ASC');
         $results = $qb->getQuery()->getArrayResult();
         $items = [];
         foreach ($results as $result){

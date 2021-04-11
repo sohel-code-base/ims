@@ -49,11 +49,17 @@ class Power
      */
     private $productSales;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ProductPurchaseArchive::class, mappedBy="power")
+     */
+    private $productPurchaseArchives;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
         $this->productPurchases = new ArrayCollection();
         $this->productSales = new ArrayCollection();
+        $this->productPurchaseArchives = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -193,6 +199,36 @@ class Power
             // set the owning side to null (unless already changed)
             if ($productSale->getWatt() === $this) {
                 $productSale->setWatt(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProductPurchaseArchive[]
+     */
+    public function getProductPurchaseArchives(): Collection
+    {
+        return $this->productPurchaseArchives;
+    }
+
+    public function addProductPurchaseArchive(ProductPurchaseArchive $productPurchaseArchive): self
+    {
+        if (!$this->productPurchaseArchives->contains($productPurchaseArchive)) {
+            $this->productPurchaseArchives[] = $productPurchaseArchive;
+            $productPurchaseArchive->setPower($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductPurchaseArchive(ProductPurchaseArchive $productPurchaseArchive): self
+    {
+        if ($this->productPurchaseArchives->removeElement($productPurchaseArchive)) {
+            // set the owning side to null (unless already changed)
+            if ($productPurchaseArchive->getPower() === $this) {
+                $productPurchaseArchive->setPower(null);
             }
         }
 

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\ProductPurchase;
+use App\Entity\ProductPurchaseArchive;
 use App\Form\ProductPurchaseType;
 use App\Repository\ProductPurchaseRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -36,24 +37,35 @@ class ProductPurchaseController extends AbstractController
     public function productPurchase(Request $request, ProductPurchaseRepository $purchaseRepository)
     {
         $productPurchase = new ProductPurchase();
+        $productPurchaseArchive = new ProductPurchaseArchive();
         $form = $this->createForm(ProductPurchaseType::class, $productPurchase);
         $form->handleRequest($request);
 
         if($form->isSubmitted()){
             $em = $this->getDoctrine()->getManager();
+
             $purchaseDate = new \DateTime($form->get('purchaseDate')->getData());
             $product = $form->get('product')->getData();
-            $watt = $form->get('proPower')->getData();
+            $purchaseQuantity = $form->get('quantity')->getData();
+            $purchasePrice = $form->get('purchasePrice')->getData();
+            $salePrice = $form->get('salePrice')->getData();
+            $power = $form->get('proPower')->getData();
 
-            $findExistingProduct = $purchaseRepository->findOneBy(['product' => $product, 'proPower' => $watt]);
+            $productPurchaseArchive->setProduct($product);
+            $productPurchaseArchive->setPower($power);
+            $productPurchaseArchive->setQuantity($purchaseQuantity);
+            $productPurchaseArchive->setPurchasePrice($purchasePrice);
+            $productPurchaseArchive->setSalePrice($salePrice);
+            $productPurchaseArchive->setPurchaseDate($purchaseDate);
+            $productPurchaseArchive->setStatus(1);
+            $productPurchaseArchive->setCreatedAt(new \DateTime('now'));
+            $em->persist($productPurchaseArchive);
+            $em->flush();
+
+            $findExistingProduct = $purchaseRepository->findOneBy(['product' => $product, 'proPower' => $power]);
 
             if ($findExistingProduct){
                 $preQuantity = $findExistingProduct->getQuantity();
-
-                $purchaseQuantity = $form->get('quantity')->getData();
-                $purchasePrice = $form->get('purchasePrice')->getData();
-                $salePrice = $form->get('salePrice')->getData();
-                $power = $form->get('proPower')->getData();
 
 
                 $findExistingProduct->setPurchasePrice($purchasePrice);
@@ -71,6 +83,8 @@ class ProductPurchaseController extends AbstractController
             $productPurchase->setCreatedAt(new \DateTime('now'));
             $em->persist($productPurchase);
             $em->flush();
+
+
             $this->addFlash('success', 'New Product added into Database!');
             return $this->redirectToRoute('all_purchase_product');
         }
