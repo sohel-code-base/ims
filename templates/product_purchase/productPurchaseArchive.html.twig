@@ -33,7 +33,7 @@
                         <table width="100%">
                             <thead>
                             <tr>
-                                <th>{{ form_widget(filterForm.monthYear,{'id': 'datepicker','attr':{'autocomplete': 'off','placeholder': 'e.g. mm-YYYY'}}) }}</th>
+                                <th>{{ form_widget(filterForm.monthYear,{'id': 'datepicker','attr':{'autocomplete': 'off','placeholder': 'e.g. '~'now'|date('m-Y') }}) }}</th>
                                 <th>{{ form_widget(filterForm.filter, {'attr':{'class':'btn-flat bg-primary'}}) }}</th>
                             </tr>
                             </thead>
