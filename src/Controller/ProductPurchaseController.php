@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\ProductPurchase;
 use App\Entity\ProductPurchaseArchive;
+use App\Form\FilterType;
 use App\Form\ProductPurchaseType;
+use App\Repository\ProductPurchaseArchiveRepository;
 use App\Repository\ProductPurchaseRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,6 +26,29 @@ class ProductPurchaseController extends AbstractController
         $allProducts = $repository->getTotalProduct();
         return $this->render('product_purchase/index.html.twig',[
             'allProducts' => $allProducts,
+        ]);
+    }
+
+    /**
+     * @Route("/product/purchase/archive", name="product_purchase_archive")
+     * @param ProductPurchaseArchiveRepository $repository
+     * @return Response
+     */
+    public function purchaseArchive(Request $request, ProductPurchaseArchiveRepository $repository)
+    {
+        $filterBy = new \DateTime('now');
+
+        $filterForm = $this->createForm(FilterType::class);
+        $filterForm->handleRequest($request);
+
+        if ($filterForm->isSubmitted()){
+            $filterBy = new \DateTime('01-'.$filterForm->get('monthYear')->getData());
+        }
+        $records = $repository->getProductPurchaseByMonth($filterBy);
+        return $this->render('product_purchase/productPurchaseArchive.html.twig',[
+            'filterForm' => $filterForm->createView(),
+            'records' => $records,
+            'filterBy' => $filterBy,
         ]);
     }
 
@@ -105,6 +130,7 @@ class ProductPurchaseController extends AbstractController
 
         if ($form->isSubmitted()){
             $em = $this->getDoctrine()->getManager();
+//            dd($form->getData());
             $purchaseDateStringToDate = $form->get('purchaseDate')->getData();
 
             $findProduct->setUpdatedAt(new \DateTime('now'));

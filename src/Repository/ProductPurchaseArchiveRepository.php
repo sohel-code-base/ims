@@ -19,32 +19,25 @@ class ProductPurchaseArchiveRepository extends ServiceEntityRepository
         parent::__construct($registry, ProductPurchaseArchive::class);
     }
 
-    // /**
-    //  * @return ProductPurchaseArchive[] Returns an array of ProductPurchaseArchive objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getProductPurchaseByMonth($filterBy)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $beginningOfMonth = $filterBy->format('Y-m-01');
+        $endOfMonth = $filterBy->format('Y-m-t');
 
-    /*
-    public function findOneBySomeField($value): ?ProductPurchaseArchive
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $qb = $this->createQueryBuilder('e');
+
+        $qb->join('e.product', 'product');
+        $qb->leftJoin('e.power', 'power');
+
+        $qb->select('product.proName AS productName');
+        $qb->addSelect('power.watt');
+        $qb->addSelect('e.quantity', 'e.purchasePrice','e.status', 'e.purchaseDate');
+
+        $qb->where('e.purchaseDate >= :beginningOfMonth')->setParameter('beginningOfMonth', $beginningOfMonth);
+        $qb->andWhere('e.purchaseDate <= :endOfMonth')->setParameter('endOfMonth', $endOfMonth);
+        $qb->orderBy('e.purchaseDate', 'DESC');
+        $results = $qb->getQuery()->getArrayResult();
+
+        return $results;
     }
-    */
 }

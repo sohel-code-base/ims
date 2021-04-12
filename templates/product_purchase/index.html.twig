@@ -82,7 +82,7 @@
                                     {% if product.watt is not empty %}
                                         <strong>{{ '('~product.watt~'w)'|default('')}}</strong>
                                     {% endif %}
-                                    {{ product.status == 0 ? "<span class='bg-orange btn-flat text-white btn-xs'>Currently Unavailable!" : "" }}
+                                    {{ product.status == 0 or product.quantity == 0 ? "<span class='bg-orange btn-flat text-white btn-xs'>Currently Unavailable!" : "" }}
                                 </td>
                                 <td>{{ product.purchasePrice|default(0) }}</td>
                                 <td>{{ product.salePrice|default(0) }}</td>
