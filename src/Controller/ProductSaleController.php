@@ -40,27 +40,7 @@ class ProductSaleController extends AbstractController
     {
         $productSale = new ProductSale();
         $form = $this->createForm(ProductSaleType::class, $productSale);
-//        $form->handleRequest($request);
 
-       /* if($form->isSubmitted()){
-            $em = $this->getDoctrine()->getManager();
-
-            $quantity = $form->get('quantity')->getData();
-            $rate = $form->get('perPcsPrice')->getData();
-
-            $productSale->setTotalPrice($quantity * $rate);
-            $productSale->setCreatedAt(new \DateTime('now'));
-            $em->persist($productSale);
-            $em->flush();
-
-            $purchaseProduct = $form->get('product')->getData();
-            $purchaseProduct->setQuantity($purchaseProduct->getQuantity()-$quantity);
-            $em->persist($purchaseProduct);
-            $em->flush();
-
-            $this->addFlash('success', 'Sale successful!');
-            return $this->redirectToRoute('all_product_sale');
-        }*/
         return $this->render('product_sale/newSale.html.twig', [
             'form' => $form->createView(),
         ]);
@@ -78,7 +58,7 @@ class ProductSaleController extends AbstractController
         $customerId = $_REQUEST['customerId'];
         $productId = $_REQUEST['product'];
         $quantity = $_REQUEST['quantity'];
-        $perPicePrice = $_REQUEST['perPicePrice'];
+        $perPiecePrice = $_REQUEST['perPiecePrice'];
         $watt = $_REQUEST['watt'];
 
         $findCustomer = $customerRepository->findOneBy(['id' => $customerId]);
@@ -92,8 +72,8 @@ class ProductSaleController extends AbstractController
             $productSale->setCustomer($findCustomer);
             $productSale->setProduct($findProduct);
             $productSale->setQuantity($quantity);
-            $productSale->setPerPcsPrice($perPicePrice);
-            $productSale->setTotalPrice($quantity * $perPicePrice);
+            $productSale->setPerPcsPrice($perPiecePrice);
+            $productSale->setTotalPrice($quantity * $perPiecePrice);
             $productSale->setWatt($findWatt ? $findWatt: null);
             $productSale->setCreatedAt(new \DateTime('now'));
             $productSale->setStatus(1);

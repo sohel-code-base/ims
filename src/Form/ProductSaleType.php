@@ -44,12 +44,19 @@ class ProductSaleType extends AbstractType
             ->add('product',EntityType::class,[
                 'class' => ProductPurchase::class,
                 'placeholder' => 'Select Product',
-                'choice_label' => 'product.proName',
+                'choice_label' => function($productPurchase){
+                    $product = $productPurchase->getProduct() ? $productPurchase->getProduct()->getProName() : '';
+                    $watt = $productPurchase->getProPower() ? ' ---'.$productPurchase->getProPower()->getWatt() . ' w' : '';
+                return  $product . $watt;
+                },
                 'group_by' => 'product.proCategory.catName',
+
                 'query_builder' => function(EntityRepository $repository){
                     return $repository->createQueryBuilder('e')
                         ->join('e.product', 'product')
+                        ->leftJoin('e.proPower', 'power')
                         ->where('e.status = 1')
+                        ->andWhere('e.quantity > 0')
                         ->orderBy('product.proName', 'ASC');
                 },
             ])

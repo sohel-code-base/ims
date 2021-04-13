@@ -55,11 +55,11 @@ $(document).on('click','#addProduct',function (event) {
     data['customerId'] = $('#customer').val();
     data['product'] = $('#newSaleSelectProduct').val();
     data['quantity'] = $('#quantity').val();
-    data['perPicePrice'] = $('#salePrice').val();
+    data['perPiecePrice'] = $('#salePrice').val();
     data['watt'] = $('#watt').val();
     // data['status'] = $('#status').val();
 
-    if(data['customerId'] ==='' || data['product'] ==='' || data['quantity'] ==='' || data['perPicePrice'] ===''){
+    if(data['customerId'] ==='' || data['product'] ==='' || data['quantity'] ==='' || data['perPiecePrice'] ===''){
         Swal.fire({
             title: 'Please enter required field.',
             showCancelButton: true,
