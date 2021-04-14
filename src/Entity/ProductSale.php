@@ -60,7 +60,7 @@ class ProductSale
     /**
      * @ORM\ManyToOne(targetEntity=Power::class, inversedBy="productSales")
      */
-    private $watt;
+    private $power;
 
     public function getId(): ?int
     {
@@ -167,14 +167,14 @@ class ProductSale
         return $this;
     }
 
-    public function getWatt(): ?Power
+    public function getPower(): ?Power
     {
-        return $this->watt;
+        return $this->power;
     }
 
-    public function setWatt(?Power $watt): self
+    public function setPower(?Power $power): self
     {
-        $this->watt = $watt;
+        $this->power = $power;
 
         return $this;
     }

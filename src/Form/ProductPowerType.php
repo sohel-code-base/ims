@@ -27,7 +27,7 @@ class ProductPowerType extends AbstractType
                     'data-on' => 'Enabled',
                     'data-off'=> 'Disabled',
                     'data-width'=> '150',
-                    'checked' => 'checked'
+//                    'checked' => 'checked'
                 ],
                 'label' => false,
             ])

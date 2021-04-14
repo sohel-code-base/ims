@@ -31,8 +31,10 @@ class ProductPurchaseController extends AbstractController
 
     /**
      * @Route("/product/purchase/archive", name="product_purchase_archive")
+     * @param Request $request
      * @param ProductPurchaseArchiveRepository $repository
      * @return Response
+     * @throws \Exception
      */
     public function purchaseArchive(Request $request, ProductPurchaseArchiveRepository $repository)
     {
@@ -74,7 +76,7 @@ class ProductPurchaseController extends AbstractController
             $purchaseQuantity = $form->get('quantity')->getData();
             $purchasePrice = $form->get('purchasePrice')->getData();
             $salePrice = $form->get('salePrice')->getData();
-            $power = $form->get('proPower')->getData();
+            $power = $form->get('power')->getData();
 
             $productPurchaseArchive->setProduct($product);
             $productPurchaseArchive->setPower($power);
@@ -87,7 +89,7 @@ class ProductPurchaseController extends AbstractController
             $em->persist($productPurchaseArchive);
             $em->flush();
 
-            $findExistingProduct = $purchaseRepository->findOneBy(['product' => $product, 'proPower' => $power]);
+            $findExistingProduct = $purchaseRepository->findOneBy(['product' => $product, 'power' => $power]);
 
             if ($findExistingProduct){
                 $preQuantity = $findExistingProduct->getQuantity();
@@ -97,12 +99,12 @@ class ProductPurchaseController extends AbstractController
                 $findExistingProduct->setSalePrice($salePrice);
                 $findExistingProduct->setQuantity($preQuantity + $purchaseQuantity);
                 $findExistingProduct->setPurchaseDate($purchaseDate);
-                $findExistingProduct->setProPower($power ? $power: null);
+                $findExistingProduct->setPower($power ? $power: null);
                 $findExistingProduct->setUpdatedAt(new \DateTime('now'));
                 $em->persist($findExistingProduct);
                 $em->flush();
                 $this->addFlash('update', 'Product Quantity Updated!');
-                return $this->redirectToRoute('all_purchase_product');
+                return $this->redirectToRoute('product_purchase');
             }
             $productPurchase->setPurchaseDate($purchaseDate);
             $productPurchase->setCreatedAt(new \DateTime('now'));
@@ -111,7 +113,7 @@ class ProductPurchaseController extends AbstractController
 
 
             $this->addFlash('success', 'New Product added into Database!');
-            return $this->redirectToRoute('all_purchase_product');
+            return $this->redirectToRoute('product_purchase');
         }
         return $this->render('product_purchase/purchaseProduct.html.twig',[
             'form' => $form->createView(),
@@ -121,6 +123,11 @@ class ProductPurchaseController extends AbstractController
 
     /**
      * @Route("/product/{id}/edit", name="edit_purchase_product")
+     * @param Request $request
+     * @param ProductPurchaseRepository $repository
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @throws \Exception
      */
     public function editPurchaseProduct(Request $request, ProductPurchaseRepository $repository, $id)
     {

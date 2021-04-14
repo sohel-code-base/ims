@@ -18,7 +18,7 @@ class ProductSubCategoryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('subCatName',TextType::class,[
+            ->add('name',TextType::class,[
                 'attr' =>[
                     'autocomplete' => 'off'
                 ]
@@ -26,11 +26,11 @@ class ProductSubCategoryType extends AbstractType
             ->add('category',EntityType::class,[
                 'placeholder' => 'Select a Category',
                 'class' => Category::class,
-                'choice_label' => 'catName',
+                'choice_label' => 'name',
                 'query_builder' => function(EntityRepository $repository){
                 return $repository->createQueryBuilder('e')
                     ->where('e.status = 1')
-                    ->orderBy('e.catName', 'ASC');
+                    ->orderBy('e.name', 'ASC');
                 }
             ])
             ->add('createdAt')
@@ -45,7 +45,7 @@ class ProductSubCategoryType extends AbstractType
                         'data-on' => 'Enabled',
                         'data-off'=> 'Disabled',
                         'data-width'=> '150',
-                        'checked' => 'checked'
+//                        'checked' => 'checked'
                     ],
                     'label' => false,
             ])

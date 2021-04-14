@@ -46,14 +46,14 @@ class ProductPurchaseType extends AbstractType
             ->add('product', EntityType::class,[
                 'class' => Product::class,
                 'placeholder' => 'Select Product',
-                'choice_label' => 'proName',
+                'choice_label' => 'name',
                 'query_builder' => function(EntityRepository $repository){
                     return $repository->createQueryBuilder('e')
                         ->where('e.status = 1')
                         ->orderBy('e.id','DESC');
                 }
             ])
-            ->add('proPower', EntityType::class,[
+            ->add('power', EntityType::class,[
                 'required' => false,
                 'class' => Power::class,
                 'placeholder' => 'Select Power',

@@ -14,6 +14,8 @@ class ProductPowerController extends AbstractController
 {
     /**
      * @Route("/product/power", name="all_power")
+     * @param PowerRepository $repository
+     * @return Response
      */
     public function index(PowerRepository $repository): Response
     {
@@ -42,7 +44,7 @@ class ProductPowerController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Power added!');
-            return $this->redirectToRoute('all_power');
+            return $this->redirectToRoute('product_new_power');
         }
         return $this->render('product_power/addPower.html.twig',[
             'form' => $form->createView(),

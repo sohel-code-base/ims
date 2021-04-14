@@ -24,7 +24,7 @@ class ProductSaleRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('e');
         $qb->join('e.customer', 'customer');
         $qb->select('e.id','e.createdAt AS orderDate', 'e.status', 'SUM(e.totalPrice) AS orderTotalPrice');
-        $qb->addSelect('customer.cusName AS customerName','customer.id AS customerId');
+        $qb->addSelect('customer.name AS customerName','customer.id AS customerId');
         $qb->orderBy('e.createdAt', 'DESC');
         $qb->groupBy('customer.id');
         $qb->addGroupBy('e.createdAt');
@@ -46,11 +46,11 @@ class ProductSaleRepository extends ServiceEntityRepository
         $qb->join('e.customer', 'customer');
         $qb->join('e.product', 'productPurchase');
         $qb->join('productPurchase.product', 'product');
-        $qb->leftJoin('e.watt', 'watt');
+        $qb->leftJoin('e.power', 'power');
         $qb->select('e.quantity','e.perPcsPrice', 'e.totalPrice');
-        $qb->addSelect('product.proName AS productName');
-        $qb->addSelect('watt.watt');
-        $qb->addSelect('customer.cusName AS customerName', 'customer.cusAddress AS customerAddress', 'customer.cusPhone AS customerPhone');
+        $qb->addSelect('product.name AS productName');
+        $qb->addSelect('power.watt');
+        $qb->addSelect('customer.name AS customerName', 'customer.address AS customerAddress', 'customer.phone AS customerPhone');
         $qb->where('e.createdAt = :orderDate')->setParameter('orderDate', $filterBy['orderDate']);
         $qb->andWhere('customer.id = :customerId')->setParameter('customerId', $filterBy['customerId']);
         $results = $qb->getQuery()->getArrayResult();

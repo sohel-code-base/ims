@@ -2,13 +2,11 @@
 
 namespace App\Controller;
 
-use App\Entity\Power;
 use App\Entity\ProductSale;
 use App\Form\ProductSaleType;
 use App\Repository\CustomerRepository;
 use App\Repository\PowerRepository;
 use App\Repository\ProductPurchaseRepository;
-use App\Repository\ProductRepository;
 use App\Repository\ProductSaleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -74,7 +72,7 @@ class ProductSaleController extends AbstractController
             $productSale->setQuantity($quantity);
             $productSale->setPerPcsPrice($perPiecePrice);
             $productSale->setTotalPrice($quantity * $perPiecePrice);
-            $productSale->setWatt($findWatt ? $findWatt: null);
+            $productSale->setPower($findWatt ? $findWatt: null);
             $productSale->setCreatedAt(new \DateTime('now'));
             $productSale->setStatus(1);
 
@@ -91,8 +89,10 @@ class ProductSaleController extends AbstractController
             return new JsonResponse('failed');
         }
     }
+
     /**
      * @Route("/sale/details", name="show_sale_details")
+     * @param Request $request
      * @param ProductSaleRepository $repository
      * @return Response
      * @throws \Exception
@@ -125,7 +125,7 @@ class ProductSaleController extends AbstractController
             return $this->redirectToRoute('all_product_sale');
         }else{
             $this->addFlash('error','Record not found!');
-            return $this->redirectToRoute('delete_sale_record');
+            return $this->redirectToRoute('all_product_sale');
         }
     }
 
@@ -144,7 +144,7 @@ class ProductSaleController extends AbstractController
                 'purchasePrice' => $findProduct->getPurchasePrice(),
                 'salePrice' => $findProduct->getSalePrice(),
                 'quantity' => $findProduct->getQuantity(),
-                'watt' => $findProduct->getProPower() ? $findProduct->getProPower()->getWatt():'',
+                'watt' => $findProduct->getPower() ? $findProduct->getPower()->getWatt():'',
             ];
 
             return new JsonResponse($returnData);
@@ -166,8 +166,8 @@ class ProductSaleController extends AbstractController
         if ($findCustomer){
             $returnData = [
                 'id' => $findCustomer->getId(),
-                'phone' => $findCustomer->getCusPhone(),
-                'address' => $findCustomer->getCusAddress(),
+                'phone' => $findCustomer->getPhone(),
+                'address' => $findCustomer->getAddress(),
             ];
             return new JsonResponse($returnData);
         }else{

@@ -47,7 +47,6 @@
                 </div>
             {% endfor %}
         {% endfor %}
-
         <!-- /.box -->
 
         <div class="box">
@@ -122,9 +121,9 @@
 
                                             <dl class="dl-horizontal">
                                                 <dt>{{ 'Category'|trans }}:</dt>
-                                                <dd>{{ product.catName|default('N/A') }}</dd>
+                                                <dd>{{ product.categoryName|default('N/A') }}</dd>
                                                 <dt>{{ 'Sub-Category'|trans }}:</dt>
-                                                <dd>{{ product.subCatName|default('N/A') }}</dd>
+                                                <dd>{{ product.subCategoryName|default('N/A') }}</dd>
                                                 <dt>{{ 'Available'|trans }}:</dt>
                                                 <dd>{{ product.quantity|default(0) }} pc</dd>
                                                 <dt>{{ 'Purchase Price'|trans }}:</dt>

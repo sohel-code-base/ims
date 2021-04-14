@@ -39,13 +39,14 @@ class Power
      */
     private $updatedAt;
 
+    private $products;
     /**
-     * @ORM\OneToMany(targetEntity=ProductPurchase::class, mappedBy="proPower")
+     * @ORM\OneToMany(targetEntity=ProductPurchase::class, mappedBy="power")
      */
     private $productPurchases;
 
     /**
-     * @ORM\OneToMany(targetEntity=ProductSale::class, mappedBy="watt")
+     * @ORM\OneToMany(targetEntity=ProductSale::class, mappedBy="power")
      */
     private $productSales;
 
@@ -103,7 +104,7 @@ class Power
     {
         if (!$this->products->contains($product)) {
             $this->products[] = $product;
-            $product->setProPower($this);
+            $product->setPower($this);
         }
 
         return $this;
@@ -113,8 +114,8 @@ class Power
     {
         if ($this->products->removeElement($product)) {
             // set the owning side to null (unless already changed)
-            if ($product->getProPower() === $this) {
-                $product->setProPower(null);
+            if ($product->getPower() === $this) {
+                $product->setPower(null);
             }
         }
 
@@ -157,7 +158,7 @@ class Power
     {
         if (!$this->productPurchases->contains($productPurchase)) {
             $this->productPurchases[] = $productPurchase;
-            $productPurchase->setProPower($this);
+            $productPurchase->setPower($this);
         }
 
         return $this;
@@ -167,8 +168,8 @@ class Power
     {
         if ($this->productPurchases->removeElement($productPurchase)) {
             // set the owning side to null (unless already changed)
-            if ($productPurchase->getProPower() === $this) {
-                $productPurchase->setProPower(null);
+            if ($productPurchase->getPower() === $this) {
+                $productPurchase->setPower(null);
             }
         }
 
@@ -187,7 +188,7 @@ class Power
     {
         if (!$this->productSales->contains($productSale)) {
             $this->productSales[] = $productSale;
-            $productSale->setWatt($this);
+            $productSale->setPower($this);
         }
 
         return $this;
@@ -197,8 +198,8 @@ class Power
     {
         if ($this->productSales->removeElement($productSale)) {
             // set the owning side to null (unless already changed)
-            if ($productSale->getWatt() === $this) {
-                $productSale->setWatt(null);
+            if ($productSale->getPower() === $this) {
+                $productSale->setPower(null);
             }
         }
 

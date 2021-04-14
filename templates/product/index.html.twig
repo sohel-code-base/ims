@@ -13,15 +13,6 @@
 
     <!-- Main content -->
     <section class="content">
-        {% for type, messages in app.flashes %}
-            {% for message in messages %}
-                <div class="alert alert-{{ type }} alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <i class="icon fa fa-{{ type == 'error' ? 'warning':'check' }}"></i>{{ message|trans }}
-                </div>
-            {% endfor %}
-        {% endfor %}
-
         <!-- /.box -->
 
         <div class="box">
@@ -50,9 +41,9 @@
                         {% for info in productInfo %}
                             <tr>
                                 <td align="center">{{ loop.index }}</td>
-                                <td>{{ info.proName|default('N/A') }} {{ info.status == 0 ? "<span class='bg-orange btn-flat text-white btn-xs'>Currently Unavailable!" : "" }}</td>
-                                <td>{{ info.proSubCategory.subCatName|default('N/A') }}</td>
-                                <td>{{ info.proCategory.catName|default('N/A') }}</td>
+                                <td>{{ info.name|default('N/A') }} {{ info.status == 0 ? "<span class='bg-orange btn-flat text-white btn-xs'>Currently Unavailable!" : "" }}</td>
+                                <td>{{ info.subCategory.name|default('N/A') }}</td>
+                                <td>{{ info.category.name|default('N/A') }}</td>
                                 <td>
                                     <div class="btn-group pull-right">
                                         <a href="javascript:" class="btn btn-sm bg-navy btn-flat"><i class="fa fa-edit"><span

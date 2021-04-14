@@ -24,8 +24,11 @@ class ProductSubCategoryController extends AbstractController
             'subCategories' => $subCategories,
         ]);
     }
+
     /**
      * @Route("/product/sub/category/new", name="product_new_sub_category")
+     * @param Request $request
+     * @return Response
      */
     public function addSubCategory(Request $request): Response
     {
@@ -40,7 +43,7 @@ class ProductSubCategoryController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Sub-Category added!');
-            return $this->redirectToRoute('all_sub_category');
+            return $this->redirectToRoute('product_new_sub_category');
         }
         return $this->render('product_sub_category/addSubCategory.html.twig',[
             'form' => $form->createView(),

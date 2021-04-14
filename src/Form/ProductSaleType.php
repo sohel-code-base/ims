@@ -21,7 +21,7 @@ class ProductSaleType extends AbstractType
         $builder
             ->add('quantity')
             ->add('perPcsPrice')
-            ->add('watt',EntityType::class,[
+            ->add('power',EntityType::class,[
                 'required' => false,
                 'class' => Power::class,
                 'placeholder' => 'Select watt',
@@ -34,30 +34,30 @@ class ProductSaleType extends AbstractType
             ->add('customer',EntityType::class,[
                 'class' => Customer::class,
                 'placeholder' => 'Select Customer',
-                'choice_label' => 'cusName',
+                'choice_label' => 'name',
                 'query_builder' => function(EntityRepository $repository){
                 return $repository->createQueryBuilder('e')
                     ->where('e.status = 1')
-                    ->orderBy('e.cusName', 'ASC');
+                    ->orderBy('e.name', 'ASC');
                 },
             ])
             ->add('product',EntityType::class,[
                 'class' => ProductPurchase::class,
                 'placeholder' => 'Select Product',
                 'choice_label' => function($productPurchase){
-                    $product = $productPurchase->getProduct() ? $productPurchase->getProduct()->getProName() : '';
-                    $watt = $productPurchase->getProPower() ? ' ---'.$productPurchase->getProPower()->getWatt() . ' w' : '';
+                    $product = $productPurchase->getProduct() ? $productPurchase->getProduct()->getName() : '';
+                    $watt = $productPurchase->getPower() ? ' ---'.$productPurchase->getPower()->getWatt() . ' w' : '';
                 return  $product . $watt;
                 },
-                'group_by' => 'product.proCategory.catName',
+                'group_by' => 'product.category.name',
 
                 'query_builder' => function(EntityRepository $repository){
                     return $repository->createQueryBuilder('e')
                         ->join('e.product', 'product')
-                        ->leftJoin('e.proPower', 'power')
+                        ->leftJoin('e.power', 'power')
                         ->where('e.status = 1')
                         ->andWhere('e.quantity > 0')
-                        ->orderBy('product.proName', 'ASC');
+                        ->orderBy('product.name', 'ASC');
                 },
             ])
             ->add('status', CheckboxType::class,[
@@ -70,7 +70,7 @@ class ProductSaleType extends AbstractType
                     'data-on' => 'Enabled',
                     'data-off'=> 'Disabled',
                     'data-width'=> '80',
-                    'checked' => 'checked'
+//                    'checked' => 'checked'
                 ],
                 'label' => false,
             ])

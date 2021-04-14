@@ -24,8 +24,11 @@ class ProductCategoryController extends AbstractController
             'categories' => $categories,
         ]);
     }
+
     /**
      * @Route("/product/category/new",methods={"GET","POST"}, name="product_new_category")
+     * @param Request $request
+     * @return Response
      */
     public function addCategory(Request $request): Response
     {
@@ -40,7 +43,7 @@ class ProductCategoryController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Category added!');
-            return $this->redirectToRoute('all_category');
+            return $this->redirectToRoute('product_new_category');
         }
         return $this->render('product_category/addCategory.html.twig',[
             'form' => $form->createView(),

@@ -44,7 +44,7 @@ class ProductController extends AbstractController
             $em->persist($product);
             $em->flush();
             $this->addFlash('success', 'Product added!');
-            return $this->redirectToRoute('product_info');
+            return $this->redirectToRoute('new_product');
         }
 
         return $this->render('product/addProduct.html.twig',[

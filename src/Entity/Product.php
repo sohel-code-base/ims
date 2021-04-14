@@ -23,17 +23,17 @@ class Product
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $proName;
+    private $name;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
      */
-    private $proCategory;
+    private $category;
 
     /**
      * @ORM\ManyToOne(targetEntity=SubCategory::class, inversedBy="products")
      */
-    private $proSubCategory;
+    private $subCategory;
 
     /**
      * @ORM\Column(type="boolean")
@@ -72,14 +72,14 @@ class Product
         return $this->id;
     }
 
-    public function getProName(): ?string
+    public function getName(): ?string
     {
-        return $this->proName;
+        return $this->name;
     }
 
-    public function setProName(string $proName): self
+    public function setName(string $name): self
     {
-        $this->proName = $proName;
+        $this->name = $name;
 
         return $this;
     }
@@ -87,33 +87,33 @@ class Product
     /**
      * @return mixed
      */
-    public function getProCategory()
+    public function getCategory()
     {
-        return $this->proCategory;
+        return $this->category;
     }
 
     /**
-     * @param mixed $proCategory
+     * @param mixed $category
      */
-    public function setProCategory($proCategory): void
+    public function setCategory($category): void
     {
-        $this->proCategory = $proCategory;
+        $this->category = $category;
     }
 
     /**
      * @return mixed
      */
-    public function getProSubCategory()
+    public function getSubCategory()
     {
-        return $this->proSubCategory;
+        return $this->subCategory;
     }
 
     /**
-     * @param mixed $proSubCategory
+     * @param mixed $subCategory
      */
-    public function setProSubCategory($proSubCategory): void
+    public function setSubCategory($subCategory): void
     {
-        $this->proSubCategory = $proSubCategory;
+        $this->subCategory = $subCategory;
     }
 
     public function getStatus(): ?bool

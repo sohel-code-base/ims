@@ -42,7 +42,7 @@ class CustomerController extends AbstractController
             $em->persist($customer);
             $em->flush();
             $this->addFlash('success', 'New customer added into Database!');
-            return $this->redirectToRoute('all_customer');
+            return $this->redirectToRoute('new_customer');
         }
         return $this->render('customer/addCustomer.htm.twig', [
             'form' => $form->createView(),

@@ -29,7 +29,7 @@ class ProductPurchaseArchiveRepository extends ServiceEntityRepository
         $qb->join('e.product', 'product');
         $qb->leftJoin('e.power', 'power');
 
-        $qb->select('product.proName AS productName');
+        $qb->select('product.name AS productName');
         $qb->addSelect('power.watt');
         $qb->addSelect('e.quantity', 'e.purchasePrice','e.status', 'e.purchaseDate');
 

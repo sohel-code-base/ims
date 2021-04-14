@@ -21,15 +21,16 @@ class ProductPurchaseRepository extends ServiceEntityRepository
 
     public function getTotalProduct()
     {
+
         $qb = $this->createQueryBuilder('e');
         $qb->join('e.product','product');
-        $qb->join('product.proCategory','category');
+        $qb->join('product.category','category');
         $qb->join('category.subCategories','subCat');
-        $qb->leftJoin('e.proPower','power');
+        $qb->leftJoin('e.power','power');
 
-        $qb->select('product.proName AS productName');
-        $qb->addSelect('category.catName');
-        $qb->addSelect('subCat.subCatName');
+        $qb->select('product.name AS productName');
+        $qb->addSelect('category.name AS categoryName');
+        $qb->addSelect('subCat.name AS subCategoryName');
         $qb->addSelect('e.id','e.quantity','e.purchasePrice','e.salePrice','e.purchaseDate', 'e.status');
         $qb->addSelect('power.watt AS watt');
 
@@ -38,6 +39,7 @@ class ProductPurchaseRepository extends ServiceEntityRepository
         $qb->addGroupBy('subCat.id');
         $qb->addGroupBy('e.id');
         $qb->orderBy('e.quantity', 'ASC');
+
         $results = $qb->getQuery()->getArrayResult();
         $items = [];
         foreach ($results as $result){

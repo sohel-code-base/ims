@@ -15,7 +15,7 @@ class ProductCategoryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('catName', TextType::class,[
+            ->add('name', TextType::class,[
                 'attr' => [
                     'autocomplete' => 'off'
                 ]
@@ -30,7 +30,7 @@ class ProductCategoryType extends AbstractType
                     'data-on' => 'Enabled',
                     'data-off'=> 'Disabled',
                     'data-width'=> '150',
-                    'checked' => 'checked'
+//                    'checked' => 'checked'
                 ],
                 'label' => false,
             ])

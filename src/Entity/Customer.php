@@ -22,17 +22,17 @@ class Customer
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $cusName;
+    private $name;
 
     /**
      * @ORM\Column(type="string")
      */
-    private $cusPhone;
+    private $phone;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $cusAddress;
+    private $address;
 
     /**
      * @ORM\Column(type="boolean")
@@ -64,14 +64,14 @@ class Customer
         return $this->id;
     }
 
-    public function getCusName(): ?string
+    public function getName(): ?string
     {
-        return $this->cusName;
+        return $this->name;
     }
 
-    public function setCusName(string $cusName): self
+    public function setName(string $name): self
     {
-        $this->cusName = $cusName;
+        $this->name = $name;
 
         return $this;
     }
@@ -79,27 +79,27 @@ class Customer
     /**
      * @return mixed
      */
-    public function getCusPhone()
+    public function getPhone()
     {
-        return $this->cusPhone;
+        return $this->phone;
     }
 
     /**
-     * @param mixed $cusPhone
+     * @param mixed $phone
      */
-    public function setCusPhone($cusPhone): void
+    public function setPhone($phone): void
     {
-        $this->cusPhone = $cusPhone;
+        $this->phone = $phone;
     }
 
-    public function getCusAddress(): ?string
+    public function getAddress(): ?string
     {
-        return $this->cusAddress;
+        return $this->address;
     }
 
-    public function setCusAddress(?string $cusAddress): self
+    public function setAddress(?string $address): self
     {
-        $this->cusAddress = $cusAddress;
+        $this->address = $address;
 
         return $this;
     }

@@ -23,7 +23,7 @@ class SubCategory
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $subCatName;
+    private $name;
 
     /**
      * @ORM\Column(type="datetime")
@@ -41,15 +41,15 @@ class SubCategory
     private $status;
 
     /**
-     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="proSubCategory")
+     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="subCategory")
      */
     private $products;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Gedmo\Slug(fields={"subCatName"}, updatable=false)
+     * @Gedmo\Slug(fields={"name"}, updatable=false)
      */
-    private $subCatSlug;
+    private $slug;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="subCategories")
@@ -66,14 +66,14 @@ class SubCategory
         return $this->id;
     }
 
-    public function getSubCatName(): ?string
+    public function getName(): ?string
     {
-        return $this->subCatName;
+        return $this->name;
     }
 
-    public function setSubCatName(?string $subCatName): self
+    public function setName(?string $name): self
     {
-        $this->subCatName = $subCatName;
+        $this->name = $name;
 
         return $this;
     }
@@ -130,7 +130,7 @@ class SubCategory
     {
         if (!$this->products->contains($product)) {
             $this->products[] = $product;
-            $product->setProSubCategory($this);
+            $product->setSubCategory($this);
         }
 
         return $this;
@@ -140,22 +140,22 @@ class SubCategory
     {
         if ($this->products->removeElement($product)) {
             // set the owning side to null (unless already changed)
-            if ($product->getProSubCategory() === $this) {
-                $product->setProSubCategory(null);
+            if ($product->getSubCategory() === $this) {
+                $product->setSubCategory(null);
             }
         }
 
         return $this;
     }
 
-    public function getSubCatSlug(): ?string
+    public function getSlug(): ?string
     {
-        return $this->subCatSlug;
+        return $this->slug;
     }
 
-    public function setSubCatSlug(string $subCatSlug): self
+    public function setSlug(string $slug): self
     {
-        $this->subCatSlug = $subCatSlug;
+        $this->slug = $slug;
 
         return $this;
     }

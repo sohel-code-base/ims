@@ -14,9 +14,9 @@ class CustomerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('cusName')
-            ->add('cusPhone')
-            ->add('cusAddress')
+            ->add('name')
+            ->add('phone')
+            ->add('address')
             ->add('status', CheckboxType::class,[
                 'required' => false,
                 'attr' => [
@@ -27,7 +27,7 @@ class CustomerType extends AbstractType
                     'data-on' => 'Enabled',
                     'data-off'=> 'Disabled',
                     'data-width'=> '150',
-                    'checked' => 'checked'
+//                    'checked' => 'checked'
                 ],
                 'label' => false,
             ])

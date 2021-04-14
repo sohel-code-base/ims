@@ -12,14 +12,6 @@
 {% block body %}
     <!-- Main content -->
     <section class="content">
-        {% for type, messages in app.flashes %}
-            {% for message in messages %}
-                <div class="alert alert-{{ type }} alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <i class="icon fa fa-{{ type == 'error' ? 'warning':'check' }}"></i>{{ message|trans }}
-                </div>
-            {% endfor %}
-        {% endfor %}
         <!-- /.box -->
 
         <div class="box">
@@ -61,20 +53,10 @@
                         {% endfor %}
                     {% else %}
                         <tr>
-                            <td colspan="10">{{ 'No Power(watt) Found!' }}</td>
+                            <td colspan="10" align="center">{{ 'No Power(watt) Found!' }}</td>
                         </tr>
                     {% endif %}
                     </tbody>
-                    {#                    <tfoot>
-                                        <tr>
-                                            <th>{{ 'S/N'|trans }}</th>
-                                            <th>{{ 'Product Name'|trans }}</th>
-                                            <th>{{ 'Purchase Price'|trans }}</th>
-                                            <th>{{ 'Sale Price'|trans }}</th>
-                                            <th>{{ 'Purchase Date'|trans }}</th>
-                                            <th><i class="fa fa-gear"></i></th>
-                                        </tr>
-                                        </tfoot>#}
                 </table>
             </div>
             <!-- /.box-body -->

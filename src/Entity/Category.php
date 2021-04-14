@@ -23,7 +23,7 @@ class Category
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $catName;
+    private $name;
 
     /**
      * @ORM\Column(type="boolean")
@@ -41,15 +41,15 @@ class Category
     private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="proCategory")
+     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="category")
      */
     private $products;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Gedmo\Slug(fields={"catName"}, updatable=false)
+     * @Gedmo\Slug(fields={"name"}, updatable=false)
      */
-    private $catSlug;
+    private $slug;
 
     /**
      * @ORM\OneToMany(targetEntity=SubCategory::class, mappedBy="category")
@@ -68,14 +68,14 @@ class Category
         return $this->id;
     }
 
-    public function getCatName(): ?string
+    public function getName(): ?string
     {
-        return $this->catName;
+        return $this->name;
     }
 
-    public function setCatName(string $catName): self
+    public function setName(string $name): self
     {
-        $this->catName = $catName;
+        $this->name = $name;
 
         return $this;
     }
@@ -133,7 +133,7 @@ class Category
     {
         if (!$this->products->contains($product)) {
             $this->products[] = $product;
-            $product->setProCategory($this);
+            $product->setCategory($this);
         }
 
         return $this;
@@ -143,22 +143,22 @@ class Category
     {
         if ($this->products->removeElement($product)) {
             // set the owning side to null (unless already changed)
-            if ($product->getProCategory() === $this) {
-                $product->setProCategory(null);
+            if ($product->getCategory() === $this) {
+                $product->setCategory(null);
             }
         }
 
         return $this;
     }
 
-    public function getCatSlug(): ?string
+    public function getSlug(): ?string
     {
-        return $this->catSlug;
+        return $this->slug;
     }
 
-    public function setCatSlug(?string $catSlug): self
+    public function setSlug(?string $slug): self
     {
-        $this->catSlug = $catSlug;
+        $this->slug = $slug;
 
         return $this;
     }

@@ -63,7 +63,7 @@ class ProductPurchase
     /**
      * @ORM\ManyToOne(targetEntity=Power::class, inversedBy="productPurchases")
      */
-    private $proPower;
+    private $power;
 
     /**
      * @ORM\OneToMany(targetEntity=ProductSale::class, mappedBy="product")
@@ -176,14 +176,14 @@ class ProductPurchase
         return $this;
     }
 
-    public function getProPower(): ?Power
+    public function getPower(): ?Power
     {
-        return $this->proPower;
+        return $this->power;
     }
 
-    public function setProPower(?Power $proPower): self
+    public function setPower(?Power $power): self
     {
-        $this->proPower = $proPower;
+        $this->power = $power;
 
         return $this;
     }
