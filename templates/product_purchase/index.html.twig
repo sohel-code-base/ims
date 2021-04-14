@@ -88,7 +88,7 @@
                                 <td>{{ product.salePrice|default(0) }}</td>
                                 <td align="center">
                                     {{ product.quantity|default(0) }}
-                                    {% if(product.quantity < 100) %}
+                                    {% if(product.quantity < 100 and product.status == 1) %}
                                         <p style="display: block" class="badge bg-red">Need to purchase!</p>
                                     {% endif %}
                                 </td>
