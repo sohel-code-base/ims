@@ -1,6 +1,8 @@
 $(document).ready(function () {
     $('.show-sale-details').on('click',function (event) {
 
+        event.preventDefault();
+
         const route = $(this).attr('data-action');
         const cId = $(this).attr('data-customer-id');
         const oDate = $(this).attr('data-order-date');

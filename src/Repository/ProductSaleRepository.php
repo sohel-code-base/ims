@@ -57,4 +57,23 @@ class ProductSaleRepository extends ServiceEntityRepository
 
         return $results;
     }
+
+    public function getProductByCustomerAndSaleDate($customerId, $saleDate)
+    {
+        $qb = $this->createQueryBuilder('e');
+        $qb->join('e.customer', 'customer');
+        $qb->join('e.product', 'purchaseProduct');
+        $qb->join('purchaseProduct.product', 'product');
+        $qb->leftJoin('e.power', 'power');
+
+        $qb->select('e.quantity', 'e.perPcsPrice', 'e.totalPrice');
+        $qb->addSelect('purchaseProduct.id AS productPurchaseId');
+        $qb->addSelect('product.name AS productName');
+        $qb->addSelect('power.watt');
+
+        $qb->where('customer.id = :customerId')->setParameter('customerId', $customerId);
+        $qb->andWhere('e.saleDate = :saleDate')->setParameter('saleDate', $saleDate);
+
+        return $qb->getQuery()->getArrayResult();
+    }
 }

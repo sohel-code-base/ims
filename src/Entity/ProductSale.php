@@ -48,6 +48,11 @@ class ProductSale
     private $updatedAt;
 
     /**
+     * @ORM\Column(type="date")
+     */
+    private $saleDate;
+
+    /**
      * @ORM\Column(type="float")
      */
     private $perPcsPrice;
@@ -142,6 +147,23 @@ class ProductSale
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getSaleDate()
+    {
+        return $this->saleDate;
+    }
+
+    /**
+     * @param mixed $saleDate
+     */
+    public function setSaleDate($saleDate): void
+    {
+        $this->saleDate = $saleDate;
+    }
+
 
     public function getPerPcsPrice(): ?float
     {

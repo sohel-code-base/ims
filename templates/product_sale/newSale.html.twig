@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 {% block title %}Make a Order!{% endblock %}
 {% block stylesheet %}
+    <!-- bootstrap datepicker -->
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-datepicker.min.css') }}">
+
     <link href="{{ asset('css/bootstrap-toggle.min.css') }}" rel="stylesheet">
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
@@ -22,9 +25,9 @@
             <div class="box-body">
                 {{ form_start(form,{'attr':{'id':'productSaleForm'}}) }}
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-group">
-                            {{ form_label(form.customer, 'Customer Name:') }}
+                            {{ form_label(form.customer, 'Customer Name') }}
                             {{ form_widget(form.customer,{'id':'customer','attr':{'class':'select2'}}) }}
                             {{ form_errors(form.customer, {'attr': {'class':'help-block'}}) }}
                         </div>
@@ -35,15 +38,22 @@
                             <input type="text" id="customerPhone" class="form-control" disabled>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <div class="form-group">
                             <label for="">Address</label>
                             <textarea rows="1" id="customerAddress" class="form-control" disabled></textarea>
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-2">
+                        <div class="form-group">
+                            {{ form_label(form.saleDate,'Date:') }}
+                            {{ form_widget(form.saleDate,{'id':'datepicker','attr':{'class':'saleDate','placeholder': 'YYYY-mm-dd'},'disabled':'disabled'}) }}
+                        </div>
+                    </div>
+                </div>
+                <div style="width: 100%; height: 2px; background-color: #d2d6de; margin-bottom: 10px"></div>
+                <div class="row">
+                    <div class="col-md-3">
                         <div class="form-group">
                             {{ form_label(form.product, 'Product Name:') }}
                             {{ form_widget(form.product,{'id':'newSaleSelectProduct','attr':{'class':'select2'}}) }}
@@ -74,7 +84,7 @@
                             {{ form_errors(form.perPcsPrice, {'attr': {'class':'help-block'}}) }}#}
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-1">
                         <div class="form-group">
                             <label for="">Watt</label>
                             <input id="watt" type="number" name="" value="" class="form-control" disabled>
@@ -100,9 +110,15 @@
             <!-- /.box-body -->
         </div>
 
+        {% include '/inc/_saleList.html.twig' %}
+        {% include '/inc/_saleDetailsModal.html.twig' %}
+
+
     </section>
 {% endblock %}
 {% block javascripts %}
+    <!-- bootstrap datepicker -->
+    <script src="{{ asset('/js/bootstrap-datepicker.min.js') }}"></script>
 
     <script src="{{ asset('js/bootstrap-toggle.min.js') }}"></script>
     <!-- Select2 -->
@@ -110,10 +126,17 @@
     <script src="{{ asset('/js/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('/js/toastr.min.js') }}"></script>
     <script src="{{ asset('js/newSale.js') }}"></script>
+    <script src="{{ asset('js/saleDetails.js') }}"></script>
     <script>
         $(function () {
             //Initialize Select2 Elements
-            $('.select2').select2()
+            $('.select2').select2();
+            //Date picker
+            $("#datepicker").datepicker({
+                autoclose: true,
+                todayHighlight: true,
+                format: 'yyyy-mm-dd',
+            });
         })
 
     </script>

@@ -54,13 +54,15 @@ class ProductSaleController extends AbstractController
     public function storeNewSaleRecord(CustomerRepository $customerRepository, ProductPurchaseRepository $productPurchaseRepository, PowerRepository $powerRepository)
     {
         $customerId = $_REQUEST['customerId'];
-        $productId = $_REQUEST['product'];
+        $productPurchaseId = $_REQUEST['productPurchaseId'];
         $quantity = $_REQUEST['quantity'];
         $perPiecePrice = $_REQUEST['perPiecePrice'];
         $watt = $_REQUEST['watt'];
+        $saleDate = new \DateTime($_REQUEST['saleDate']);
+
 
         $findCustomer = $customerRepository->findOneBy(['id' => $customerId]);
-        $findProduct = $productPurchaseRepository->findOneBy(['id' => $productId]);
+        $findProduct = $productPurchaseRepository->findOneBy(['id' => $productPurchaseId]);
         $findWatt = $powerRepository->findOneBy(['watt' => $watt]);
 
         if (!empty($findCustomer) && !empty($findProduct)){
@@ -73,6 +75,7 @@ class ProductSaleController extends AbstractController
             $productSale->setPerPcsPrice($perPiecePrice);
             $productSale->setTotalPrice($quantity * $perPiecePrice);
             $productSale->setPower($findWatt ? $findWatt: null);
+            $productSale->setSaleDate($saleDate);
             $productSale->setCreatedAt(new \DateTime('now'));
             $productSale->setStatus(1);
 
@@ -84,7 +87,15 @@ class ProductSaleController extends AbstractController
             $em->persist($findProduct);
             $em->flush();
 
-            return new JsonResponse('success');
+            $returnData = [
+                'status' => 'success',
+                'productName' => $productSale->getProduct()->getProduct()->getName(),
+                'quantity' => $productSale->getQuantity(),
+                'perPiecePrice' => $productSale->getPerPcsPrice(),
+                'power' => $productSale->getPower()->getWatt(),
+                'totalPrice' => $productSale->getTotalPrice(),
+            ];
+            return new JsonResponse($returnData);
         }else{
             return new JsonResponse('failed');
         }
@@ -173,6 +184,45 @@ class ProductSaleController extends AbstractController
         }else{
             return new JsonResponse('failed!');
         }
+    }
+
+    /**
+     * @Route("/sale/product/collect", name="collect_product_customer_and_sale_date", options={"expose"=true})
+     * @param ProductSaleRepository $repository
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function collectProductByCustomerAndSaleDate(ProductSaleRepository $repository)
+    {
+        $customerId = $_REQUEST['customerId'];
+        $saleDate = new \DateTime($_REQUEST['saleDate']);
+
+        $findRecords = $repository->getProductByCustomerAndSaleDate($customerId, $saleDate);
+
+        return new JsonResponse($findRecords);
+
+    }
+
+    /**
+     * @Route("/sale/product/remove", name="remove_product_from_sale_list", options={"expose"=true})
+     */
+    public function removeProductFromSaleList(ProductSaleRepository $repository)
+    {
+        $customerId = $_REQUEST['customerId'];
+        $productPurchaseId = $_REQUEST['productPurchaseId'];
+        $saleDate = new \DateTime($_REQUEST['saleDate']);
+        $findRecord = $repository->findOneBy(['customer' => $customerId, 'product' => $productPurchaseId, 'saleDate' => $saleDate]);
+
+
+        if ($findRecord){
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($findRecord);
+            $em->flush();
+
+            return new JsonResponse('success');
+        }
+
+        return new JsonResponse('failed');
     }
 
 }
