@@ -65,11 +65,10 @@
                                            data-action="{{ path('show_sale_details') }}"
                                            data-customer-id="{{ sale.customerId }}"
                                            data-order-date="{{ sale.orderDate|date('Y-m-d') }}"><i
-                                                    class="fa fa-file-text-o"><span
-                                                        style="margin-left: 3px;">Details</span></i></a>
+                                                    class="fa fa-file-text-o"> Details</i></a>
 
-                                        <a href="" class="btn btn-sm bg-navy btn-flat"><i class="fa fa-edit"><span style="margin-left: 3px;">Edit</span></i></a>
-                                        <a href="{{ path('delete_sale_record',{'id': sale.id}) }}" class="btn btn-sm bg-maroon btn-flat delete-record"><i class="fa fa-trash"><span style="margin-left: 3px;">Delete</span></i></a>
+{#                                        <a href="" class="btn btn-sm bg-navy btn-flat"><i class="fa fa-edit"> Edit</i></a>#}
+                                        <a href="{{ path('delete_sale_record',{'id': sale.id}) }}" class="btn btn-sm bg-maroon btn-flat delete-record"><i class="fa fa-trash"> Delete</i></a>
                                     </div>
 
                                 </td>

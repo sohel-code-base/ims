@@ -44,9 +44,9 @@ class ProductSaleRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('e');
         $qb->join('e.customer', 'customer');
-        $qb->join('e.product', 'productPurchase');
-        $qb->join('productPurchase.product', 'product');
-        $qb->leftJoin('e.power', 'power');
+        $qb->join('e.product', 'purchaseProduct');
+        $qb->join('purchaseProduct.product', 'product');
+        $qb->leftJoin('purchaseProduct.power', 'power');
         $qb->select('e.quantity','e.perPcsPrice', 'e.totalPrice');
         $qb->addSelect('product.name AS productName');
         $qb->addSelect('power.watt');
@@ -64,7 +64,7 @@ class ProductSaleRepository extends ServiceEntityRepository
         $qb->join('e.customer', 'customer');
         $qb->join('e.product', 'purchaseProduct');
         $qb->join('purchaseProduct.product', 'product');
-        $qb->leftJoin('e.power', 'power');
+        $qb->leftJoin('purchaseProduct.power', 'power');
 
         $qb->select('e.quantity', 'e.perPcsPrice', 'e.totalPrice');
         $qb->addSelect('purchaseProduct.id AS productPurchaseId');

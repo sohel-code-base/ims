@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/animate.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/toastr.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/saleDetailsPrint.css') }}">
+
 {% endblock %}
 {% block contentTitle %}
     Sale! <small>This is the location where you can sale!</small>
@@ -70,35 +72,20 @@
                         <div class="form-group">
                             <label for="">Quantity</label>
                             <input id="quantity" type="number" name="" value="" class="form-control">
-                            {#{{ form_label(form.quantity, 'Quantity:') }}
-                            {{ form_widget(form.quantity,{'attr':{'placeholder': 'e.g. 10'}}) }}
-                            {{ form_errors(form.quantity, {'attr': {'class':'help-block'}}) }}#}
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="">Sale Price(1pcs)</label>
                             <input id="salePrice" type="number" name="" value="" class="form-control">
-                            {#{{ form_label(form.perPcsPrice, 'Sale Price(1pcs):') }}
-                            {{ form_widget(form.perPcsPrice,{'attr':{'autocomplete':'off','placeholder': 'e.g. 100'}}) }}
-                            {{ form_errors(form.perPcsPrice, {'attr': {'class':'help-block'}}) }}#}
                         </div>
                     </div>
                     <div class="col-md-1">
                         <div class="form-group">
                             <label for="">Watt</label>
                             <input id="watt" type="number" name="" value="" class="form-control" disabled>
-{#                            {{ form_label(form.watt, 'Watt:') }}
-                            {{ form_widget(form.watt) }}
-                            {{ form_errors(form.watt, {'attr': {'class':'help-block'}}) }}#}
                         </div>
                     </div>
-{#                    <div class="col-md-1">
-                        <div class="form-group">
-#}{#                            <input id="status" type="checkbox" data-toggle="toggle" data-style="slow" data-offstyle="danger" data-onstyle="success" data-on="Enabled" data-off="Disabled" data-width="" checked>#}{#
-                            {{ form_widget(form.status,{'id':'status'}) }}
-                        </div>
-                    </div>#}
                     <div class="col-md-2">
                         <div class="form-group">
                             {{ form_widget(form.Submit, {'label': 'Add','id':'addProduct', 'attr':{'class': 'fa fa-plus btn-flat btn-primary text-white pull-right','style':'padding: 9px 55px; margin-top: 25px;'}}) }}

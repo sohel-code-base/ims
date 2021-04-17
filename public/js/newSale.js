@@ -56,6 +56,9 @@ $(document).on('change','.saleDate',function () {
                 productSaleList.find('tfoot').remove();
 
                 $.each(response,function (key, value) {
+                    if(!$.trim(response[key].watt)){
+                        response[key].watt = 'N/A';
+                    }
                     itemTr = "<tr>" +
                         "<td>" + response[key].productName + "</td>" +
                         "<td>" + response[key].quantity + " pcs" + "</td>" +
@@ -178,10 +181,8 @@ $(document).on('click','#addProduct',function (event) {
     data['productPurchaseId'] = $('#newSaleSelectProduct').val();
     data['quantity'] = $('#quantity').val();
     data['perPiecePrice'] = $('#salePrice').val();
-    data['watt'] = $('#watt').val();
+    // data['watt'] = $('#watt').val();
     // data['status'] = $('#status').val();
-
-    alert(data['watt']);
 
     if(data['customerId'] ==='' || data['product'] ==='' || data['quantity'] ==='' || data['perPiecePrice'] ===''|| data['saleDate'] ===''){
         Swal.fire({
@@ -209,7 +210,9 @@ $(document).on('click','#addProduct',function (event) {
                     let productSaleList = $('#productSaleList');
                     let itemTr = '';
 
-                    // console.log(response);
+                    if(!$.trim(response.watt)){
+                        response.watt = 'N/A';
+                    }
 
                     itemTr = "<tr>" +
                         "<td>" + response.productName + "</td>" +

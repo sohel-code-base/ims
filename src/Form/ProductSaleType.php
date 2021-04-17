@@ -22,16 +22,16 @@ class ProductSaleType extends AbstractType
         $builder
             ->add('quantity')
             ->add('perPcsPrice')
-            ->add('power',EntityType::class,[
-                'required' => false,
-                'class' => Power::class,
-                'placeholder' => 'Select watt',
-                'choice_label' => 'watt',
-                'query_builder' => function(EntityRepository $repository){
-                return $repository->createQueryBuilder('e')
-                    ->orderBy('e.watt', 'ASC');
-                }
-            ])
+//            ->add('power',EntityType::class,[
+//                'required' => false,
+//                'class' => Power::class,
+//                'placeholder' => 'Select watt',
+//                'choice_label' => 'watt',
+//                'query_builder' => function(EntityRepository $repository){
+//                return $repository->createQueryBuilder('e')
+//                    ->orderBy('e.watt', 'ASC');
+//                }
+//            ])
             ->add('customer',EntityType::class,[
                 'class' => Customer::class,
                 'placeholder' => 'Select Customer',

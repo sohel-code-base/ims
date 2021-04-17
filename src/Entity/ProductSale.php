@@ -62,10 +62,6 @@ class ProductSale
      */
     private $totalPrice;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Power::class, inversedBy="productSales")
-     */
-    private $power;
 
     public function getId(): ?int
     {
@@ -185,18 +181,6 @@ class ProductSale
     public function setTotalPrice(?float $totalPrice): self
     {
         $this->totalPrice = $totalPrice;
-
-        return $this;
-    }
-
-    public function getPower(): ?Power
-    {
-        return $this->power;
-    }
-
-    public function setPower(?Power $power): self
-    {
-        $this->power = $power;
 
         return $this;
     }
