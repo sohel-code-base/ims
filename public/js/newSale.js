@@ -27,7 +27,7 @@ $(document).on('change','#customer', function (event) {
 
 
 
-//show product on change customer and sale date
+//show product on change customer and sale date in list
 $(document).on('change','.saleDate',function () {
     let customerId = $('#customer').val();
     let saleDate = $('.saleDate').val();
@@ -49,6 +49,10 @@ $(document).on('change','.saleDate',function () {
         data: {customerId: customerId, saleDate: saleDate},
         success: function (response) {
             if (response.length !== 0){
+
+                // Activate receipt button
+                $('.show-sale-details').removeClass('disabled');
+
                 productSaleList.find('tfoot').remove();
 
                 $.each(response,function (key, value) {
@@ -95,6 +99,27 @@ $(document).on('click','.removeProductFromSaleList',function (event) {
       success: function (response) {
           if (response === 'success'){
               $("#productSaleList table tbody").find("[data-product-id='" + productPurchaseId + "']").closest('tr').hide();
+
+              //Item added notification
+              toastr["error"]("Item Deleted!")
+
+              toastr.options = {
+                  "closeButton": false,
+                  "debug": false,
+                  "newestOnTop": false,
+                  "progressBar": false,
+                  "positionClass": "toast-top-center",
+                  "preventDuplicates": true,
+                  "onclick": null,
+                  "showDuration": "300",
+                  "hideDuration": "1000",
+                  "timeOut": "5000",
+                  "extendedTimeOut": "1000",
+                  "showEasing": "swing",
+                  "hideEasing": "linear",
+                  "showMethod": "fadeIn",
+                  "hideMethod": "fadeOut"
+              }
           }
 
       }
@@ -108,7 +133,7 @@ $(document).on('click','.removeProductFromSaleList',function (event) {
 
 
 
-//Show product details
+// Fill up product details after selecting product
 $(document).on('change', '#newSaleSelectProduct', function (event) {
     let id = $(this).val();
     let route = Routing.generate('new_sale_product_details', {id:id});
@@ -156,6 +181,8 @@ $(document).on('click','#addProduct',function (event) {
     data['watt'] = $('#watt').val();
     // data['status'] = $('#status').val();
 
+    alert(data['watt']);
+
     if(data['customerId'] ==='' || data['product'] ==='' || data['quantity'] ==='' || data['perPiecePrice'] ===''|| data['saleDate'] ===''){
         Swal.fire({
             title: 'Please fill all fields.',
@@ -188,12 +215,16 @@ $(document).on('click','#addProduct',function (event) {
                         "<td>" + response.productName + "</td>" +
                         "<td>" + response.quantity + " pcs" + "</td>" +
                         "<td>" + response.perPiecePrice + " tk" + "</td>" +
-                        "<td>" + response.power + "</td>" +
+                        "<td>" + response.watt + "</td>" +
                         "<td>" + response.totalPrice + " tk" + "</td>" +
                         "<td class='removeProductFromSaleList' data-customer-id=" + data['customerId'] + " data-product-id=" + data['productPurchaseId'] + " data-sale-date=" + data['saleDate'] + " style='cursor: pointer'><i class='fa fa-remove'></i></td>" +
                         "</tr>"
                     productSaleList.find('tbody').append(itemTr);
                     productSaleList.find('tfoot').remove();
+
+
+                    // Activate receipt button
+                    $('.show-sale-details').removeClass('disabled');
 
                     //Item added notification
                     toastr["success"]("New Item added!")

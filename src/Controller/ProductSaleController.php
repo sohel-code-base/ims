@@ -57,13 +57,13 @@ class ProductSaleController extends AbstractController
         $productPurchaseId = $_REQUEST['productPurchaseId'];
         $quantity = $_REQUEST['quantity'];
         $perPiecePrice = $_REQUEST['perPiecePrice'];
-        $watt = $_REQUEST['watt'];
+//        $watt = $_REQUEST['watt'];
         $saleDate = new \DateTime($_REQUEST['saleDate']);
 
 
         $findCustomer = $customerRepository->findOneBy(['id' => $customerId]);
         $findProduct = $productPurchaseRepository->findOneBy(['id' => $productPurchaseId]);
-        $findWatt = $powerRepository->findOneBy(['watt' => $watt]);
+//        $findWatt = $powerRepository->findOneBy(['watt' => $watt]);
 
         if (!empty($findCustomer) && !empty($findProduct)){
             $productSale = new ProductSale();
@@ -74,7 +74,7 @@ class ProductSaleController extends AbstractController
             $productSale->setQuantity($quantity);
             $productSale->setPerPcsPrice($perPiecePrice);
             $productSale->setTotalPrice($quantity * $perPiecePrice);
-            $productSale->setPower($findWatt ? $findWatt: null);
+//            $productSale->setPower($findWatt ? $findWatt: null);
             $productSale->setSaleDate($saleDate);
             $productSale->setCreatedAt(new \DateTime('now'));
             $productSale->setStatus(1);
@@ -92,7 +92,7 @@ class ProductSaleController extends AbstractController
                 'productName' => $productSale->getProduct()->getProduct()->getName(),
                 'quantity' => $productSale->getQuantity(),
                 'perPiecePrice' => $productSale->getPerPcsPrice(),
-                'power' => $productSale->getPower()->getWatt(),
+                'watt' => $productSale->getProduct()->getPower()->getWatt(),
                 'totalPrice' => $productSale->getTotalPrice(),
             ];
             return new JsonResponse($returnData);
