@@ -18,15 +18,46 @@
     <link rel="stylesheet" href="{{ asset('css/AdminLTE.min.css') }}">
     <!-- iCheck -->
     <link rel="stylesheet" href="{{ asset('css/blue.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
 
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <style>
+        body:before{
+            content: "";
+            position: fixed;
+            left: 0;
+            right: 0;
+            z-index: -1;
+
+            display: block;
+
+            background:linear-gradient(0deg, rgba(0, 0, 0, .70), rgba(0, 0, 0, .70)), url({{ asset('images/login-bg-2.jpg') }});
+            background-size:cover;
+            width: 100%;
+            min-height: 100%;
+/*
+            -webkit-filter: blur(6px);
+            -moz-filter: blur(6px);
+            -o-filter: blur(6px);
+            -ms-filter: blur(6px);
+            filter: blur(6px);*/
+        }
+        body{
+            position: fixed;
+            left: 0;
+            right: 0;
+            z-index: 0;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+    </style>
 </head>
-<body class="hold-transition login-page" style="background: url({{ asset('images/login-bg.jpg') }}) no-repeat; background-attachment: fixed; background-position: top center; background-size: cover;">
-<div class="login-box">
+<body class="hold-transition login-page">
+<div class="login-box text-white">
     <div class="login-logo">
-        <a href=""><b>ISLAMIA</b>enterprise</a>
+        <b>ISLAMIA</b>enterprise
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
