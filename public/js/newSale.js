@@ -65,7 +65,8 @@ $(document).on('change','.saleDate',function () {
                         "<td>" + response[key].perPcsPrice + " tk" + "</td>" +
                         "<td>" + response[key].watt + "</td>" +
                         "<td>" + response[key].totalPrice + " tk" + "</td>" +
-                        "<td class='removeProductFromSaleList' data-customer-id=" + customerId + " data-product-id=" + response[key].productPurchaseId + " data-sale-date=" + saleDate + " style='cursor: pointer'><i class='fa fa-remove'></i></td>" +
+                        // "<td class='removeProductFromSaleList' data-customer-id=" + customerId + " data-product-id=" + response[key].productPurchaseId + " data-sale-date=" + saleDate + " style='cursor: pointer'><i class='fa fa-remove'></i></td>" +
+                        "<td></td>" +
                         "</tr>";
                     productSaleList.find('tbody').append(itemTr);
                 })
