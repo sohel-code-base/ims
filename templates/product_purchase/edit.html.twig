@@ -59,7 +59,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             {{ form_label(form.power, 'Watt:') }}
-                            {{ form_widget(form.power) }}
+                            {{ form_widget(form.power,{'attr':{'class':'select2'}}) }}
                             {{ form_errors(form.power, {'attr': {'class':'help-block'}}) }}
                         </div>
                     </div>

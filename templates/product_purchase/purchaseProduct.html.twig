@@ -69,14 +69,14 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             {{ form_label(form.power, 'Watt:') }}
-                            {{ form_widget(form.power) }}
+                            {{ form_widget(form.power,{'attr':{'class':'select2'}}) }}
                             {{ form_errors(form.power, {'attr': {'class':'help-block'}}) }}
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             {{ form_label(form.purchaseDate, 'Purchase Date:') }}
-                            {{ form_widget(form.purchaseDate,{'id': 'datepicker','attr':{'placeholder':'e.g. YYYY-mm-dd'}}) }}
+                            {{ form_widget(form.purchaseDate,{'id': 'datepicker','attr':{'placeholder':'e.g. dd-mm-yyyy'}}) }}
                             {{ form_errors(form.purchaseDate, {'attr': {'class':'help-block'}}) }}
                         </div>
                     </div>
@@ -118,7 +118,7 @@
             $("#datepicker").datepicker({
                 autoclose: true,
                 todayHighlight: true,
-                format: 'yyyy-mm-dd',
+                format: 'dd-mm-yyyy',
             });
         })
     </script>

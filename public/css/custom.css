@@ -59,6 +59,36 @@
     background: #a5a5a526;
 }
 
+.select2-container--default .select2-selection--single{
+    border-radius: 5px !important;
+    box-shadow: inset 0px -1px 10px -2px #d2d6de;
+    border-color: #d2d6de !important;
+    height: 34px !important;
+}
+
+.select2-container--default.select2-container--open .select2-selection--single{
+    border-bottom-left-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow{
+    top: 0px !important;
+    border-top-right-radius: 5px !important;
+    border-bottom-right-radius: 5px !important;
+    background: linear-gradient(0deg, #d2d6de8c, #cccccc14);
+    height: 100% !important;
+}
+
+.select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow{
+    border-bottom-right-radius: 0px !important;
+
+}
+
+.form-control {
+    border-radius: 5px !important;
+    box-shadow: inset 0px -1px 10px -2px #d2d6de;
+}
+
 
 /*Delete Alert style*/
 .animate__animated{
@@ -108,11 +138,11 @@ table.dataTable thead{
  .slow .toggle-group { transition: left 0.7s; -webkit-transition: left 0.7s; }
 
 
-#addNewProductForm .select2-container--default .select2-selection--single, #addNewSubCategoryForm .select2-container--default .select2-selection--single, #purchaseProductForm .select2-container--default .select2-selection--single, #productSaleForm .select2-container--default .select2-selection--single{
-    border-color: #d2d6de !important;
-    border-radius: 0 !important;
-    height: 34px !important;
-}
+/*#addNewProductForm .select2-container--default .select2-selection--single, #addNewSubCategoryForm .select2-container--default .select2-selection--single, #purchaseProductForm .select2-container--default .select2-selection--single, #productSaleForm .select2-container--default .select2-selection--single{*/
+/*    border-color: #d2d6de !important;*/
+/*    border-radius: 0 !important;*/
+/*    height: 34px !important;*/
+/*}*/
 
 .select2-container {
     width: 100% !important;

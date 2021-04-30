@@ -71,6 +71,7 @@ class ProductPurchaseController extends AbstractController
         if($form->isSubmitted()){
             $em = $this->getDoctrine()->getManager();
 
+//            dd($form->get('purchaseDate')->getData());
             $purchaseDate = new \DateTime($form->get('purchaseDate')->getData());
             $product = $form->get('product')->getData();
             $purchaseQuantity = $form->get('quantity')->getData();

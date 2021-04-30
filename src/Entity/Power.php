@@ -46,11 +46,6 @@ class Power
     private $productPurchases;
 
     /**
-     * @ORM\OneToMany(targetEntity=ProductSale::class, mappedBy="power")
-     */
-    private $productSales;
-
-    /**
      * @ORM\OneToMany(targetEntity=ProductPurchaseArchive::class, mappedBy="power")
      */
     private $productPurchaseArchives;
