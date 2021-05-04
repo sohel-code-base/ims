@@ -4,32 +4,32 @@
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('/css/dataTables.bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/animate.min.css') }}">
-    <style>
-        @media print {
-            body * {
-                visibility: hidden;
-            }
+{#    <style>#}
+{#        @media print {#}
+{#            body * {#}
+{#                visibility: hidden;#}
+{#            }#}
 
-            .modal * {
-                visibility: visible;
-                overflow: visible;
-            }
-            .modal .modal-body table thead tr th,.modal .modal-body table tbody tr td{
-                padding: 3px !important;
-            }
+{#            .modal * {#}
+{#                visibility: visible;#}
+{#                overflow: visible;#}
+{#            }#}
+{#            .modal .modal-body table thead tr th,.modal .modal-body table tbody tr td{#}
+{#                padding: 3px !important;#}
+{#            }#}
 
-            .modal-footer {
-                /*visibility: hidden;*/
-                display: none;
-            }
+{#            .modal-footer {#}
+{#                /*visibility: hidden;*/#}
+{#                display: none;#}
+{#            }#}
 
-            .modal-header h3 {
-                text-align: left !important;
-                background-color: red !important;
-                color: #fff !important;
-            }
-        }
-    </style>
+{#            .modal-header h3 {#}
+{#                text-align: left !important;#}
+{#                background-color: red !important;#}
+{#                color: #fff !important;#}
+{#            }#}
+{#        }#}
+{#    </style>#}
 {% endblock %}
 
 {% block contentTitle %}
@@ -131,12 +131,12 @@
                                                 <dt>{{ 'Sale Price'|trans }}:</dt>
                                                 <dd>{{ product.salePrice|default(0) }} pc</dd>
                                                 <dt>{{ 'Last Purchasre Date'|trans }}:</dt>
-                                                <dd>{{ product.purchaseDate|date('d-m-Y') }} pc</dd>
+                                                <dd>{{ product.purchaseDate|date('d-m-Y') }}</dd>
                                             </dl>
                                         </div>
-                                        <div class="modal-footer text-center">
-                                            <a href="javascript:window.print()" class="btn bg-purple btn-flat">Print <i class="fa fa-print"></i></a>
-                                        </div>
+{#                                        <div class="modal-footer text-center">#}
+{#                                            <a href="javascript:window.print()" class="btn bg-purple btn-flat">Print <i class="fa fa-print"></i></a>#}
+{#                                        </div>#}
                                     </div>
                                     <!-- /.modal-content -->
                                 </div>

@@ -16,11 +16,29 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MAIN NAVIGATION</li>
-            <li class="bg-primary sale-btn" style="text-align: center; font-size: 20px">
-                <a href="{{ path('new_sale') }}" class="text-white">
-                    <span>SALE</span> <i class="fa fa-share-square"></i>
+            <li class="btn-group-lg">
+                <a href="#" class="btn bg-navy-active btn-flat" style="text-align: left">
+                    <i class="fa fa-minus-square"></i> <span>Expense</span>
+                </a>
+                <a href="{{ path('new_sale') }}" class="btn bg-maroon btn-flat" style="text-align: left">
+                    <i class="fa fa-shopping-cart"></i> <span>Sale</span>
                 </a>
             </li>
+            {#<li class="treeview">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-f bg-navy-active"><i class="fa fa-minus-square"></i> <span>Expense</span></button>
+                    <button type="button" class="btn bg-maroon"><i class="fa fa-share-square"></i> <span>Sale</span></button>
+                </div>
+                <div class="row">
+                    <a href="#" class="text-white col-md-6 bg-navy-active" style="padding: 10px">
+                        <i class="fa fa-minus-square"></i> <span>Expense</span>
+                    </a>
+                    <a href="{{ path('new_sale') }}" class="text-white col-md-6 bg-maroon" style="padding: 10px">
+                        <i class="fa fa-share-square"></i> <span>Sale</span>
+                    </a>
+                </div>
+
+            </li>#}
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-th"></i> <span>Products</span>

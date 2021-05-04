@@ -30,14 +30,13 @@
                 <div class="row">
                     <div class="col-md-6 col-md-offset-3 margin-bottom">
                         {{ form_start(filterForm) }}
-                        <table width="100%">
-                            <thead>
-                            <tr>
-                                <th>{{ form_widget(filterForm.monthYear,{'id': 'datepicker','attr':{'autocomplete': 'off','placeholder': 'e.g. '~'now'|date('F-Y') }}) }}</th>
-                                <th>{{ form_widget(filterForm.filter, {'attr':{'class':'btn-flat bg-primary', 'style':'margin-left: -3px;border-top-right-radius: 5px;border-bottom-right-radius: 5px;'}}) }}</th>
-                            </tr>
-                            </thead>
-                        </table>
+                        <div class="input-group margin">
+                            {{ form_widget(filterForm.monthYear,{'id': 'datepicker','attr':{'autocomplete': 'off','placeholder': 'e.g. '~'now'|date('F-Y') }}) }}
+                            <span class="input-group-btn">
+                                {{ form_widget(filterForm.filter, {'attr':{'class':'btn-flat bg-primary', 'style':'margin-left: -3px;border-top-right-radius: 5px;border-bottom-right-radius: 5px;width: 100px;box-shadow: inset 1px -5px 15px -1px #005eaf'}}) }}
+                    </span>
+                        </div>
+
                         {{ form_rest(filterForm) }}
                     </div>
                 </div>
