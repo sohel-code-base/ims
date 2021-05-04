@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\ProductSale;
+use App\Entity\ProductSaleDetails;
 use App\Form\ProductSaleType;
 use App\Repository\CustomerRepository;
 use App\Repository\PowerRepository;
 use App\Repository\ProductPurchaseRepository;
+use App\Repository\ProductSaleDetailsRepository;
 use App\Repository\ProductSaleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -34,10 +36,9 @@ class ProductSaleController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function newSale(Request $request): Response
+    public function newSaleView(Request $request): Response
     {
-        $productSale = new ProductSale();
-        $form = $this->createForm(ProductSaleType::class, $productSale);
+        $form = $this->createForm(ProductSaleType::class);
 
         return $this->render('product_sale/newSale.html.twig', [
             'form' => $form->createView(),
@@ -49,9 +50,11 @@ class ProductSaleController extends AbstractController
      * @param CustomerRepository $customerRepository
      * @param ProductPurchaseRepository $productPurchaseRepository
      * @param PowerRepository $powerRepository
+     * @param ProductSaleRepository $productSaleRepository
      * @return JsonResponse
+     * @throws \Exception
      */
-    public function storeNewSaleRecord(CustomerRepository $customerRepository, ProductPurchaseRepository $productPurchaseRepository, PowerRepository $powerRepository)
+    public function storeNewSaleRecord(CustomerRepository $customerRepository, ProductPurchaseRepository $productPurchaseRepository, PowerRepository $powerRepository, ProductSaleRepository $productSaleRepository)
     {
         $customerId = $_REQUEST['customerId'];
         $productPurchaseId = $_REQUEST['productPurchaseId'];
@@ -64,20 +67,38 @@ class ProductSaleController extends AbstractController
         $findProduct = $productPurchaseRepository->findOneBy(['id' => $productPurchaseId]);
 
         if (!empty($findCustomer) && !empty($findProduct)){
-            $productSale = new ProductSale();
             $em = $this->getDoctrine()->getManager();
 
-            $productSale->setCustomer($findCustomer);
-            $productSale->setProduct($findProduct);
-            $productSale->setQuantity($quantity);
-            $productSale->setPerPcsPrice($perPiecePrice);
-            $productSale->setTotalPrice($quantity * $perPiecePrice);
-            $productSale->setSaleDate($saleDate);
-            $productSale->setCreatedAt(new \DateTime('now'));
-            $productSale->setStatus(1);
+            $findSale = $productSaleRepository->findOneBy(['customer' => $findCustomer, 'saleDate' => $saleDate]);
+            if ($findSale){
+                $saleDetails = new ProductSaleDetails();
+                $saleDetails->setSale($findSale);
+                $saleDetails->setProduct($findProduct);
+                $saleDetails->setQuantity($quantity);
+                $saleDetails->setPerPcsPrice($perPiecePrice);
 
-            $em->persist($productSale);
-            $em->flush();
+                $findSale->addProductSaleDetail($saleDetails);
+                $findSale->setTotalPrice($findSale->getTotalPrice() + ($quantity * $perPiecePrice));
+                $em->persist($findSale);
+                $em->flush();
+            }else{
+                $productSale = new ProductSale();
+                $productSale->setCustomer($findCustomer);
+                $productSale->setTotalPrice($quantity * $perPiecePrice);
+                $productSale->setSaleDate($saleDate);
+                $productSale->setCreatedAt(new \DateTime('now'));
+                $productSale->setStatus(1);
+
+                $saleDetails = new ProductSaleDetails();
+                $saleDetails->setSale($productSale);
+                $saleDetails->setProduct($findProduct);
+                $saleDetails->setQuantity($quantity);
+                $saleDetails->setPerPcsPrice($perPiecePrice);
+
+                $productSale->addProductSaleDetail($saleDetails);
+                $em->persist($productSale);
+                $em->flush();
+            }
 
             $prevQuantity = $findProduct->getQuantity();
             $findProduct->setQuantity($prevQuantity - $quantity);
@@ -86,11 +107,12 @@ class ProductSaleController extends AbstractController
 
             $returnData = [
                 'status' => 'success',
-                'productName' => $productSale->getProduct()->getProduct()->getName(),
-                'quantity' => $productSale->getQuantity(),
-                'perPiecePrice' => $productSale->getPerPcsPrice(),
-                'watt' => $productSale->getProduct()->getPower() ? $productSale->getProduct()->getPower()->getWatt() : '',
-                'totalPrice' => $productSale->getTotalPrice(),
+                'saleId' => $saleDetails->getSale()->getId(),
+                'productName' => $saleDetails->getProduct()->getProduct()->getName(),
+                'quantity' => $saleDetails->getQuantity(),
+                'perPiecePrice' => $saleDetails->getPerPcsPrice(),
+                'watt' => $saleDetails->getProduct()->getPower() ? $saleDetails->getProduct()->getPower()->getWatt() : '',
+                'totalPrice' => $quantity * $perPiecePrice,
             ];
             return new JsonResponse($returnData);
         }else{
@@ -189,7 +211,7 @@ class ProductSaleController extends AbstractController
      * @return JsonResponse
      * @throws \Exception
      */
-    public function collectProductByCustomerAndSaleDate(ProductSaleRepository $repository)
+    public function collectProductByCustomerAndSaleDate(ProductSaleDetailsRepository $repository)
     {
         $customerId = $_REQUEST['customerId'];
         $saleDate = new \DateTime($_REQUEST['saleDate']);
@@ -202,19 +224,33 @@ class ProductSaleController extends AbstractController
 
     /**
      * @Route("/sale/product/remove", name="remove_product_from_sale_list", options={"expose"=true})
+     * @param ProductSaleDetailsRepository $saleDetailsRepository
+     * @param ProductSaleRepository $saleRepository
+     * @return JsonResponse
      */
-    public function removeProductFromSaleList(ProductSaleRepository $repository)
+    public function removeProductFromSaleList(ProductSaleDetailsRepository $saleDetailsRepository, ProductSaleRepository $saleRepository)
     {
-        $customerId = $_REQUEST['customerId'];
+        $saleId = $_REQUEST['saleId'];
         $productPurchaseId = $_REQUEST['productPurchaseId'];
-        $saleDate = new \DateTime($_REQUEST['saleDate']);
-        $findRecord = $repository->findOneBy(['customer' => $customerId, 'product' => $productPurchaseId, 'saleDate' => $saleDate]);
+//        $saleDate = new \DateTime($_REQUEST['saleDate']);
+
+        $findProduct = $saleDetailsRepository->findOneBy(['sale' => $saleId, 'product' => $productPurchaseId]);
 
 
-        if ($findRecord){
+        if ($findProduct){
             $em = $this->getDoctrine()->getManager();
-            $em->remove($findRecord);
+            $price = $findProduct->getQuantity() * $findProduct->getPerPcsPrice();
+
+            $findSale = $saleRepository->findOneBy(['id' => $findProduct->getSale()]);
+            $findSale->setTotalPrice($findSale->getTotalPrice() - $price);
+            $em->persist($findSale);
+
+            $em->remove($findProduct);
             $em->flush();
+            if ($findSale->getTotalPrice() == 0){
+                $em->remove($findSale);
+                $em->flush();
+            }
 
             return new JsonResponse('success');
         }

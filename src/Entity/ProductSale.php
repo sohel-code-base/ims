@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductSaleRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,14 +25,19 @@ class ProductSale
     private $customer;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ProductPurchase::class, inversedBy="productSales")
+     * @ORM\Column(type="float", nullable=true)
      */
-    private $product;
+    private $totalPrice;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float", nullable=true)
      */
-    private $quantity;
+    private $dueAmount;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $saleDate;
 
     /**
      * @ORM\Column(type="boolean")
@@ -48,19 +55,14 @@ class ProductSale
     private $updatedAt;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\OneToMany(targetEntity=ProductSaleDetails::class, mappedBy="sale", cascade={"persist"})
      */
-    private $saleDate;
+    private $productSaleDetails;
 
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $perPcsPrice;
-
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $totalPrice;
+    public function __construct()
+    {
+        $this->productSaleDetails = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -68,38 +70,69 @@ class ProductSale
         return $this->id;
     }
 
-    public function getCustomer(): ?Customer
+
+    /**
+     * @return Collection|ProductSaleDetails[]
+     */
+    public function getProductSaleDetails(): Collection
     {
-        return $this->customer;
+        return $this->productSaleDetails;
     }
 
-    public function setCustomer(?Customer $customer): self
+    public function addProductSaleDetail(ProductSaleDetails $productSaleDetail): self
     {
-        $this->customer = $customer;
+        if (!$this->productSaleDetails->contains($productSaleDetail)) {
+            $this->productSaleDetails[] = $productSaleDetail;
+            $productSaleDetail->setSale($this);
+        }
 
         return $this;
     }
 
-    public function getProduct(): ?ProductPurchase
+    public function removeProductSaleDetail(ProductSaleDetails $productSaleDetail): self
     {
-        return $this->product;
-    }
-
-    public function setProduct(?ProductPurchase $product): self
-    {
-        $this->product = $product;
+        if ($this->productSaleDetails->removeElement($productSaleDetail)) {
+            // set the owning side to null (unless already changed)
+            if ($productSaleDetail->getSale() === $this) {
+                $productSaleDetail->setSale(null);
+            }
+        }
 
         return $this;
     }
 
-    public function getQuantity(): ?int
+    public function getTotalPrice(): ?float
     {
-        return $this->quantity;
+        return $this->totalPrice;
     }
 
-    public function setQuantity(int $quantity): self
+    public function setTotalPrice(float $totalPrice): self
     {
-        $this->quantity = $quantity;
+        $this->totalPrice = $totalPrice;
+
+        return $this;
+    }
+
+    public function getDueAmount(): ?float
+    {
+        return $this->dueAmount;
+    }
+
+    public function setDueAmount(float $dueAmount): self
+    {
+        $this->dueAmount = $dueAmount;
+
+        return $this;
+    }
+
+    public function getSaleDate(): ?\DateTimeInterface
+    {
+        return $this->saleDate;
+    }
+
+    public function setSaleDate(\DateTimeInterface $saleDate): self
+    {
+        $this->saleDate = $saleDate;
 
         return $this;
     }
@@ -116,20 +149,16 @@ class ProductSale
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getCreatedAt()
+    public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    /**
-     * @param mixed $createdAt
-     */
-    public function setCreatedAt($createdAt): void
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
@@ -144,43 +173,14 @@ class ProductSale
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSaleDate()
+    public function getCustomer(): ?Customer
     {
-        return $this->saleDate;
+        return $this->customer;
     }
 
-    /**
-     * @param mixed $saleDate
-     */
-    public function setSaleDate($saleDate): void
+    public function setCustomer(?Customer $customer): self
     {
-        $this->saleDate = $saleDate;
-    }
-
-
-    public function getPerPcsPrice(): ?float
-    {
-        return $this->perPcsPrice;
-    }
-
-    public function setPerPcsPrice(float $perPcsPrice): self
-    {
-        $this->perPcsPrice = $perPcsPrice;
-
-        return $this;
-    }
-
-    public function getTotalPrice(): ?float
-    {
-        return $this->totalPrice;
-    }
-
-    public function setTotalPrice(?float $totalPrice): self
-    {
-        $this->totalPrice = $totalPrice;
+        $this->customer = $customer;
 
         return $this;
     }

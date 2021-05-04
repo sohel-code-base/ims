@@ -65,15 +65,6 @@ class ProductPurchase
      */
     private $power;
 
-    /**
-     * @ORM\OneToMany(targetEntity=ProductSale::class, mappedBy="product")
-     */
-    private $productSales;
-
-    public function __construct()
-    {
-        $this->productSales = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -188,33 +179,4 @@ class ProductPurchase
         return $this;
     }
 
-    /**
-     * @return Collection|ProductSale[]
-     */
-    public function getProductSales(): Collection
-    {
-        return $this->productSales;
-    }
-
-    public function addProductSale(ProductSale $productSale): self
-    {
-        if (!$this->productSales->contains($productSale)) {
-            $this->productSales[] = $productSale;
-            $productSale->setProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProductSale(ProductSale $productSale): self
-    {
-        if ($this->productSales->removeElement($productSale)) {
-            // set the owning side to null (unless already changed)
-            if ($productSale->getProduct() === $this) {
-                $productSale->setProduct(null);
-            }
-        }
-
-        return $this;
-    }
 }

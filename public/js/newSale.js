@@ -92,17 +92,22 @@ $(document).on('change','.saleDate',function () {
 //Remove product from sale list
 $(document).on('click','.removeProductFromSaleList',function (event) {
   let route = Routing.generate('remove_product_from_sale_list');
-  let customerId = $(this).attr('data-customer-id');
+  let saleId = $(this).attr('data-sale-id');
   let productPurchaseId = $(this).attr('data-product-id');
-  let saleDate = $(this).attr('data-sale-date');
+  // let saleDate = $(this).attr('data-sale-date');
 
   $.ajax({
       url: route,
       type: 'POST',
-      data: {customerId: customerId, productPurchaseId: productPurchaseId, saleDate: saleDate},
+      data: {saleId: saleId, productPurchaseId: productPurchaseId},
       success: function (response) {
           if (response === 'success'){
-              $("#productSaleList table tbody").find("[data-product-id='" + productPurchaseId + "']").closest('tr').hide();
+              $("#productSaleList table tbody").find("[data-product-id='" + productPurchaseId + "']").closest('tr').remove();
+              let productRows = $("#productSaleList table tbody tr").length;
+              if( productRows === 0){
+                  $('.show-sale-details').addClass('disabled');
+
+              }
 
               //Item added notification
               toastr["error"]("Item Deleted!")
@@ -221,7 +226,7 @@ $(document).on('click','#addProduct',function (event) {
                         "<td>" + response.perPiecePrice + " tk" + "</td>" +
                         "<td>" + response.watt + "</td>" +
                         "<td>" + response.totalPrice + " tk" + "</td>" +
-                        "<td class='removeProductFromSaleList' data-customer-id=" + data['customerId'] + " data-product-id=" + data['productPurchaseId'] + " data-sale-date=" + data['saleDate'] + " style='cursor: pointer'><i class='fa fa-remove'></i></td>" +
+                        "<td class='removeProductFromSaleList' data-sale-id=" + response.saleId + " data-product-id=" + data['productPurchaseId'] + " data-sale-date=" + data['saleDate'] + " style='cursor: pointer'><i class='fa fa-remove'></i></td>" +
                         "</tr>"
                     productSaleList.find('tbody').append(itemTr);
                     productSaleList.find('tfoot').remove();

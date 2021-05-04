@@ -23,11 +23,9 @@ class ProductSaleRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('e');
         $qb->join('e.customer', 'customer');
-        $qb->select('e.id','e.createdAt AS orderDate', 'e.status', 'SUM(e.totalPrice) AS orderTotalPrice');
+        $qb->select('e.id','e.saleDate AS orderDate', 'e.status', 'e.totalPrice');
         $qb->addSelect('customer.name AS customerName','customer.id AS customerId');
-        $qb->orderBy('e.createdAt', 'DESC');
-        $qb->groupBy('customer.id');
-        $qb->addGroupBy('e.createdAt');
+        $qb->orderBy('e.saleDate', 'DESC');
         $results = $qb->getQuery()->getArrayResult();
 //        $data = [];
 //        foreach ($results as $result){
@@ -58,22 +56,4 @@ class ProductSaleRepository extends ServiceEntityRepository
         return $results;
     }
 
-    public function getProductByCustomerAndSaleDate($customerId, $saleDate)
-    {
-        $qb = $this->createQueryBuilder('e');
-        $qb->join('e.customer', 'customer');
-        $qb->join('e.product', 'purchaseProduct');
-        $qb->join('purchaseProduct.product', 'product');
-        $qb->leftJoin('purchaseProduct.power', 'power');
-
-        $qb->select('e.quantity', 'e.perPcsPrice', 'e.totalPrice');
-        $qb->addSelect('purchaseProduct.id AS productPurchaseId');
-        $qb->addSelect('product.name AS productName');
-        $qb->addSelect('power.watt');
-
-        $qb->where('customer.id = :customerId')->setParameter('customerId', $customerId);
-        $qb->andWhere('e.saleDate = :saleDate')->setParameter('saleDate', $saleDate);
-
-        return $qb->getQuery()->getArrayResult();
-    }
 }
