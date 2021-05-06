@@ -2,7 +2,7 @@
 $(document).on('change','#customer', function (event) {
     $('#customerPhone').val('');
     $('#customerAddress').val('');
-    $(this).attr('disabled','disabled'); // Deactivate customer dropdown
+    $(this).prop('disabled',true); // Deactivate customer dropdown
     $('.saleDate').removeAttr('disabled'); //Active Date field
 
     const customerId = $(this).val();
@@ -21,24 +21,19 @@ $(document).on('change','#customer', function (event) {
 })
 
 
-
-
-
-
-
-
-//show product on change customer and sale date in list
+//show products in list after changing customer and sale date
 $(document).on('change','.saleDate',function () {
     let customerId = $('#customer').val();
     let saleDate = $('.saleDate').val();
+    let productSaleList = $('#productSaleList');
 
-    // Added print button data value
-    $('.show-sale-details').attr('data-customer-id', customerId);
-    $('.show-sale-details').attr('data-order-date', saleDate);
+
+    // Added Receipt button data value
+    productSaleList.find('.show-sale-details').attr('data-customer-id', customerId);
+    productSaleList.find('.show-sale-details').attr('data-order-date', saleDate);
 
     let route = Routing.generate('collect_product_customer_and_sale_date');
 
-    let productSaleList = $('#productSaleList');
     let itemTr = '';
 
     productSaleList.find('tbody').empty();
@@ -50,8 +45,10 @@ $(document).on('change','.saleDate',function () {
         success: function (response) {
             if (response.length !== 0){
 
-                // Activate receipt button
-                $('.show-sale-details').removeClass('disabled');
+                // Show receipt button
+                productSaleList.find('.show-sale-details').removeClass('hide');
+
+                productSaleList.find('#totalPrice span').text(response[0].totalPrice);
 
                 productSaleList.find('tfoot').remove();
 
@@ -64,82 +61,27 @@ $(document).on('change','.saleDate',function () {
                         "<td>" + response[key].quantity + " pcs" + "</td>" +
                         "<td>" + response[key].perPcsPrice + " tk" + "</td>" +
                         "<td>" + response[key].watt + "</td>" +
-                        "<td>" + response[key].totalPrice + " tk" + "</td>" +
+                        "<td>" + response[key].price + " tk" + "</td>" +
                         // "<td class='removeProductFromSaleList' data-customer-id=" + customerId + " data-product-id=" + response[key].productPurchaseId + " data-sale-date=" + saleDate + " style='cursor: pointer'><i class='fa fa-remove'></i></td>" +
                         "<td></td>" +
                         "</tr>";
                     productSaleList.find('tbody').append(itemTr);
+                    productSaleList.find('#dueAmount span').text(response[0].dueAmount);
+                    productSaleList.find('.pay-amount').attr('data-sale-id',response[0].saleId);
+
                 })
             }else {
+                // Hide receipt button
+                productSaleList.find('.show-sale-details').addClass('hide');
                 productSaleList.find('tfoot tr').remove();
                 itemTr = "<tr>" +
                     "<td colspan='10' align='center'>Item not added yet!</td>" +
                     "</tr>";
-                productSaleList.find('tfoot').append(itemTr);
+                productSaleList.find('tbody').append(itemTr);
             }
         }
     })
 })
-
-
-
-
-
-
-
-
-
-//Remove product from sale list
-$(document).on('click','.removeProductFromSaleList',function (event) {
-  let route = Routing.generate('remove_product_from_sale_list');
-  let saleId = $(this).attr('data-sale-id');
-  let productPurchaseId = $(this).attr('data-product-id');
-  // let saleDate = $(this).attr('data-sale-date');
-
-  $.ajax({
-      url: route,
-      type: 'POST',
-      data: {saleId: saleId, productPurchaseId: productPurchaseId},
-      success: function (response) {
-          if (response === 'success'){
-              $("#productSaleList table tbody").find("[data-product-id='" + productPurchaseId + "']").closest('tr').remove();
-              let productRows = $("#productSaleList table tbody tr").length;
-              if( productRows === 0){
-                  $('.show-sale-details').addClass('disabled');
-
-              }
-
-              //Item added notification
-              toastr["error"]("Item Deleted!")
-
-              toastr.options = {
-                  "closeButton": false,
-                  "debug": false,
-                  "newestOnTop": false,
-                  "progressBar": false,
-                  "positionClass": "toast-top-center",
-                  "preventDuplicates": true,
-                  "onclick": null,
-                  "showDuration": "300",
-                  "hideDuration": "1000",
-                  "timeOut": "5000",
-                  "extendedTimeOut": "1000",
-                  "showEasing": "swing",
-                  "hideEasing": "linear",
-                  "showMethod": "fadeIn",
-                  "hideMethod": "fadeOut"
-              }
-          }
-
-      }
-  })
-})
-
-
-
-
-
-
 
 
 // Fill up product details after selecting product
@@ -164,12 +106,6 @@ $(document).on('change', '#newSaleSelectProduct', function (event) {
         }
     })
 })
-
-
-
-
-
-
 
 
 
@@ -213,8 +149,11 @@ $(document).on('click','#addProduct',function (event) {
             data: data,
             success: function (response) {
                 if (response.status === 'success'){
-                    let productSaleList = $('#productSaleList');
                     let itemTr = '';
+
+                    let productSaleList = $('#productSaleList');
+                    productSaleList.find('.pay-amount').attr('data-sale-id', response.saleId);
+
 
                     if(!$.trim(response.watt)){
                         response.watt = 'N/A';
@@ -225,15 +164,18 @@ $(document).on('click','#addProduct',function (event) {
                         "<td>" + response.quantity + " pcs" + "</td>" +
                         "<td>" + response.perPiecePrice + " tk" + "</td>" +
                         "<td>" + response.watt + "</td>" +
-                        "<td>" + response.totalPrice + " tk" + "</td>" +
+                        "<td>" + response.price + " tk" + "</td>" +
                         "<td class='removeProductFromSaleList' data-sale-id=" + response.saleId + " data-product-id=" + data['productPurchaseId'] + " data-sale-date=" + data['saleDate'] + " style='cursor: pointer'><i class='fa fa-remove'></i></td>" +
-                        "</tr>"
-                    productSaleList.find('tbody').append(itemTr);
+                        "</tr>";
+
                     productSaleList.find('tfoot').remove();
+                    productSaleList.find('tbody').append(itemTr);
+                    productSaleList.find('#totalPrice span').text(response.totalPrice);
 
 
-                    // Activate receipt button
-                    $('.show-sale-details').removeClass('disabled');
+                    // Show receipt button
+                    productSaleList.find('.show-sale-details').removeClass('hide');
+
 
                     //Item added notification
                     toastr["success"]("New Item added!")
@@ -258,5 +200,84 @@ $(document).on('click','#addProduct',function (event) {
                 }
             }
         })
+    }
+})
+
+//Remove product from sale list
+$(document).on('click','.removeProductFromSaleList',function (event) {
+  let route = Routing.generate('remove_product_from_sale_list');
+  let saleId = $(this).attr('data-sale-id');
+  let productPurchaseId = $(this).attr('data-product-id');
+  // let saleDate = $(this).attr('data-sale-date');
+
+  $.ajax({
+      url: route,
+      type: 'POST',
+      data: {saleId: saleId, productPurchaseId: productPurchaseId},
+      success: function (response) {
+          if (response.status === 200){
+              $('#productSaleList').find('#totalPrice span').text(response.totalPrice);
+
+              $("#productSaleList table tbody").find("[data-product-id='" + productPurchaseId + "']").closest('tr').remove();
+              let productRows = $("#productSaleList table tbody tr").length;
+              if( productRows === 0){
+                  $('#productSaleList').find('.show-sale-details').addClass('hide');
+
+              }
+
+              //Item added notification
+              toastr["error"]("Item Deleted!")
+
+              toastr.options = {
+                  "closeButton": false,
+                  "debug": false,
+                  "newestOnTop": false,
+                  "progressBar": false,
+                  "positionClass": "toast-top-center",
+                  "preventDuplicates": true,
+                  "onclick": null,
+                  "showDuration": "300",
+                  "hideDuration": "1000",
+                  "timeOut": "5000",
+                  "extendedTimeOut": "1000",
+                  "showEasing": "swing",
+                  "hideEasing": "linear",
+                  "showMethod": "fadeIn",
+                  "hideMethod": "fadeOut"
+              }
+          }
+
+      }
+  })
+})
+
+// Prevent Enter key on Sale Area
+$(document).on('keypress', function (e) {
+    if (e.keyCode == 13){
+        e.preventDefault();
+    }
+})
+
+// Update Due amount
+$(document).on('keypress','.pay-amount', function (e) {
+    if (e.keyCode == 13){
+        let payAmount = $('.pay-amount').val();
+        let url = $('.pay-amount').attr('data-action');
+        let saleId = $('.pay-amount').attr('data-sale-id');
+        if (!$.trim(payAmount)){
+            payAmount = 0;
+        }
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: {saleId: saleId, payAmount: payAmount},
+            success: function (response) {
+                if (response.status == 200){
+                    $('#productSaleList').find('#dueAmount span').text(response.dueAmount);
+                }
+            }
+        })
+        console.log(payAmount, saleId);
     }
 })

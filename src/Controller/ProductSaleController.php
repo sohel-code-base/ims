@@ -85,6 +85,7 @@ class ProductSaleController extends AbstractController
                 $productSale = new ProductSale();
                 $productSale->setCustomer($findCustomer);
                 $productSale->setTotalPrice($quantity * $perPiecePrice);
+                $productSale->setDueAmount(0);
                 $productSale->setSaleDate($saleDate);
                 $productSale->setCreatedAt(new \DateTime('now'));
                 $productSale->setStatus(1);
@@ -112,8 +113,10 @@ class ProductSaleController extends AbstractController
                 'quantity' => $saleDetails->getQuantity(),
                 'perPiecePrice' => $saleDetails->getPerPcsPrice(),
                 'watt' => $saleDetails->getProduct()->getPower() ? $saleDetails->getProduct()->getPower()->getWatt() : '',
-                'totalPrice' => $quantity * $perPiecePrice,
+                'price' => $quantity * $perPiecePrice,
+                'totalPrice' => $saleDetails->getSale()->getTotalPrice(),
             ];
+//            dump($returnData);
             return new JsonResponse($returnData);
         }else{
             return new JsonResponse('failed');
@@ -123,17 +126,17 @@ class ProductSaleController extends AbstractController
     /**
      * @Route("/sale/details", name="show_sale_details")
      * @param Request $request
-     * @param ProductSaleRepository $repository
+     * @param ProductSaleDetailsRepository $repository
      * @return Response
      * @throws \Exception
      */
-    public function showSaleDetails(Request $request, ProductSaleRepository $repository)
+    public function showSaleDetails(Request $request, ProductSaleDetailsRepository $repository)
     {
         $requestData = $request->query->all();
-        $orderDate = new \DateTime($requestData['orderDate']);
-        $filterBy['customerId'] = $requestData['customerId'];
-        $filterBy['orderDate'] = $orderDate;
-        $saleDetails = $repository->getSalesRecordByCustomerAndDate($filterBy);
+        $saleDate = new \DateTime($requestData['orderDate']);
+        $customerId = $requestData['customerId'];
+
+        $saleDetails = $repository->getProductByCustomerAndSaleDate($customerId, $saleDate);
 
         return new JsonResponse($saleDetails);
     }
@@ -226,9 +229,10 @@ class ProductSaleController extends AbstractController
      * @Route("/sale/product/remove", name="remove_product_from_sale_list", options={"expose"=true})
      * @param ProductSaleDetailsRepository $saleDetailsRepository
      * @param ProductSaleRepository $saleRepository
+     * @param ProductPurchaseRepository $purchaseRepository
      * @return JsonResponse
      */
-    public function removeProductFromSaleList(ProductSaleDetailsRepository $saleDetailsRepository, ProductSaleRepository $saleRepository)
+    public function removeProductFromSaleList(ProductSaleDetailsRepository $saleDetailsRepository, ProductSaleRepository $saleRepository, ProductPurchaseRepository $purchaseRepository)
     {
         $saleId = $_REQUEST['saleId'];
         $productPurchaseId = $_REQUEST['productPurchaseId'];
@@ -242,20 +246,58 @@ class ProductSaleController extends AbstractController
             $price = $findProduct->getQuantity() * $findProduct->getPerPcsPrice();
 
             $findSale = $saleRepository->findOneBy(['id' => $findProduct->getSale()]);
-            $findSale->setTotalPrice($findSale->getTotalPrice() - $price);
-            $em->persist($findSale);
+            if (($findSale)){
+                $findSale->setTotalPrice($findSale->getTotalPrice() - $price);
+                $em->persist($findSale);
+            }
+
+            $findPurchaseProduct = $purchaseRepository->findOneBy(['id' => $productPurchaseId]);
+            if ($findPurchaseProduct){
+                $findPurchaseProduct->setQuantity($findPurchaseProduct->getQuantity() + $findProduct->getQuantity());
+                $em->persist($findPurchaseProduct);
+            }
 
             $em->remove($findProduct);
             $em->flush();
+
             if ($findSale->getTotalPrice() == 0){
                 $em->remove($findSale);
                 $em->flush();
             }
 
-            return new JsonResponse('success');
+            return new JsonResponse([
+                'status' => 200,
+                'totalPrice' => $findSale->getTotalPrice(),
+            ]);
         }
 
         return new JsonResponse('failed');
+    }
+
+    /**
+     * @param ProductSaleRepository $saleRepository
+     * @Route("/due-amount/update", name="update_due_amount")
+     */
+    public function updateDueAmount(ProductSaleRepository $saleRepository)
+    {
+        $saleId = $_REQUEST['saleId'];
+        $payAmount = $_REQUEST['payAmount'];
+
+        $findSale = $saleRepository->findOneBy(['id' => $saleId]);
+        $em = $this->getDoctrine()->getManager();
+
+        if ($findSale->getDueAmount() == 0){
+            $findSale->setDueAmount($findSale->getTotalPrice() - $payAmount);
+        }else{
+            $findSale->setDueAmount($findSale->getDueAmount() - $payAmount);
+        }
+        $em->persist($findSale);
+        $em->flush();
+        return new JsonResponse([
+            'status' => 200,
+            'dueAmount' => $findSale->getDueAmount(),
+        ]);
+
     }
 
 }

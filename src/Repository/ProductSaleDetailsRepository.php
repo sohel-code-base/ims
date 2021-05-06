@@ -49,7 +49,6 @@ class ProductSaleDetailsRepository extends ServiceEntityRepository
     */
 
 
-
     public function getProductByCustomerAndSaleDate($customerId, $saleDate)
     {
         $qb = $this->createQueryBuilder('e');
@@ -59,7 +58,10 @@ class ProductSaleDetailsRepository extends ServiceEntityRepository
         $qb->join('purchaseProduct.product', 'product');
         $qb->leftJoin('purchaseProduct.power', 'power');
 
-        $qb->select('e.quantity', 'e.perPcsPrice', '(e.quantity * e.perPcsPrice) AS totalPrice');
+        $qb->select('e.quantity', 'e.perPcsPrice', '(e.quantity * e.perPcsPrice) AS price');
+        $qb->addSelect('customer.name AS customerName', 'customer.address AS customerAddress', 'customer.phone AS customerPhone');
+        $qb->addSelect('sale.totalPrice', 'sale.dueAmount', 'sale.id AS saleId');
+
         $qb->addSelect('purchaseProduct.id AS productPurchaseId');
         $qb->addSelect('product.name AS productName');
         $qb->addSelect('power.watt');

@@ -54,7 +54,7 @@
                             <tr>
                                 <td>{{ loop.index }}</td>
                                 <td>{{ sale.customerName|default('N/A') }}</td>
-                                <td>{{ sale.orderTotalPrice|default(0) }}</td>
+                                <td>{{ sale.totalPrice|default(0) }} tk</td>
                                 <td>{{ sale.status == 1 ? "<span class = 'label label-success'>Delivered!</span>" : "<span class = 'label label-warning'>Pending!</span>" }}</td>
                                 <td>{{ sale.orderDate|date('d-m-Y')|default('N/A') }}</td>
                                 <td>

@@ -16,7 +16,7 @@ $(document).ready(function () {
                 let detailsModal = $('#saleDetails');
                 let productDetails = '';
                 let customerDetails = '';
-                let totalAmount = 0;
+                // let totalAmount = 0;
                 let productTotalAmount = '';
                 let date = new Date(oDate);
                 let formattedDate = ('0' + date.getDate()).slice(-2) + "-" + ('0' + (date.getMonth()+1)).slice(-2) + "-" + date.getFullYear(); // add '0' on single digit date and remove '0' from double digit date like '011' with slice(-2)
@@ -41,13 +41,14 @@ $(document).ready(function () {
                         response[key].watt = "(" + response[key].watt + " watt)";
                     }
 
-                    totalAmount = totalAmount + response[key].totalPrice;
+                    // totalAmount += Number(response[key].totalPrice);
+
                     productDetails = "<tr>" +
                         "<td>" + (key+1) + "</td>" +
                         "<td>" + response[key].productName + response[key].watt + "</td>" +
                         "<td align='center'>" + response[key].quantity + " pcs" + "</td>" +
                         "<td align='center'>" + response[key].perPcsPrice + " tk" + "</td>" +
-                        "<td align='right'>" + response[key].totalPrice + " tk" + "</td>" +
+                        "<td align='right'>" + response[key].price + " tk" + "</td>" +
                         "</tr>";
                     detailsModal.find('.modal-body tbody.productDetails').append(productDetails);
                     // console.log(response[key]);
@@ -55,7 +56,7 @@ $(document).ready(function () {
                 })
                 productTotalAmount = "<tr>" +
                     "<td colspan=4 style='font-weight: bold' align='center'> Total </td>" +
-                    "<td style='font-weight: bold' align='right'>" + totalAmount + " tk" + "</td>" +
+                    "<td style='font-weight: bold' align='right'>" + response[0].totalPrice + " tk" + "</td>" +
                     "</tr>";
                 detailsModal.find('.modal-body tbody.productDetails').append(productTotalAmount);
                 detailsModal.find('.modal-body tbody.customerDetails').append(customerDetails);

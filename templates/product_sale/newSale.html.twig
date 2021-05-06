@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Make a Order!{% endblock %}
+{% block title %}New Sale!{% endblock %}
 {% block stylesheet %}
     <!-- bootstrap datepicker -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap-datepicker.min.css') }}">
@@ -49,7 +49,7 @@
                     <div class="col-md-2">
                         <div class="form-group">
                             {{ form_label(form.saleDate,'Date:') }}
-                            {{ form_widget(form.saleDate,{'id':'datepicker','attr':{'class':'saleDate','placeholder': 'dd-mm-yyyy'},'disabled':'disabled'}) }}
+                            {{ form_widget(form.saleDate,{'id':'datepicker','attr':{'class':'saleDate','placeholder': 'dd-mm-yyyy', 'disabled': 'disabled'}}) }}
                         </div>
                     </div>
                 </div>
@@ -88,7 +88,7 @@
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            {{ form_widget(form.Submit, {'label': 'Add','id':'addProduct', 'attr':{'class': 'fa fa-plus btn-flat btn-primary text-white pull-right','style':'padding: 9px 55px; margin-top: 25px;'}}) }}
+                            {{ form_widget(form.Submit, {'label': ' Add','id':'addProduct', 'attr':{'class': 'fa fa-plus btn-flat btn-facebook text-bold pull-right','style':'padding: 9px 55px; margin-top: 25px;'}}) }}
                         </div>
                     </div>
                 </div>

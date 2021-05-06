@@ -181,3 +181,10 @@ table.dataTable thead{
     top: 52px !important;
     right: -430px !important;
 }
+
+input.pay-amount{
+    cursor: text;
+}
+input.pay-amount:active:focus{
+    outline: 0;
+}

@@ -1,6 +1,37 @@
 <div class="box box-primary" id="productSaleList">
-    <div class="box-header with-border text-right">
-        <a href="" class="btn btn-sm bg-purple btn-flat disabled show-sale-details" data-toggle="modal" data-target="" data-action="{{ path('show_sale_details') }}" data-customer-id="" data-order-date=""><i class="fa fa-file-text-o"> Receipt</i></a>
+    <div class="box-header with-border">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="btn-group">
+                    <p id="totalPrice" class="btn btn-success btn-flat" style="pointer-events: none">{{ 'Total Amount:'|trans }} <strong><span>0.00</span></strong> tk</p>
+                </div>
+            </div>
+            <div class="col-md-6 text-center">
+                <div class="btn-group">
+                    <input type="number" placeholder="Pay Amount" class="btn btn-default text-black text-bold btn-flat pay-amount" data-action="{{ path('update_due_amount') }}" data-sale-id="">
+
+                    <span id="dueAmount" class="btn btn-pinterest btn-flat" style="pointer-events: none">{{ 'Due Amount:'|trans }} <strong><span>0.00</span></strong> tk</span>
+                </div>
+            </div>
+            <div class="col-md-3 text-right">
+                <div class="btn-group">
+                    <span id="payment" class="btn btn-warning btn-flat">{{ 'Payment'|trans }}</span>
+
+                    <a class="btn bg-purple btn-flat show-sale-details" data-toggle="modal" data-target="" data-action="{{ path('show_sale_details') }}" data-customer-id="" data-order-date="" ><i class="fa fa-file-text-o"> Receipt</i></a>
+
+                </div>
+            </div>
+        </div>
+{#        <div class="btn-group">#}
+{#            <p id="totalPrice" class="btn btn-success btn-flat" style="pointer-events: none">{{ 'Total Amount:'|trans }} <strong><span>0.00</span></strong> tk</p>#}
+{#            <span id="payment" class="btn btn-warning btn-flat">{{ 'Payment'|trans }}</span>#}
+{#            <input type="number" placeholder="Pay Amount" class="btn btn-default text-black text-bold btn-flat pay-amount hide" data-action="{{ path('update_due_amount') }}" data-sale-id="">#}
+
+{#            <p id="dueAmount" class="btn btn-pinterest btn-flat hide" style="pointer-events: none">{{ 'Due Amount:'|trans }} <strong><span>0.00</span></strong> tk</p>#}
+
+{#            <a class="btn bg-purple btn-flat show-sale-details hide" data-toggle="modal" data-target="" data-action="{{ path('show_sale_details') }}" data-customer-id="" data-order-date="" ><i class="fa fa-file-text-o"> Receipt</i></a>#}
+
+{#        </div>#}
     </div>
     <!-- /.box-header -->
     <div class="box-body">
@@ -14,7 +45,7 @@
                         <th>{{ 'Quantity'|trans }}</th>
                         <th>{{ 'U. Price'|trans }}</th>
                         <th>{{ 'Watt'|trans }}</th>
-                        <th>{{ 'Total Price'|trans }}</th>
+                        <th>{{ 'Price'|trans }}</th>
                         <th width="10"><i class="fa fa-gear"></i></th>
                     </tr>
                     </thead>
