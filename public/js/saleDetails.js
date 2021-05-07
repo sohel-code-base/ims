@@ -26,7 +26,8 @@ $(document).ready(function () {
                 // console.log(response[0].orderDate);
 
                 customerDetails = "<tr>" +
-                    "<td colspan= 3 style='text-align: right'>" + "<strong>Date: </strong>" + formattedDate + "</td>" +
+                    "<td>" + "<strong>Bill No: </strong>" + response[0].saleId + "</td>" +
+                    "<td colspan= 2 style='text-align: right'>" + "<strong>Date: </strong>" + formattedDate + "</td>" +
                     "</tr>" +
                     "<tr>" +
                     "<td>" + "<strong>Name: </strong>" + response[0].customerName + "</td>" +
@@ -54,8 +55,9 @@ $(document).ready(function () {
                     // console.log(response[key]);
 
                 })
-                productTotalAmount = "<tr>" +
-                    "<td colspan=4 style='font-weight: bold' align='center'> Total </td>" +
+                productTotalAmount = "<tr><td colspan='5' border='0'></td></tr><tr>" +
+                    "<td colspan='3' align='left'> Pay Amount:  <strong>" + (response[0].totalPrice - response[0].dueAmount) + " tk</strong>" + "&nbsp;&nbsp;" + "Due Amount: <strong>" + response[0].dueAmount + " tk" + "</strong></td>" +
+                    "<td style='font-weight: bold' align='left'> Total Amount </td>" +
                     "<td style='font-weight: bold' align='right'>" + response[0].totalPrice + " tk" + "</td>" +
                     "</tr>";
                 detailsModal.find('.modal-body tbody.productDetails').append(productTotalAmount);

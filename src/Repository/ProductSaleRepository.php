@@ -23,7 +23,7 @@ class ProductSaleRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('e');
         $qb->join('e.customer', 'customer');
-        $qb->select('e.id','e.saleDate AS orderDate', 'e.status', 'e.totalPrice');
+        $qb->select('e.id','e.saleDate AS orderDate', 'e.status', 'e.totalPrice', 'e.dueAmount');
         $qb->addSelect('customer.name AS customerName','customer.id AS customerId');
         $qb->orderBy('e.saleDate', 'DESC');
         return $qb->getQuery()->getArrayResult();

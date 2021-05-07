@@ -43,6 +43,7 @@
                         <th width="10" class="text-center">{{ 'S/N'|trans }}</th>
                         <th>{{ 'Customer Name'|trans }}</th>
                         <th>{{ 'Total Amount'|trans }}</th>
+                        <th>{{ 'Due Amount'|trans }}</th>
                         <th>{{ 'Status'|trans }}</th>
                         <th>{{ 'Sale Date'|trans }}</th>
                         <th width="20%"><i class="fa fa-gear"></i></th>
@@ -55,6 +56,7 @@
                                 <td>{{ loop.index }}</td>
                                 <td>{{ sale.customerName|default('N/A') }}</td>
                                 <td>{{ sale.totalPrice|default(0) }} tk</td>
+                                <td>{{ sale.dueAmount != 0 ? sale.dueAmount ~ ' tk' : "<span class='bg-orange label'>Paid!"  }}</td>
                                 <td>{{ sale.status == 1 ? "<span class = 'label label-success'>Delivered!</span>" : "<span class = 'label label-warning'>Pending!</span>" }}</td>
                                 <td>{{ sale.orderDate|date('d-m-Y')|default('N/A') }}</td>
                                 <td>

@@ -79,13 +79,14 @@ class ProductSaleController extends AbstractController
 
                 $findSale->addProductSaleDetail($saleDetails);
                 $findSale->setTotalPrice($findSale->getTotalPrice() + ($quantity * $perPiecePrice));
+                $findSale->setDueAmount($findSale->getDueAmount() + ($quantity * $perPiecePrice));
                 $em->persist($findSale);
                 $em->flush();
             }else{
                 $productSale = new ProductSale();
                 $productSale->setCustomer($findCustomer);
                 $productSale->setTotalPrice($quantity * $perPiecePrice);
-                $productSale->setDueAmount(0);
+                $productSale->setDueAmount($quantity * $perPiecePrice);
                 $productSale->setSaleDate($saleDate);
                 $productSale->setCreatedAt(new \DateTime('now'));
                 $productSale->setStatus(1);
@@ -109,6 +110,7 @@ class ProductSaleController extends AbstractController
             $returnData = [
                 'status' => 'success',
                 'saleId' => $saleDetails->getSale()->getId(),
+                'dueAmount' => $saleDetails->getSale()->getDueAmount(),
                 'productName' => $saleDetails->getProduct()->getProduct()->getName(),
                 'quantity' => $saleDetails->getQuantity(),
                 'perPiecePrice' => $saleDetails->getPerPcsPrice(),
@@ -248,6 +250,7 @@ class ProductSaleController extends AbstractController
             $findSale = $saleRepository->findOneBy(['id' => $findProduct->getSale()]);
             if (($findSale)){
                 $findSale->setTotalPrice($findSale->getTotalPrice() - $price);
+                $findSale->setDueAmount($findSale->getDueAmount() - $price);
                 $em->persist($findSale);
             }
 
@@ -268,6 +271,8 @@ class ProductSaleController extends AbstractController
             return new JsonResponse([
                 'status' => 200,
                 'totalPrice' => $findSale->getTotalPrice(),
+                'dueAmount' => $findSale->getDueAmount(),
+//                'productCount' => $findSale->getProductSaleDetails()->count(),
             ]);
         }
 
@@ -288,6 +293,7 @@ class ProductSaleController extends AbstractController
 
         if ($findSale->getDueAmount() == 0){
             $findSale->setDueAmount($findSale->getTotalPrice() - $payAmount);
+
         }else{
             $findSale->setDueAmount($findSale->getDueAmount() - $payAmount);
         }
