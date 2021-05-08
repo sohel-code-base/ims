@@ -1,8 +1,3 @@
-<style>
-    .sidebar .sidebar-menu .active .treeview-menu {
-        display: block;
-    }
-</style>
 <!-- Left side column. contains the sidebar -->
 <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
@@ -24,24 +19,9 @@
                     <i class="fa fa-shopping-cart"></i> <span>Sale</span>
                 </a>
             </li>
-            {#<li class="treeview">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-f bg-navy-active"><i class="fa fa-minus-square"></i> <span>Expense</span></button>
-                    <button type="button" class="btn bg-maroon"><i class="fa fa-share-square"></i> <span>Sale</span></button>
-                </div>
-                <div class="row">
-                    <a href="#" class="text-white col-md-6 bg-navy-active" style="padding: 10px">
-                        <i class="fa fa-minus-square"></i> <span>Expense</span>
-                    </a>
-                    <a href="{{ path('new_sale') }}" class="text-white col-md-6 bg-maroon" style="padding: 10px">
-                        <i class="fa fa-share-square"></i> <span>Sale</span>
-                    </a>
-                </div>
-
-            </li>#}
             <li class="treeview">
                 <a href="#">
-                    <i class="fa fa-th"></i> <span>Products</span>
+                    <i class="fa fa-th"></i> <span>Stock</span>
                     <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -50,54 +30,6 @@
                     <li><a href="{{ path('all_purchase_product') }}"><i class="fa fa-list"></i>All Products</a></li>
                     <li><a href="{{ path('product_purchase') }}"><i class="fa fa-plus-square"></i>Store Product</a></li>
                     <li><a href="{{ path('product_purchase_archive') }}"><i class="fa fa-database"></i>Purchase Archive</a></li>
-                </ul>
-            </li>
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-info-circle"></i> <span>Item</span>
-                    <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="{{ path('product_info') }}"><i class="fa fa-list"></i>Item Info</a></li>
-                    <li><a href="{{ path('new_product') }}"><i class="fa fa-database"></i>New Item</a></li>
-                </ul>
-            </li>
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-th-large"></i> <span>Categories</span>
-                    <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="{{ path('all_category') }}"><i class="fa fa-list"></i>All Categories</a></li>
-                    <li><a href="{{ path('product_new_category') }}"><i class="fa fa-plus-square"></i>New Category</a></li>
-                </ul>
-            </li>
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-th-list"></i> <span>Sub-Categories</span>
-                    <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="{{ path('all_sub_category') }}"><i class="fa fa-list"></i>All Sub-Categories</a></li>
-                    <li><a href="{{ path('product_new_sub_category') }}"><i class="fa fa-plus-square"></i>New Sub-Category</a></li>
-                </ul>
-            </li>
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-flash"></i> <span>Power(Watt)</span>
-                    <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="{{ path('all_power') }}"><i class="fa fa-list"></i>All Power</a></li>
-                    <li><a href="{{ path('product_new_power') }}"><i class="fa fa-plus-square"></i>New Power(watt)</a></li>
                 </ul>
             </li>
             <li class="treeview">
@@ -122,6 +54,66 @@
                 <ul class="treeview-menu">
                     <li><a href="{{ path('all_product_sale') }}"><i class="fa fa-send"></i>Sales Archive</a></li>
                     <li><a href="{{ path('new_sale') }}"><i class="fa fa-share-square"></i>New Sale</a></li>
+                </ul>
+            </li>
+
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-list-alt"></i> <span>Product Details</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-info-circle"></i> <span>Item Details</span>
+                            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="{{ path('product_info') }}"><i class="fa fa-list"></i>Item Info</a></li>
+                            <li><a href="{{ path('new_product') }}"><i class="fa fa-database"></i>New Item</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-th-large"></i> <span>Categories</span>
+                            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="{{ path('all_category') }}"><i class="fa fa-list"></i>All Categories</a></li>
+                            <li><a href="{{ path('product_new_category') }}"><i class="fa fa-plus-square"></i>New Category</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-th-list"></i> <span>Sub-Categories</span>
+                            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="{{ path('all_sub_category') }}"><i class="fa fa-list"></i>All Sub-Categories</a></li>
+                            <li><a href="{{ path('product_new_sub_category') }}"><i class="fa fa-plus-square"></i>New Sub-Category</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-flash"></i> <span>Power(Watt)</span>
+                            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="{{ path('all_power') }}"><i class="fa fa-list"></i>All Power</a></li>
+                            <li><a href="{{ path('product_new_power') }}"><i class="fa fa-plus-square"></i>New Power(watt)</a></li>
+                        </ul>
+                    </li>
+
                 </ul>
             </li>
         </ul>

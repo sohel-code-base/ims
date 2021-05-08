@@ -19,7 +19,10 @@
     background-color: #cfe2ff !important;
     border-color: #b6d4fe !important;
 }
-
+.btn:active:focus{
+    outline: 0 !important;
+    outline-offset: 0 !important;
+}
 .w-10{
     width: 10%;
 }
@@ -61,7 +64,8 @@
 
 .select2-container--default .select2-selection--single{
     border-radius: 5px !important;
-    box-shadow: inset -4px -5px 15px -1px #d2d6de;
+    /*box-shadow: inset -4px -5px 15px -1px #d2d6de;*/
+    box-shadow: inset -4px -5px 10px -4px #d2d6de;
     border-color: #d2d6de !important;
     height: 34px !important;
 }
@@ -86,7 +90,8 @@
 
 .form-control {
     border-radius: 5px !important;
-    box-shadow: inset 0px -5px 15px -1px #d2d6de;
+    /*box-shadow: inset 0px -5px 15px -1px #d2d6de;*/
+    box-shadow: inset -4px -5px 10px -4px #d2d6de;
 }
 
 
@@ -153,15 +158,15 @@ table.dataTable thead{
     box-shadow: 0px 2px 4px #00000069;
 
 }
-.product-details .modal-header {
-    background: #3c8dbc;
-    color: #fff;
-}
-.product-details button.close {
+/*.product-details .modal-header {*/
+/*    background: #3c8dbc;*/
+/*    color: #fff;*/
+/*}*/
+button.close {
     color: #fff !important;
     opacity: 1 !important;
 }
-.product-details button.close:focus, .product-details button.close:hover {
+button.close:focus, .product-details button.close:hover {
     outline: none;
 }
 
@@ -177,9 +182,16 @@ table.dataTable thead{
     font-size: 35px;
 }
 /*toastr position customize*/
-.toast-top-center {
-    top: 52px !important;
-    right: -430px !important;
+.toast-top-right {
+    top: 57px !important;
+    right: 15px !important;
+}
+
+#toast-container > div {
+    padding: 10px 10px 10px 50px !important;
+    box-shadow: none !important;
+    opacity: 0.9 !important;
+    border-radius: 0 !important;
 }
 
 input.pay-amount{

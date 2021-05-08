@@ -1,0 +1,48 @@
+<!-- Modal for New Customer -->
+<div class="modal fade" id="newCustomer">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{{ 'New Customer'|trans }}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <form id="newCustomerForm" action="{{ path('new_customer',{'from': 'modal'}) }}" method="post">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="customer_name" class="required">Customer Name:</label>
+                                    <input type="text" name="customerName" autocomplete="off" placeholder="Name" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="customer_phone" class="required">Customer Phone:</label>
+                                    <input type="text" name="customerPhone" autocomplete="off" placeholder="Phone Number" class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="customer_address">Address:</label>
+                                    <textarea name="customerAddress" placeholder="Address" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <button type="submit" class="btn-flat btn-primary btn btn-block">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

@@ -6,6 +6,7 @@ use App\Entity\Customer;
 use App\Form\CustomerType;
 use App\Repository\CustomerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,12 +27,30 @@ class CustomerController extends AbstractController
     }
 
     /**
-     * @Route("/customer/new", name="new_customer")
+     * @Route("/customer/new/{from}", defaults={"from" = null}, methods={"GET","POST"}, name="new_customer")
      * @param Request $request
+     * @param $from
      * @return Response
      */
-    public function addCustomer(Request $request): Response
+    public function addCustomer(Request $request, $from): Response
     {
+        if ($from == 'modal'){
+            $formData = $request->request->all();
+            $customer = new Customer();
+            $customer->setName($formData['customerName']);
+            $customer->setPhone($formData['customerPhone']);
+            $customer->setAddress($formData['customerAddress']);
+            $customer->setStatus(1);
+            $customer->setCreatedAt(new \DateTime('now'));
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($customer);
+            $em->flush();
+
+            return new JsonResponse(['status' => 200]);
+            die();
+        }
+
         $customer = new Customer();
         $form = $this->createForm(CustomerType::class, $customer);
         $form->handleRequest($request);
@@ -44,6 +63,8 @@ class CustomerController extends AbstractController
             $this->addFlash('success', 'New customer added into Database!');
             return $this->redirectToRoute('new_customer');
         }
+
+
         return $this->render('customer/addCustomer.htm.twig', [
             'form' => $form->createView(),
         ]);

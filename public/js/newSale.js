@@ -1,42 +1,16 @@
-//Show customer Details
-$(document).on('change', '#customer', function (event) {
-    $('#customerPhone').val('');
-    $('#customerAddress').val('');
-    $(this).prop('disabled', true); // Deactivate customer dropdown
-    $('.saleDate').removeAttr('disabled'); //Active Date field
+function getProductsByCustomerAndDate(customerId, saleDate) {
 
-    const customerId = $(this).val();
-    let route = Routing.generate('new_sale_customer_details', {'id': customerId});
-    if (customerId.length !== 0) {
-        $.ajax({
-            url: route,
-            type: 'GET',
-            async: true,
-            success: function (response) {
-                $('#customerPhone').val(response.phone);
-                $('#customerAddress').val(response.address);
-            }
-        })
-    }
-})
+    let route = Routing.generate('collect_product_customer_and_sale_date');
+    let itemTr = '';
 
-
-//show products in list after changing customer and sale date
-$(document).on('change', '.saleDate', function () {
-    let customerId = $('#customer').val();
-    let saleDate = $('.saleDate').val();
     let productSaleList = $('#productSaleList');
-
 
     // Added Receipt button data value
     productSaleList.find('.show-sale-details').attr('data-customer-id', customerId);
     productSaleList.find('.show-sale-details').attr('data-order-date', saleDate);
 
-    let route = Routing.generate('collect_product_customer_and_sale_date');
-
-    let itemTr = '';
-
     productSaleList.find('tbody').empty();
+
 
     $.ajax({
         url: route,
@@ -47,10 +21,8 @@ $(document).on('change', '.saleDate', function () {
 
                 // Show receipt button
                 productSaleList.find('.show-sale-details').removeClass('hide');
-
                 productSaleList.find('#totalPrice span').text(response[0].totalPrice);
-
-                productSaleList.find('tfoot').remove();
+                productSaleList.find('tfoot').hide();
 
                 $.each(response, function (key, value) {
                     if (!$.trim(response[key].watt)) {
@@ -73,10 +45,62 @@ $(document).on('change', '.saleDate', function () {
             } else {
                 // Hide receipt button
                 productSaleList.find('.show-sale-details').addClass('hide');
+                productSaleList.find('#totalPrice span').text('0.00');
+                productSaleList.find('#dueAmount span').text('0.00');
+                productSaleList.find('tfoot').show();
+
+
+
             }
         }
-    })
-})
+    });
+}
+
+//Show customer Details & get Purchase products
+$(document).on('change', '#customer', function (event) {
+    $('#customerPhone').val('');
+    $('#customerAddress').val('');
+    $('.saleDate').removeAttr('disabled'); //Active Date field
+    $('#productSaleForm').find('#addProduct').show();
+
+/*    $.cookie('customer', this.value);
+
+    location.reload(true);
+    $('#customer').val( $.cookie('customer'));*/
+
+    const customerId = $(this).val();
+    let route = Routing.generate('new_sale_customer_details', {'id': customerId});
+    let saleDate = $('.saleDate').val();
+    if (!$.trim(saleDate)){
+        let currentDate = new Date();
+        let day = currentDate.getDate() ;
+        let month = currentDate.getMonth() +1;
+
+        saleDate = ((day < 10 ? '0' : '')) + day + '-' + ((month < 10 ? '0' : '')) + month + '-' + currentDate.getFullYear();
+    }
+
+    if (customerId.length !== 0) {
+        $.ajax({
+            url: route,
+            type: 'GET',
+            async: true,
+            success: function (response) {
+                $('#customerPhone').val(response.phone);
+                $('#customerAddress').val(response.address);
+            }
+        });
+
+        getProductsByCustomerAndDate(customerId, saleDate);
+    }
+});
+
+//show products in list after changing customer and sale date
+$(document).on('change', '.saleDate', function () {
+    let customerId = $('#customer').val();
+    let saleDate = $('.saleDate').val();
+    getProductsByCustomerAndDate(customerId, saleDate);
+});
+
 
 
 // Fill up product details after selecting product
@@ -167,31 +191,29 @@ $(document).on('click', '#addProduct', function (event) {
                     productSaleList.find('#totalPrice span').text(response.totalPrice);
                     productSaleList.find('#dueAmount span').text(response.dueAmount);
 
-
                     // Show receipt button
                     // productSaleList.find('.show-sale-details').removeClass('hide');
 
 
                     //Item added notification
-                    toastr["success"]("New Item added!")
-
                     toastr.options = {
                         "closeButton": false,
                         "debug": false,
                         "newestOnTop": false,
                         "progressBar": false,
-                        "positionClass": "toast-top-center",
+                        "positionClass": "toast-top-right",
                         "preventDuplicates": true,
                         "onclick": null,
                         "showDuration": "300",
                         "hideDuration": "1000",
-                        "timeOut": "5000",
+                        "timeOut": "3000",
                         "extendedTimeOut": "1000",
                         "showEasing": "swing",
                         "hideEasing": "linear",
                         "showMethod": "fadeIn",
                         "hideMethod": "fadeOut"
                     }
+                    toastr.success("New Item added!")
                 }
             }
         })
@@ -226,25 +248,24 @@ $(document).on('click', '.removeProductFromSaleList', function (event) {
                 }*/
 
                 //Item added notification
-                toastr["error"]("Item Deleted!")
-
                 toastr.options = {
                     "closeButton": false,
                     "debug": false,
                     "newestOnTop": false,
                     "progressBar": false,
-                    "positionClass": "toast-top-center",
+                    "positionClass": "toast-top-right",
                     "preventDuplicates": true,
                     "onclick": null,
                     "showDuration": "300",
                     "hideDuration": "1000",
-                    "timeOut": "5000",
+                    "timeOut": "3000",
                     "extendedTimeOut": "1000",
                     "showEasing": "swing",
                     "hideEasing": "linear",
                     "showMethod": "fadeIn",
                     "hideMethod": "fadeOut"
                 }
+                toastr.error("Item Deleted!")
             }
 
         }
@@ -260,9 +281,10 @@ $(document).on('keypress', function (e) {
 
 // Update Due amount
 $(document).on('click', '#paymentTransfar', function (e) {
-    let payAmount = $('.pay-amount').val();
-    let url = $('.pay-amount').attr('data-action');
-    let saleId = $('.pay-amount').attr('data-sale-id');
+    let amountField = $('.pay-amount');
+    let payAmount = amountField.val();
+    let url = amountField.attr('data-action');
+    let saleId = amountField.attr('data-sale-id');
     if (!$.trim(payAmount)) {
         payAmount = 0;
     }
@@ -272,13 +294,13 @@ $(document).on('click', '#paymentTransfar', function (e) {
         type: 'POST',
         data: {saleId: saleId, payAmount: payAmount},
         success: function (response) {
-            if (response.status == 200) {
+            if (response.status === 200) {
                 $('#productSaleList').find('#dueAmount span').text(response.dueAmount);
                 $('#productSaleList').find('#paymentBtn').addClass('hide');
                 $('#productSaleList').find('#paymentSection').addClass('hide');
                 $('#productSaleList').find('#thanks').removeClass('hide');
                 $('#productSaleList').find('.show-sale-details').removeClass('hide');
-                $('#productSaleList').find('.removeProductFromSaleList').addClass('hide');
+                $('#productSaleList').find('.removeProductFromSaleList').replaceWith('<td></td>');
             }
         }
     })
@@ -286,6 +308,6 @@ $(document).on('click', '#paymentTransfar', function (e) {
 
 $(document).on('click', '#paymentBtn', function (e) {
     $('#paymentSection').removeClass('hide');
-    $('#productSaleForm').find('#addProduct').remove();
+    $('#productSaleForm').find('#addProduct').hide();
 
 })
