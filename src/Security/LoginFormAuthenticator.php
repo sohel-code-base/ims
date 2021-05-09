@@ -13,6 +13,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -41,33 +42,70 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $this->passwordEncoder = $passwordEncoder;
     }
 
-    protected function getLoginUrl()
-    {
-        // TODO: Implement getLoginUrl() method.
-    }
-
+    /**
+     * @param Request $request
+     * @return bool
+     */
     public function supports(Request $request)
     {
-        // TODO: Implement supports() method.
+        return self::LOGIN_ROUTE === $request->attributes->get('_route') && $request->isMethod('POST');
     }
 
+    /**
+     * @param Request $request
+     * @return array|mixed
+     */
     public function getCredentials(Request $request)
     {
-        // TODO: Implement getCredentials() method.
+        $credentials = [
+            'username' => $request->request->get('username'),
+            'password' => $request->request->get('password'),
+            'csrf_token' => $request->request->get('_csrf_token'),
+        ];
+        $request->getSession()->set(Security::LAST_USERNAME, $credentials['username']);
+        return $credentials;
     }
 
+    /**
+     * @param mixed $credentials
+     * @param UserProviderInterface $userProvider
+     * @return User|object|UserInterface|null
+     */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        // TODO: Implement getUser() method.
+        return $this->entityManager->getRepository(User::class)->findOneBy(['username' => $credentials['username']]);
     }
 
+    /**
+     * @param array $credentials
+     * @param UserInterface $user
+     * @return bool
+     */
     public function checkCredentials($credentials, UserInterface $user)
     {
-        // TODO: Implement checkCredentials() method.
+        $token = new CsrfToken('authenticate', $credentials['csrf_token']);
+        if (!$this->csrfTokenManager->isTokenValid($token)){
+            throw new InvalidCsrfTokenException();
+        }
+        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
     }
 
+    /**
+     * @param Request $request
+     * @param TokenInterface $token
+     * @param string $providerKey
+     * @return Response|void|null
+     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)
     {
-        // TODO: Implement onAuthenticationSuccess() method.
+        return new RedirectResponse($this->urlGenerator->generate('all_purchase_product'));
+    }
+
+    /**
+     * @return string
+     */
+    protected function getLoginUrl()
+    {
+        return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
 }
