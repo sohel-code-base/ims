@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% block title %}Access Forbidden!{% endblock %}
+{#{% block contentTitle %}#}
+{#    Access Forbidden! <small>You are not allowed this area!</small>#}
+{#{% endblock %}#}
+{% block body %}
+    <div class="error-page text-center" style="margin: 7% auto">
+        <h1 class="text-red" style="font-size: 100px"><i class="fa fa-warning"></i></h1>
+        <h3><i class="fa fa-lock text-red"></i> {{ message|raw }}</h3>
+
+        <p>Contact your ADMIN!</p>
+    </div>
+
+{% endblock %}

@@ -39,7 +39,7 @@
     width: 50%;
 }
 .navbar-nav>.user-menu>.dropdown-menu {
-    width: 182px;
+    width: -webkit-fill-available;
 }
 .dropdown-menu>li>a {
     color: #fff;

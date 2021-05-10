@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AdminLTE 2 | Log in</title>
+    <title>Log in | ISLAMIA enterprise</title>
     <link rel="shortcut icon" href="{{ asset('images/lightBulb.png') }}" type="image/x-icon">
 
     <!-- Tell the browser to be responsive to screen width -->
@@ -12,12 +12,8 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="{{ asset('css/ionicons.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('css/AdminLTE.min.css') }}">
-    <!-- iCheck -->
-    <link rel="stylesheet" href="{{ asset('css/blue.css') }}">
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
 
@@ -30,19 +26,11 @@
             left: 0;
             right: 0;
             z-index: -1;
-
             display: block;
-
             background:linear-gradient(0deg, rgba(0, 0, 0, .70), rgba(0, 0, 0, .70)), url({{ asset('images/login-bg-2.jpg') }});
             background-size:cover;
             width: 100%;
             min-height: 100%;
-/*
-            -webkit-filter: blur(6px);
-            -moz-filter: blur(6px);
-            -o-filter: blur(6px);
-            -ms-filter: blur(6px);
-            filter: blur(6px);*/
         }
         body{
             position: fixed;
@@ -55,7 +43,7 @@
     </style>
 </head>
 <body class="hold-transition login-page">
-<div class="login-box text-white">
+<div class="login-box text-white" style="width: 300px;">
     <div class="login-logo">
         <b>ISLAMIA</b>enterprise
     </div>
@@ -80,7 +68,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="checkbox icheck">
+                    <div class="checkbox">
                         <label>
                             <input type="checkbox" name="_remember_me"> Remember Me
                         </label>
@@ -88,10 +76,9 @@
                 </div>
                 <!-- /.col -->
             </div>
-
             <div class="row">
-                <div class="col-md-6 col-md-offset-3 text-center">
-                    <button type="submit" class="btn btn-facebook btn-block btn-flat"><i class="fa fa-sign-in"></i>&nbsp; Sign In</button>
+                <div class="col-md-12 text-center">
+                    <button type="submit" class="btn btn-facebook btn-lg btn-flat"><i class="fa fa-sign-in"></i>&nbsp; Sign In</button>
                 </div>
                 <!-- /.col -->
             </div>
@@ -107,16 +94,5 @@
 <script src="{{ asset('js/jquery.min.js') }}"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-<!-- iCheck -->
-<script src="{{ asset('js/icheck.min.js') }}"></script>
-<script>
-    $(function () {
-        $('input').iCheck({
-            checkboxClass: 'icheckbox_square-blue',
-            radioClass: 'iradio_square-blue',
-            increaseArea: '20%' /* optional */
-        });
-    });
-</script>
 </body>
 </html>

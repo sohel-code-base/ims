@@ -1,0 +1,171 @@
+{% extends 'base.html.twig' %}
+{% block title %}Employees{% endblock %}
+
+{% block stylesheet %}
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{{ asset('/css/dataTables.bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/animate.min.css') }}">
+    {#    <style>#}
+    {#        @media print {#}
+    {#            body * {#}
+    {#                visibility: hidden;#}
+    {#            }#}
+
+    {#            .modal * {#}
+    {#                visibility: visible;#}
+    {#                overflow: visible;#}
+    {#            }#}
+    {#            .modal .modal-body table thead tr th,.modal .modal-body table tbody tr td{#}
+    {#                padding: 3px !important;#}
+    {#            }#}
+
+    {#            .modal-footer {#}
+    {#                /*visibility: hidden;*/#}
+    {#                display: none;#}
+    {#            }#}
+
+    {#            .modal-header h3 {#}
+    {#                text-align: left !important;#}
+    {#                background-color: red !important;#}
+    {#                color: #fff !important;#}
+    {#            }#}
+    {#        }#}
+    {#    </style>#}
+{% endblock %}
+
+{% block contentTitle %}
+    Employees <small>Employees!</small>
+{% endblock %}
+{% block body %}
+
+    <!-- Main content -->
+    <section class="content">
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type }} alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <i class="icon fa fa-{{ type == 'error' ? 'warning':'check' }}"></i>{{ message|trans }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+        <!-- /.box -->
+
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title"><i class="fa fa-th-list" style="margin-right: 5px;"></i>List </h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table id="employeeTable" class="table">
+                    <thead>
+                    <tr>
+                        <th width="10" class="text-center">{{ 'S/N'|trans }}</th>
+                        <th>{{ 'Name'|trans }}</th>
+                        <th>{{ 'Designation'|trans }}</th>
+                        <th>{{ 'Phone'|trans }}</th>
+                        <th>{{ 'Joining Date'|trans }}</th>
+                        <th>{{ 'Status'|trans }}</th>
+                        <th width="20%"><i class="fa fa-gear"></i></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if employees is not empty %}
+                        {% for employee in employees %}
+                            <tr>
+                                <td align="center">{{ loop.index }}</td>
+                                <td>{{ employee.fullName|default('') }}</td>
+                                <td>{{ employee.designation|default('') }}</td>
+                                <td>{{ employee.phone|default('') }}</td>
+                                <td>{{ 'now'|date('d-m-Y') }}</td>
+                                <td>{{ employee.status == 1 ? '<span class="label label-success">Permanent</span>' : '<span class="label label-danger">Temporary</span>' }}</td>
+                                <td>
+                                    <div class="btn-group pull-right">
+                                        <a href="#" class="btn btn-sm bg-purple btn-flat"  data-toggle="modal" data-target="#employee-details-{{ employee.id }}"><i class="fa fa-eye"><span style="margin-left: 3px;">Details</span></i></a>
+
+                                        <a href="" class="btn btn-sm bg-navy btn-flat"><i class="fa fa-edit"><span style="margin-left: 3px;">Edit</span></i></a>
+                                        <a href="" class="btn btn-sm bg-maroon btn-flat delete-record"><i class="fa fa-trash"><span style="margin-left: 3px;">Delete</span></i></a>
+                                    </div>
+
+                                </td>
+                            </tr>
+                            <!-- Modal for details view -->
+                            <div class="modal fade product-details" id="employee-details-{{ employee.id }}">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-primary">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title">{{ 'Employee Details'|trans }}</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <img src="{{ asset('images/user.png') }}" alt="">
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <h2>{{ employee.fullName|default('') }}</h2>
+                                                    <p>{{ employee.designation|default('') }}</p>
+                                                    <hr style="margin: 0">
+                                                    <h4><strong>Username: </strong>{{ employee.username|default('') }}</h4>
+                                                    <h4><strong>Phone: </strong>{{ employee.phone|default('') }}</h4>
+                                                    <h4><strong>Job Status: </strong>{{ employee.status == 1 ? 'Permanent' : 'Temporary' }}</h4>
+                                                    <h4><strong>Access Level: </strong>
+                                                        {% for role in employee.roles %}
+
+                                                            {% set splitRole = role|split('_') %}
+
+                                                            {% for userRole in splitRole %}
+                                                                {{ not loop.first ? userRole }}
+                                                            {% endfor %}
+
+                                                            {{ not loop.last ? ', ' }}
+
+                                                        {% endfor %}
+                                                    </h4>
+                                                    <h4><strong>Address: </strong>{{ employee.address|default('') }}</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+                            <!-- /.modal -->
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="10" align="center">{{ 'No Product Found!' }}</td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+    </section>
+    <!-- /.content -->
+{% endblock %}
+
+{% block javascripts %}
+    <!-- DataTables -->
+    <script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('/js/dataTables.bootstrap.min.js') }}"></script>
+    <script src="{{ asset('/js/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('/js/deleteConfirmationAlert.js') }}"></script>
+    <!-- DataTable Activation script -->
+    <script>
+        $(function () {
+            $('#employeeTable').DataTable({
+                "columnDefs":[{
+                    "targets": -1,
+                    "orderable": false
+                }]
+            })
+        })
+    </script>
+{% endblock %}

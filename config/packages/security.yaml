@@ -21,6 +21,7 @@ security:
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
+            access_denied_handler: App\Security\AccessDeniedHandler
             logout:
                 path: app_logout
                 # where to redirect after logout
@@ -39,5 +40,5 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+         - { path: ^/employee, roles: ROLE_SUPER_ADMIN }
          - { path: ^(?!/login), roles: ROLE_USER }
