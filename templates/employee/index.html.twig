@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Employees{% endblock %}
+{% block title %}Employees | IE{% endblock %}
 
 {% block stylesheet %}
     <!-- DataTables -->
@@ -79,7 +79,7 @@
                                 <td>{{ employee.fullName|default('') }}</td>
                                 <td>{{ employee.designation|default('') }}</td>
                                 <td>{{ employee.phone|default('') }}</td>
-                                <td>{{ 'now'|date('d-m-Y') }}</td>
+                                <td>{{ employee.joiningDate|date('d-m-Y') }}</td>
                                 <td>{{ employee.status == 1 ? '<span class="label label-success">Permanent</span>' : '<span class="label label-danger">Temporary</span>' }}</td>
                                 <td>
                                     <div class="btn-group pull-right">

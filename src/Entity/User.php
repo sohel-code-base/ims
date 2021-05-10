@@ -74,6 +74,11 @@ class User implements UserInterface
      */
     private $updatedAt;
 
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $joiningDate;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -246,6 +251,18 @@ class User implements UserInterface
     public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getJoiningDate(): ?\DateTimeInterface
+    {
+        return $this->joiningDate;
+    }
+
+    public function setJoiningDate(\DateTimeInterface $joiningDate): self
+    {
+        $this->joiningDate = $joiningDate;
 
         return $this;
     }
