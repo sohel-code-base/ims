@@ -308,6 +308,6 @@ $(document).on('click', '#paymentTransfar', function (e) {
 
 $(document).on('click', '#paymentBtn', function (e) {
     $('#paymentSection').removeClass('hide');
-    $('#productSaleForm').find('#addProduct').hide();
+    // $('#productSaleForm').find('#addProduct').hide();
 
 })

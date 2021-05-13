@@ -68,7 +68,7 @@
                         <th>{{ 'Sale Price'|trans }}</th>
                         <th class="text-center">{{ 'Quantity'|trans }}</th>
                         <th>{{ 'Purchase Date'|trans }}</th>
-                        <th width="20%"><i class="fa fa-gear"></i></th>
+                        <th width="22%" class="text-center"><i class="fa fa-gear"></i></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -96,8 +96,10 @@
                                     <div class="btn-group pull-right">
                                         <a href="#" class="btn btn-sm bg-purple btn-flat"  data-toggle="modal" data-target="#product-details-{{ product.id }}"><i class="fa fa-eye"><span style="margin-left: 3px;">Show</span></i></a>
 
-                                        <a href="{{ path('edit_purchase_product',{'id':product.id}) }}" class="btn btn-sm bg-navy btn-flat"><i class="fa fa-edit"><span style="margin-left: 3px;">Edit</span></i></a>
-                                        <a href="{{ path('delete_purchase_product',{'id':product.id}) }}" class="btn btn-sm bg-maroon btn-flat delete-record"><i class="fa fa-trash"><span style="margin-left: 3px;">Delete</span></i></a>
+                                        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
+                                            <a href="{{ path('edit_purchase_product',{'id':product.id}) }}" class="btn btn-sm bg-navy btn-flat"><i class="fa fa-edit"><span style="margin-left: 3px;">Edit</span></i></a>
+                                            <a href="{{ path('delete_purchase_product',{'id':product.id}) }}" class="btn btn-sm bg-maroon btn-flat delete-record"><i class="fa fa-trash"><span style="margin-left: 3px;">Delete</span></i></a>
+                                        {% endif %}
                                     </div>
 
                                 </td>
@@ -127,9 +129,9 @@
                                                 <dt>{{ 'Available'|trans }}:</dt>
                                                 <dd>{{ product.quantity|default(0) }} pc</dd>
                                                 <dt>{{ 'Purchase Price'|trans }}:</dt>
-                                                <dd>{{ product.purchasePrice|default(0) }} pc</dd>
+                                                <dd>{{ product.purchasePrice|default(0) }} tk</dd>
                                                 <dt>{{ 'Sale Price'|trans }}:</dt>
-                                                <dd>{{ product.salePrice|default(0) }} pc</dd>
+                                                <dd>{{ product.salePrice|default(0) }} tk</dd>
                                                 <dt>{{ 'Last Purchasre Date'|trans }}:</dt>
                                                 <dd>{{ product.purchaseDate|date('d-m-Y') }}</dd>
                                             </dl>

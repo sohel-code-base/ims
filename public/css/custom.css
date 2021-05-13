@@ -40,6 +40,7 @@
 }
 .navbar-nav>.user-menu>.dropdown-menu {
     width: -webkit-fill-available;
+    width: -moz-available;
 }
 .dropdown-menu>li>a {
     color: #fff;
