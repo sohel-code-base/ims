@@ -169,6 +169,7 @@ modules.xml
 ### Symfony ###
 
 /public/images/
+/public/uploads/
 # Cache and logs (Symfony2)
 /app/cache/*
 /app/logs/*
