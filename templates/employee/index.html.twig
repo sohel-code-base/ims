@@ -80,7 +80,7 @@
                                 <td>{{ employee.designation|default('') }}</td>
                                 <td>{{ employee.phone|default('') }}</td>
                                 <td>{{ employee.joiningDate|date('d-m-Y') }}</td>
-                                <td>{{ employee.status == 1 ? '<span class="label label-success">Permanent</span>' : '<span class="label label-danger">Temporary</span>' }}</td>
+                                <td>{{ employee.jobStatus == 1 ? '<span class="label label-success">Permanent</span>' : '<span class="label label-danger">Temporary</span>' }}</td>
                                 <td>
                                     <div class="btn-group pull-right">
                                         <a href="#" class="btn btn-sm bg-purple btn-flat"  data-toggle="modal" data-target="#employee-details-{{ employee.id }}"><i class="fa fa-eye"><span style="margin-left: 3px;">Details</span></i></a>
@@ -92,7 +92,7 @@
                                 </td>
                             </tr>
                             <!-- Modal for details view -->
-                            <div class="modal fade product-details" id="employee-details-{{ employee.id }}">
+                            <div class="modal fade" id="employee-details-{{ employee.id }}">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header bg-primary">
@@ -103,7 +103,7 @@
                                         <div class="modal-body">
                                             <div class="row">
                                                 <div class="col-md-3">
-                                                    <img src="{{ asset('images/user.png') }}" alt="">
+                                                    <img src="{{ asset('/uploads/photo/') ~ employee.photo }}" alt="">
                                                 </div>
                                                 <div class="col-md-9">
                                                     <h2>{{ employee.fullName|default('') }}</h2>
@@ -111,7 +111,7 @@
                                                     <hr style="margin: 0">
                                                     <h4><strong>Username: </strong>{{ employee.username|default('') }}</h4>
                                                     <h4><strong>Phone: </strong>{{ employee.phone|default('') }}</h4>
-                                                    <h4><strong>Job Status: </strong>{{ employee.status == 1 ? 'Permanent' : 'Temporary' }}</h4>
+                                                    <h4><strong>Job Status: </strong>{{ employee.jobStatus == 1 ? 'Permanent' : 'Temporary' }}</h4>
                                                     <h4><strong>Access Level: </strong>
                                                         {% for role in employee.roles %}
 

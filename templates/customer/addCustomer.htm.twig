@@ -32,14 +32,14 @@
                         <div class="form-group">
                             {{ form_label(form.name, 'Customer Name:') }}
                             {{ form_widget(form.name,{'attr':{'autocomplete':'off','placeholder':'e.g. Mr. Sajib'}}) }}
-                            {{ form_errors(form.name, {'attr': {'class':'help-block'}}) }}
+{#                            {{ form_errors(form.name, {'attr': {'class':'help-block'}}) }}#}
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             {{ form_label(form.phone, 'Customer Phone:') }}
                             {{ form_widget(form.phone,{'attr':{'autocomplete':'off','placeholder':'e.g. 0123456789'}}) }}
-                            {{ form_errors(form.phone, {'attr': {'class':'help-block'}}) }}
+{#                            {{ form_errors(form.phone, {'attr': {'class':'help-block'}}) }}#}
                         </div>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                         <div class="form-group">
                             {{ form_label(form.address, 'Address:') }}
                             {{ form_widget(form.address,{'attr':{'placeholder': 'e.g. Rajendrapur Cantt.'}}) }}
-                            {{ form_errors(form.address, {'attr': {'class':'help-block'}}) }}
+{#                            {{ form_errors(form.address, {'attr': {'class':'help-block'}}) }}#}
                         </div>
                     </div>
                 </div>

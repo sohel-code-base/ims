@@ -88,6 +88,7 @@ class ProductSaleController extends AbstractController
                 $productSale->setTotalPrice($quantity * $perPiecePrice);
                 $productSale->setDueAmount($quantity * $perPiecePrice);
                 $productSale->setSaleDate($saleDate);
+                $productSale->setEmployee($this->getUser());
                 $productSale->setCreatedAt(new \DateTime('now'));
                 $productSale->setStatus(1);
 

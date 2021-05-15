@@ -1,0 +1,197 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+{% block stylesheet %}
+    <link href="{{ asset('css/bootstrap-toggle.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('/css/animate.min.css') }}">
+    <!-- bootstrap datepicker -->
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-datepicker.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/blue.css') }}">
+    <style>
+        .checkbox label, .radio label {
+            padding-left: 10px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        .preview-user-photo img{
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            padding: 5px;
+        }
+        .preview-user-signature img{
+            width: 100%;
+            height: 50px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            padding: 5px;
+        }
+/*        .invalid-feedback{
+            display: block;
+            font-weight: normal;
+            color: red;
+        }
+        .invalid-feedback .badge{
+            display: none;
+        }*/
+    </style>
+{% endblock %}
+
+{% block contentTitle %}
+    New Employee! <small>Register new employee!</small>
+{% endblock %}
+{% block body %}
+
+    <!-- Main content -->
+    <section class="content">
+        {% for flashError in app.flashes('verify_email_error') %}
+            <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+        {% endfor %}
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                {#            <h3 class="box-title">General Elements</h3>#}
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                {{ form_start(registrationForm) }}
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(registrationForm.fullName, 'Full Name') }}
+                            {{ form_widget(registrationForm.fullName,{'attr':{'autocomplete':'off','placeholder':'Name'}}) }}
+{#                        </div>#}
+{#                        <div class="form-group">#}
+                            {{ form_label(registrationForm.designation, 'Designation') }}
+                            {{ form_widget(registrationForm.designation,{'attr':{'autocomplete':'off','placeholder':'Designation'}}) }}
+{#                        </div>#}
+{#                        <div class="form-group">#}
+                            {{ form_label(registrationForm.phone, 'Phone') }}
+                            {{ form_widget(registrationForm.phone,{'attr':{'autocomplete':'off','placeholder':'Phone Number'}}) }}
+
+                            {{ form_label(registrationForm.address) }}
+                            {{ form_widget(registrationForm.address,{'attr':{'autocomplete':'off','placeholder':'Address'}}) }}
+
+                            {{ form_label(registrationForm.joiningDate) }}
+                            {{ form_widget(registrationForm.joiningDate,{'id': 'datepicker', 'attr':{'autocomplete':'off','placeholder':'dd-mm-yyyy'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(registrationForm.roles, 'Access', {'label_attr': {'class': 'bg-gray', 'style': 'padding-left: 10px; margin-top:10px'}}) }}
+                            {{ form_widget(registrationForm.roles, {'attr': {'class': 'checkbox'}}) }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group bg-gray-light" style="padding: 0px 15px">
+                            {{ form_label(registrationForm.username, 'Username') }}
+                            {{ form_widget(registrationForm.username,{'attr':{'autocomplete':'off','placeholder':'Username'}}) }}
+{#                        </div>#}
+{#                        <div class="form-group">#}
+                            {{ form_label(registrationForm.password, 'Password') }}
+                            {{ form_widget(registrationForm.password,{'type': 'text','attr':{'autocomplete':'off','placeholder':'Password'}}) }}
+                            {{ form_help(registrationForm.password) }}
+                        </div>
+                        <div class="row" style="padding-left: 14px; min-height: 250px">
+                            <div class="col-md-6">
+                                <div class="form-group margin-bottom-none">
+                                    {{ form_label(registrationForm.photo) }}
+                                    {{ form_widget(registrationForm.photo, {'id': 'uploadPhoto'}) }}
+                                </div>
+                                <div class="form-group preview-user-photo text-center">
+                                    <img src="" alt="" id="uploadPhotoPreview" class="hide">
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group margin-bottom-none">
+                                    {{ form_label(registrationForm.signature) }}
+                                    {{ form_widget(registrationForm.signature, {'id': 'uploadSignature'}) }}
+                                </div>
+                                <div class="form-group preview-user-signature">
+                                    <img src="" alt="" class="hide">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group text-center">
+                            {{ form_label(registrationForm.jobStatus) }}
+                            {{ form_widget(registrationForm.jobStatus) }}
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3 text-center">
+                        {{ form_widget(registrationForm.Save) }}
+                    </div>
+                </div>
+
+                {{ form_end(registrationForm) }}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block javascripts %}
+    <!-- bootstrap datepicker -->
+    <script src="{{ asset('/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset('/js/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('js/icheck.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-toggle.min.js') }}"></script>
+
+
+    <script>
+        $(function () {
+            $("#datepicker").datepicker({
+                autoclose: true,
+                todayHighlight: true,
+                format: 'dd-mm-yyyy',
+            });
+        });
+    </script>
+
+    <script>
+        function preview(thisObj, previewArea){
+            let file = thisObj.get(0).files[0];
+
+            if (file){
+                if (file.size > 102400){
+                    previewArea.html('<small class="form-text text-danger">Please upload less than 100KB!</small>');
+                }else {
+                    let reader = new FileReader();
+
+                    reader.onload = function(){
+                        previewArea.attr("src", reader.result);
+                        previewArea.removeClass('hide');
+                    }
+
+                    reader.readAsDataURL(file);
+                }
+            }
+        }
+
+        $('#uploadPhoto').on('change', function (e) {
+            let previewArea = $('.preview-user-photo').find('img');
+            preview($(this), previewArea);
+        })
+
+        $('#uploadSignature').on('change', function (e) {
+            let previewArea = $('.preview-user-signature').find('img');
+            preview($(this), previewArea);
+        })
+    </script>
+    <script>
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' /* optional */
+            });
+        });
+
+        //iCheck for checkbox and radio inputs
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+            checkboxClass: 'icheckbox_minimal-blue',
+            radioClass   : 'iradio_minimal-blue'
+        })
+    </script>
+{% endblock %}

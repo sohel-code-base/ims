@@ -163,11 +163,11 @@ table.dataTable thead{
 /*    background: #3c8dbc;*/
 /*    color: #fff;*/
 /*}*/
-button.close {
+.modal-header button.close {
     color: #fff !important;
     opacity: 1 !important;
 }
-button.close:focus, .product-details button.close:hover {
+.modal-header button.close:focus, .modal-header button.close:hover {
     outline: none;
 }
 
@@ -200,4 +200,12 @@ input.pay-amount{
 }
 input.pay-amount:active:focus{
     outline: 0;
+}
+.signature-area{
+    padding-top: 100px;
+}
+.signature-area small {
+    display: inline-block;
+    width: 48%;
+    font-weight: 600;
 }

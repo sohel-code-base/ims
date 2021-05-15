@@ -21,7 +21,7 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
 
     public function handle(Request $request, AccessDeniedException $accessDeniedException)
     {
-        $content="You are not authorized to access this page !";
+        $content="You are not authorized to access this area !";
 //        return new Response($content, 403);
         return new Response($this->twig->render('security/error403.html.twig',[
             "message" =>$content,

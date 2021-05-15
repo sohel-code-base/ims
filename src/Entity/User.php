@@ -3,11 +3,16 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
  */
 class User implements UserInterface
 {
@@ -19,6 +24,7 @@ class User implements UserInterface
     private $id;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $username;
@@ -78,6 +84,26 @@ class User implements UserInterface
      * @ORM\Column(type="date")
      */
     private $joiningDate;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $photo;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $jobStatus;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ProductSale::class, mappedBy="employee")
+     */
+    private $productSales;
+
+    public function __construct()
+    {
+        $this->productSales = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -255,14 +281,68 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getJoiningDate(): ?\DateTimeInterface
+    public function getJoiningDate()
     {
         return $this->joiningDate;
     }
 
-    public function setJoiningDate(\DateTimeInterface $joiningDate): self
+    public function setJoiningDate($joiningDate): self
     {
         $this->joiningDate = $joiningDate;
+
+        return $this;
+    }
+
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?string $photo): self
+    {
+        $this->photo = $photo;
+
+        return $this;
+    }
+
+    public function getJobStatus(): ?bool
+    {
+        return $this->jobStatus;
+    }
+
+    public function setJobStatus(bool $jobStatus): self
+    {
+        $this->jobStatus = $jobStatus;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ProductSale[]
+     */
+    public function getProductSales(): Collection
+    {
+        return $this->productSales;
+    }
+
+    public function addProductSale(ProductSale $productSale): self
+    {
+        if (!$this->productSales->contains($productSale)) {
+            $this->productSales[] = $productSale;
+            $productSale->setEmployee($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductSale(ProductSale $productSale): self
+    {
+        if ($this->productSales->removeElement($productSale)) {
+            // set the owning side to null (unless already changed)
+            if ($productSale->getEmployee() === $this) {
+                $productSale->setEmployee(null);
+            }
+        }
 
         return $this;
     }
