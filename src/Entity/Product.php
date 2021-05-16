@@ -26,11 +26,6 @@ class Product
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
-     */
-    private $category;
-
-    /**
      * @ORM\ManyToOne(targetEntity=SubCategory::class, inversedBy="products")
      */
     private $subCategory;
@@ -82,22 +77,6 @@ class Product
         $this->name = $name;
 
         return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
-
-    /**
-     * @param mixed $category
-     */
-    public function setCategory($category): void
-    {
-        $this->category = $category;
     }
 
     /**

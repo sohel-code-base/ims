@@ -260,4 +260,9 @@ class ProductSaleController extends AbstractController
 
     }
 
+    public function updateDueAmount()
+    {
+
+    }
+
 }

@@ -26,6 +26,18 @@ class ProductType extends AbstractType
                     'autocomplete' => 'off'
                 ]
             ])
+            ->add('subCategory', EntityType::class,[
+                'required' => false,
+                'class' => SubCategory::class,
+                'placeholder' => 'Select a Sub-Category',
+                'choice_label' => 'name',
+                'group_by' => 'category.name',
+                'query_builder' => function(EntityRepository $repository){
+                    return $repository->createQueryBuilder('e')
+                        ->where('e.status = 1')
+                        ->orderBy('e.name','ASC');
+                }
+            ])
             ->add('status', CheckboxType::class,[
                 'required' => false,
                 'attr' => [
@@ -42,28 +54,6 @@ class ProductType extends AbstractType
             ])
             ->add('createdAt', DateTimeType::class)
             ->add('updatedAt', DateTimeType::class)
-            ->add('category', EntityType::class,[
-                'class' => Category::class,
-                'placeholder' => 'Select a Category',
-                'choice_label' => 'name',
-                'query_builder' => function(EntityRepository $repository){
-                return $repository->createQueryBuilder('e')
-                    ->where('e.status = 1')
-                    ->orderBy('e.name','ASC');
-                }
-            ])
-            ->add('subCategory', EntityType::class,[
-                'required' => false,
-                'class' => SubCategory::class,
-                'placeholder' => 'Select a Sub-Category',
-                'choice_label' => 'name',
-                'group_by' => 'category.name',
-                'query_builder' => function(EntityRepository $repository){
-                    return $repository->createQueryBuilder('e')
-                        ->where('e.status = 1')
-                        ->orderBy('e.name','ASC');
-                }
-            ])
             ->add('Submit', SubmitType::class)
         ;
     }

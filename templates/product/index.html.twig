@@ -43,7 +43,7 @@
                                 <td align="center">{{ loop.index }}</td>
                                 <td>{{ info.name|default('N/A') }} {{ info.status == 0 ? "<span class='bg-orange btn-flat text-white btn-xs'>Currently Unavailable!" : "" }}</td>
                                 <td>{{ info.subCategory.name|default('N/A') }}</td>
-                                <td>{{ info.category.name|default('N/A') }}</td>
+                                <td>{{ info.subCategory.category.name|default('N/A') }}</td>
                                 <td>
                                     <div class="btn-group pull-right">
                                         {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_DEVELOPER") %}

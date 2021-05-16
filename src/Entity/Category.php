@@ -40,10 +40,6 @@ class Category
      */
     private $updatedAt;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="category")
-     */
-    private $products;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -58,7 +54,6 @@ class Category
 
     public function __construct()
     {
-        $this->products = new ArrayCollection();
         $this->subCategories = new ArrayCollection();
     }
 
@@ -118,37 +113,6 @@ class Category
     public function setUpdatedAt($updatedAt): void
     {
         $this->updatedAt = $updatedAt;
-    }
-
-
-    /**
-     * @return Collection|Product[]
-     */
-    public function getProducts(): Collection
-    {
-        return $this->products;
-    }
-
-    public function addProduct(Product $product): self
-    {
-        if (!$this->products->contains($product)) {
-            $this->products[] = $product;
-            $product->setCategory($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProduct(Product $product): self
-    {
-        if ($this->products->removeElement($product)) {
-            // set the owning side to null (unless already changed)
-            if ($product->getCategory() === $this) {
-                $product->setCategory(null);
-            }
-        }
-
-        return $this;
     }
 
     public function getSlug(): ?string

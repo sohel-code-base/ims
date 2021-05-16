@@ -31,9 +31,9 @@ $(document).ready(function () {
                     "<td colspan= 2 style='text-align: right'>" + "<strong>Date: </strong>" + oDate + "</td>" +
                     "</tr>" +
                     "<tr>" +
-                    "<td>" + "<strong>Name: </strong>" + response[0].customerName + "</td>" +
+                    "<td width='30%'>" + "<strong>Name: </strong>" + response[0].customerName + "</td>" +
                     "<td>" + "<strong>Address: </strong>" + response[0].customerAddress + "</td>" +
-                    "<td align='right'>" + "<strong>Phone: </strong>" + response[0].customerPhone + "</td>" +
+                    "<td width='25%' align='right'>" + "<strong>Phone: </strong>" + response[0].customerPhone + "</td>" +
                     "</tr>";
 
                 $.each(response, function(key, value) {

@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block contentTitle %}
-    Sale Archive <small>Previous sales here</small>
+    Sale Archive <small>Previous sales</small>
 {% endblock %}
 {% block body %}
 
@@ -41,6 +41,7 @@
                     <thead>
                     <tr>
                         <th width="10" class="text-center">{{ 'S/N'|trans }}</th>
+                        <th>{{ 'Receipt No'|trans }}</th>
                         <th>{{ 'Customer Name'|trans }}</th>
                         <th>{{ 'Total Amount'|trans }}</th>
                         <th>{{ 'Due Amount'|trans }}</th>
@@ -54,6 +55,7 @@
                         {% for sale in allSales %}
                             <tr>
                                 <td>{{ loop.index }}</td>
+                                <td>{{ sale.saleId|default('N/A') }}</td>
                                 <td>{{ sale.customerName|default('N/A') }}</td>
                                 <td>{{ sale.totalPrice|default(0) }} tk</td>
                                 <td>{{ sale.dueAmount != 0 ? sale.dueAmount ~ ' tk' : "<span class='bg-orange label'>Paid!"  }}</td>
@@ -70,7 +72,7 @@
 
 {#                                        <a href="" class="btn btn-sm bg-navy btn-flat"><i class="fa fa-edit"> Edit</i></a>#}
                                         {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_DEVELOPER") %}
-                                            <a href="{{ path('delete_sale_record',{'id': sale.id}) }}" class="btn btn-sm bg-maroon btn-flat delete-record"><i class="fa fa-trash"> Delete</i></a>
+                                            <a href="{{ path('delete_sale_record',{'id': sale.saleId}) }}" class="btn btn-sm bg-maroon btn-flat delete-record"><i class="fa fa-trash"> Delete</i></a>
                                         {% endif %}
                                     </div>
 
