@@ -69,4 +69,25 @@ class CustomerController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/{id}/customer/details", name="new_sale_customer_details", options={"expose"=true})
+     * @param $id
+     * @param CustomerRepository $repository
+     * @return JsonResponse
+     */
+    public function getCustomerDetails($id, CustomerRepository $repository)
+    {
+        $findCustomer = $repository->findOneBy(['id' => $id]);
+        if ($findCustomer){
+            $returnData = [
+                'id' => $findCustomer->getId(),
+                'phone' => $findCustomer->getPhone(),
+                'address' => $findCustomer->getAddress(),
+            ];
+            return new JsonResponse($returnData);
+        }else{
+            return new JsonResponse('failed!');
+        }
+    }
 }

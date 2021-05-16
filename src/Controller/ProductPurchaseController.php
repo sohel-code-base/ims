@@ -9,6 +9,7 @@ use App\Form\ProductPurchaseType;
 use App\Repository\ProductPurchaseArchiveRepository;
 use App\Repository\ProductPurchaseRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -149,7 +150,7 @@ class ProductPurchaseController extends AbstractController
             return $this->redirectToRoute('all_purchase_product');
         }
 
-        $purchaseDateToString = $form->get('purchaseDate')->getData()->format('Y-m-d');
+        $purchaseDateToString = $form->get('purchaseDate')->getData()->format('d-m-Y');
         $form->get('purchaseDate')->setData($purchaseDateToString);
 
         return $this->render('product_purchase/edit.html.twig',[
@@ -176,5 +177,31 @@ class ProductPurchaseController extends AbstractController
             $this->addFlash('error','Record not found!');
             return $this->redirectToRoute('all_purchase_product');
         }
+    }
+
+
+    /**
+     * @Route("/{id}/product/details", methods={"GET"}, name="new_sale_product_details", options={"expose"=true})
+     * @param $id
+     * @param ProductPurchaseRepository $repository
+     * @return JsonResponse
+     */
+    public function getProductDetailsOnProductSelect($id, ProductPurchaseRepository $repository)
+    {
+        $findProduct = $repository->findOneBy(['id' => $id]);
+        if ($findProduct){
+            $returnData = [
+                'id' => $findProduct->getId(),
+                'purchasePrice' => $findProduct->getPurchasePrice(),
+                'salePrice' => $findProduct->getSalePrice(),
+                'quantity' => $findProduct->getQuantity(),
+                'watt' => $findProduct->getPower() ? $findProduct->getPower()->getWatt():'',
+            ];
+
+            return new JsonResponse($returnData);
+        }else{
+            return new JsonResponse('failed!');
+        }
+
     }
 }

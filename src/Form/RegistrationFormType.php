@@ -11,6 +11,8 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use function Sodium\add;
 
@@ -61,11 +63,11 @@ class RegistrationFormType extends AbstractType
                     'data-offstyle' => 'danger',
                     'data-onstyle'=> 'success',
                     'data-on' => 'Permanent',
-                    'data-off'=> 'Temporary',
-//                    'data-width'=> '150',
+                    'data-off'=> 'Probation',
+                    'data-width'=> '150',
 //                    'checked' => 'checked'
                 ],
-//                'label' => false,
+                'label' => false,
             ])
             ->add('Save', SubmitType::class, [
                 'attr' => [
@@ -73,6 +75,17 @@ class RegistrationFormType extends AbstractType
                 ]
             ])
         ;
+    }
+
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $fileName = $form->getViewData()->getPhoto();
+        $signature = $form->getViewData()->getSignature();
+
+        $view->vars['employeePhoto'] = ($fileName === null) ? null : '/uploads/photo/' . $fileName;
+        $view->vars['employeeSignature'] = ($signature === null) ? null : '/uploads/signature/' . $signature;
+
+
     }
 
     public function configureOptions(OptionsResolver $resolver)

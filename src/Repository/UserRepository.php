@@ -70,6 +70,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $qb = $this->createQueryBuilder('e');
         $qb->select('e');
         $qb->where('e.status = 1');
+        $qb->andWhere("e.roles NOT LIKE '%ROLE_DEVELOPER%'");
 
         return $qb->getQuery()->getArrayResult();
     }

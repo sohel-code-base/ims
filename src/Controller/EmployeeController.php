@@ -37,6 +37,12 @@ class EmployeeController extends AbstractController
 
     /**
      * @Route("/register", name="app_register")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param GuardAuthenticatorHandler $guardHandler
+     * @param LoginFormAuthenticator $authenticator
+     * @return Response
+     * @throws \Exception
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator): Response
     {
@@ -93,5 +99,96 @@ class EmployeeController extends AbstractController
         return $this->render('employee/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/{id}/edit", name="edit_employee")
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @param $id
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @throws \Exception
+     */
+    public function edit(Request $request, UserRepository $userRepository, $id, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $findEmployee = $userRepository->findOneBy(['id' => $id]);
+        $form = $this->createForm(RegistrationFormType::class, $findEmployee);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()){
+            $joiningDate = $form->get('joiningDate')->getData();
+            $findEmployee->setJoiningDate(new \DateTime($joiningDate));
+
+            $userPhoto = $form->get('photo')->getData();
+            $userSignature = $form->get('signature')->getData();
+
+            if ($userPhoto){
+                $fileName = $form->get('fullName')->getData() . '-photo' . '.' . $userPhoto->getClientOriginalExtension();
+//                $userPhoto->move($this->getParameter('uploads_dir') . '/photo/', $fileName);
+                move_uploaded_file($userPhoto->getPathname(), $this->getParameter('uploads_dir') . '/photo/' . $fileName);
+                $findEmployee->setPhoto($fileName);
+            }
+
+            if ($userSignature){
+//                dd($userSignature->getPathname());
+                $fileName = $form->get('username')->getData() . '-signature' . '.' . $userSignature->getClientOriginalExtension();
+//                $userSignature->move($this->getParameter('uploads_dir') . '/signature/', $fileName);
+                move_uploaded_file($userSignature->getPathname(), $this->getParameter('uploads_dir') . '/signature/' . $fileName);
+                $findEmployee->setSignature($fileName);
+            }
+            // encode the plain password
+            $findEmployee->setPassword(
+                $passwordEncoder->encodePassword(
+                    $findEmployee,
+                    $form->get('password')->getData()
+                )
+            );
+            $findEmployee->setUpdatedAt(new \DateTime('now'));
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($findEmployee);
+            $entityManager->flush();
+            $this->addFlash('update', 'Employee details has been updated!');
+
+            return $this->redirectToRoute('all_employee');
+        }
+
+        $joiningDateToString = $form->get('joiningDate')->getData()->format('d-m-Y');
+        $form->get('joiningDate')->setData($joiningDateToString);
+
+        return $this->render('employee/edit.html.twig',[
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/delete", name="delete_employee")
+     * @param $id
+     * @param UserRepository $repository
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function delete($id, UserRepository $repository)
+    {
+        $findEmployee = $repository->findOneBy(['id' => $id]);
+        if ($findEmployee){
+            $findEmployee->setStatus(0);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($findEmployee);
+            $em->flush();
+            $this->addFlash('success', 'Employee deleted successfully!');
+            return $this->redirectToRoute('all_employee');
+        }else{
+            $this->addFlash('error', 'Employee not found!');
+            return $this->redirectToRoute('all_employee');
+        }
+    }
+
+    /**
+     * @Route("/profile", name="employee_profile")
+     */
+    public function myProfile()
+    {
+        return $this->render('employee/myProfile.html.twig');
     }
 }

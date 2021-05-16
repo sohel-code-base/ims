@@ -5,6 +5,11 @@
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('/css/dataTables.bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/animate.min.css') }}">
+    <style>
+        table>tbody>tr>td{
+            vertical-align: middle !important;
+        }
+    </style>
     {#    <style>#}
     {#        @media print {#}
     {#            body * {#}
@@ -63,11 +68,10 @@
                     <thead>
                     <tr>
                         <th width="10" class="text-center">{{ 'S/N'|trans }}</th>
+                        <th>{{ 'Photo'|trans }}</th>
                         <th>{{ 'Name'|trans }}</th>
                         <th>{{ 'Designation'|trans }}</th>
                         <th>{{ 'Phone'|trans }}</th>
-                        <th>{{ 'Joining Date'|trans }}</th>
-                        <th>{{ 'Status'|trans }}</th>
                         <th width="20%"><i class="fa fa-gear"></i></th>
                     </tr>
                     </thead>
@@ -76,17 +80,17 @@
                         {% for employee in employees %}
                             <tr>
                                 <td align="center">{{ loop.index }}</td>
+                                <td><img src="/uploads/photo/{{ employee.photo }}" alt="Employee photo" width="35px"></td>
                                 <td>{{ employee.fullName|default('') }}</td>
                                 <td>{{ employee.designation|default('') }}</td>
                                 <td>{{ employee.phone|default('') }}</td>
-                                <td>{{ employee.joiningDate|date('d-m-Y') }}</td>
-                                <td>{{ employee.jobStatus == 1 ? '<span class="label label-success">Permanent</span>' : '<span class="label label-danger">Temporary</span>' }}</td>
                                 <td>
                                     <div class="btn-group pull-right">
                                         <a href="#" class="btn btn-sm bg-purple btn-flat"  data-toggle="modal" data-target="#employee-details-{{ employee.id }}"><i class="fa fa-eye"><span style="margin-left: 3px;">Details</span></i></a>
-
-                                        <a href="" class="btn btn-sm bg-navy btn-flat"><i class="fa fa-edit"><span style="margin-left: 3px;">Edit</span></i></a>
-                                        <a href="" class="btn btn-sm bg-maroon btn-flat delete-record"><i class="fa fa-trash"><span style="margin-left: 3px;">Delete</span></i></a>
+                                        <a href="{{ path('edit_employee', {'id': employee.id}) }}" class="btn btn-sm bg-navy btn-flat"><i class="fa fa-edit"><span style="margin-left: 3px;">Edit</span></i></a>
+                                        {% if employee.designation != 'Managing Director' %}
+                                         <a href="{{ path('delete_employee',{'id': employee.id}) }}" class="btn btn-sm bg-maroon btn-flat delete-record"><i class="fa fa-trash"><span style="margin-left: 3px;">Delete</span></i></a>
+                                        {% endif %}
                                     </div>
 
                                 </td>
@@ -111,7 +115,7 @@
                                                     <hr style="margin: 0">
                                                     <h4><strong>Username: </strong>{{ employee.username|default('') }}</h4>
                                                     <h4><strong>Phone: </strong>{{ employee.phone|default('') }}</h4>
-                                                    <h4><strong>Job Status: </strong>{{ employee.jobStatus == 1 ? 'Permanent' : 'Temporary' }}</h4>
+                                                    <h4><strong>Job Status:</strong> {{ employee.jobStatus == 1 ? '<span class="label label-success">Permanent</span>' : '<span class="label label-danger">Probation</span>' }}</h4>
                                                     <h4><strong>Access Level: </strong>
                                                         {% for role in employee.roles %}
 

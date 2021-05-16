@@ -62,7 +62,6 @@ class ProductSaleController extends AbstractController
         $perPiecePrice = $_REQUEST['perPiecePrice'];
         $saleDate = new \DateTime($_REQUEST['saleDate']);
 
-
         $findCustomer = $customerRepository->findOneBy(['id' => $customerId]);
         $findProduct = $productPurchaseRepository->findOneBy(['id' => $productPurchaseId]);
 
@@ -119,7 +118,6 @@ class ProductSaleController extends AbstractController
                 'price' => $quantity * $perPiecePrice,
                 'totalPrice' => $saleDetails->getSale()->getTotalPrice(),
             ];
-//            dump($returnData);
             return new JsonResponse($returnData);
         }else{
             return new JsonResponse('failed');
@@ -165,51 +163,6 @@ class ProductSaleController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/sale/{id}/product/details", methods={"GET"}, name="new_sale_product_details", options={"expose"=true})
-     * @param $id
-     * @param ProductPurchaseRepository $repository
-     * @return JsonResponse
-     */
-    public function getProductDetailsOnProductSelect($id, ProductPurchaseRepository $repository)
-    {
-        $findProduct = $repository->findOneBy(['id' => $id]);
-        if ($findProduct){
-            $returnData = [
-                'id' => $findProduct->getId(),
-                'purchasePrice' => $findProduct->getPurchasePrice(),
-                'salePrice' => $findProduct->getSalePrice(),
-                'quantity' => $findProduct->getQuantity(),
-                'watt' => $findProduct->getPower() ? $findProduct->getPower()->getWatt():'',
-            ];
-
-            return new JsonResponse($returnData);
-        }else{
-            return new JsonResponse('failed!');
-        }
-
-    }
-
-    /**
-     * @Route("/sale/{id}/customer/details", name="new_sale_customer_details", options={"expose"=true})
-     * @param $id
-     * @param CustomerRepository $repository
-     * @return JsonResponse
-     */
-    public function getCustomerDetails($id, CustomerRepository $repository)
-    {
-        $findCustomer = $repository->findOneBy(['id' => $id]);
-        if ($findCustomer){
-            $returnData = [
-                'id' => $findCustomer->getId(),
-                'phone' => $findCustomer->getPhone(),
-                'address' => $findCustomer->getAddress(),
-            ];
-            return new JsonResponse($returnData);
-        }else{
-            return new JsonResponse('failed!');
-        }
-    }
 
     /**
      * @Route("/sale/product/collect", name="collect_product_customer_and_sale_date", options={"expose"=true})
@@ -242,7 +195,6 @@ class ProductSaleController extends AbstractController
 //        $saleDate = new \DateTime($_REQUEST['saleDate']);
 
         $findProduct = $saleDetailsRepository->findOneBy(['sale' => $saleId, 'product' => $productPurchaseId]);
-
 
         if ($findProduct){
             $em = $this->getDoctrine()->getManager();
@@ -281,10 +233,11 @@ class ProductSaleController extends AbstractController
     }
 
     /**
+     * @Route("/sale/payment", name="sale-payment")
      * @param ProductSaleRepository $saleRepository
-     * @Route("/due-amount/update", name="update_due_amount")
+     * @return JsonResponse
      */
-    public function updateDueAmount(ProductSaleRepository $saleRepository)
+    public function payment(ProductSaleRepository $saleRepository)
     {
         $saleId = $_REQUEST['saleId'];
         $payAmount = $_REQUEST['payAmount'];

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register | IE{% endblock %}
+{% block title %}Update | IE{% endblock %}
 {% block stylesheet %}
     <link href="{{ asset('css/bootstrap-toggle.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('/css/animate.min.css') }}">
@@ -39,7 +39,7 @@
 {% endblock %}
 
 {% block contentTitle %}
-    New Employee! <small>Register new employee!</small>
+    Edit Employee! <small>Edit employee details!</small>
 {% endblock %}
 {% block body %}
 
@@ -54,74 +54,78 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-                {{ form_start(registrationForm) }}
+                {{ form_start(form) }}
 
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            {{ form_label(registrationForm.fullName, 'Full Name') }}
-                            {{ form_widget(registrationForm.fullName,{'attr':{'autocomplete':'off','placeholder':'Name'}}) }}
+                            {{ form_label(form.fullName, 'Full Name') }}
+                            {{ form_widget(form.fullName,{'attr':{'autocomplete':'off','placeholder':'Name'}}) }}
 
-                            {{ form_label(registrationForm.designation, 'Designation') }}
-                            {{ form_widget(registrationForm.designation,{'attr':{'autocomplete':'off','placeholder':'Designation'}}) }}
+                            {{ form_label(form.designation, 'Designation') }}
+                            {{ form_widget(form.designation,{'attr':{'autocomplete':'off','placeholder':'Designation'}}) }}
 
-                            {{ form_label(registrationForm.phone, 'Phone') }}
-                            {{ form_widget(registrationForm.phone,{'attr':{'autocomplete':'off','placeholder':'Phone Number'}}) }}
+                            {{ form_label(form.phone, 'Phone') }}
+                            {{ form_widget(form.phone,{'attr':{'autocomplete':'off','placeholder':'Phone Number'}}) }}
 
-                            {{ form_label(registrationForm.address) }}
-                            {{ form_widget(registrationForm.address,{'attr':{'autocomplete':'off','placeholder':'Address'}}) }}
+                            {{ form_label(form.address) }}
+                            {{ form_widget(form.address,{'attr':{'autocomplete':'off','placeholder':'Address'}}) }}
 
-                            {{ form_label(registrationForm.joiningDate) }}
-                            {{ form_widget(registrationForm.joiningDate,{'id': 'datepicker', 'attr':{'autocomplete':'off','placeholder':'dd-mm-yyyy'}}) }}
+                            {{ form_label(form.joiningDate) }}
+                            {{ form_widget(form.joiningDate,{'id': 'datepicker', 'attr':{'autocomplete':'off','placeholder':'dd-mm-yyyy'}}) }}
                         </div>
                         <div class="form-group">
-                            {{ form_label(registrationForm.roles, 'Access', {'label_attr': {'class': 'bg-gray', 'style': 'padding-left: 10px; margin-top:10px'}}) }}
-                            {{ form_widget(registrationForm.roles, {'attr': {'class': 'checkbox'}}) }}
+                            {{ form_label(form.roles, 'Access', {'label_attr': {'class': 'bg-gray', 'style': 'padding-left: 10px; margin-top:10px'}}) }}
+                            {{ form_widget(form.roles, {'attr': {'class': 'checkbox'}}) }}
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group bg-gray-light" style="padding: 0px 15px">
-                            {{ form_label(registrationForm.username, 'Username') }}
-                            {{ form_widget(registrationForm.username,{'attr':{'autocomplete':'off','placeholder':'Username'}}) }}
+                            {{ form_label(form.username, 'Username') }}
+                            {{ form_widget(form.username,{'attr':{'autocomplete':'off','placeholder':'Username'}}) }}
 
-                            {{ form_label(registrationForm.password, 'Password') }}
-                            {{ form_widget(registrationForm.password,{'type': 'text','attr':{'autocomplete':'off','placeholder':'Password'}}) }}
-                            {{ form_help(registrationForm.password) }}
+                            {{ form_label(form.password, 'Password') }}
+                            {{ form_widget(form.password,{'type': 'text','attr':{'autocomplete':'off','placeholder':'Password'}}) }}
+                            {{ form_help(form.password, {'help': 'Note:Type previous password or add new!'}) }}
                         </div>
                         <div class="row" style="padding-left: 14px; min-height: 250px">
                             <div class="col-md-6">
                                 <div class="form-group margin-bottom-none">
-                                    {{ form_label(registrationForm.photo) }}
-                                    {{ form_widget(registrationForm.photo, {'id': 'uploadPhoto'}) }}
+                                    {{ form_label(form.photo) }}
+                                    {{ form_widget(form.photo, {'id': 'uploadPhoto'}) }}
                                 </div>
                                 <div class="form-group preview-user-photo text-center">
-                                    <img src="" alt="" id="uploadPhotoPreview" class="hide">
+                                    {% if form.vars.employeePhoto is not null %}
+                                        <img src="{{ form.vars.employeePhoto }}" alt="">
+                                    {% endif %}
                                 </div>
 
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group margin-bottom-none">
-                                    {{ form_label(registrationForm.signature) }}
-                                    {{ form_widget(registrationForm.signature, {'id': 'uploadSignature'}) }}
+                                    {{ form_label(form.signature) }}
+                                    {{ form_widget(form.signature, {'id': 'uploadSignature'}) }}
                                 </div>
                                 <div class="form-group preview-user-signature">
-                                    <img src="" alt="" class="hide">
+                                    {% if form.vars.employeeSignature is not null %}
+                                        <img src="{{ form.vars.employeeSignature }}" alt="">
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
                         <div class="form-group text-center">
                             <label for="">Job Status</label>
-                            {{ form_widget(registrationForm.jobStatus) }}
+                            {{ form_widget(form.jobStatus) }}
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6 col-md-offset-3 text-center">
-                        {{ form_widget(registrationForm.Save) }}
+                        {{ form_widget(form.Save) }}
                     </div>
                 </div>
 
-                {{ form_end(registrationForm) }}
+                {{ form_end(form) }}
             </div>
         </div>
     </section>
@@ -133,6 +137,7 @@
     <script src="{{ asset('js/icheck.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap-toggle.min.js') }}"></script>
     <script src="{{ asset('js/employee.js') }}"></script>
+
 
     <script>
         $(function () {

@@ -61,7 +61,6 @@
                                 <td>{{ sale.orderDate|date('d-m-Y')|default('N/A') }}</td>
                                 <td>
                                     <div class="btn-group pull-right">
-                                        {#                                        {{ path('show_sale_details',{'customerId': sale.customerId, 'orderDate':sale.orderDate|date('Y-m-d')}) }}#}
                                         <a href="" class="btn btn-sm bg-purple btn-flat show-sale-details"
                                            data-toggle="modal" data-target=""
                                            data-action="{{ path('show_sale_details') }}"
@@ -70,7 +69,9 @@
                                                     class="fa fa-file-text-o"> Details</i></a>
 
 {#                                        <a href="" class="btn btn-sm bg-navy btn-flat"><i class="fa fa-edit"> Edit</i></a>#}
-                                        <a href="{{ path('delete_sale_record',{'id': sale.id}) }}" class="btn btn-sm bg-maroon btn-flat delete-record"><i class="fa fa-trash"> Delete</i></a>
+                                        {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_DEVELOPER") %}
+                                            <a href="{{ path('delete_sale_record',{'id': sale.id}) }}" class="btn btn-sm bg-maroon btn-flat delete-record"><i class="fa fa-trash"> Delete</i></a>
+                                        {% endif %}
                                     </div>
 
                                 </td>
