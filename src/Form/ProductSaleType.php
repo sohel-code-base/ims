@@ -50,7 +50,7 @@ class ProductSaleType extends AbstractType
                     $watt = $productPurchase->getPower() ? ' ---'.$productPurchase->getPower()->getWatt() . ' w' : '';
                 return  $product . $watt;
                 },
-                'group_by' => 'product.category.name',
+                'group_by' => 'product.subCategory.category.name',
 
                 'query_builder' => function(EntityRepository $repository){
                     return $repository->createQueryBuilder('e')

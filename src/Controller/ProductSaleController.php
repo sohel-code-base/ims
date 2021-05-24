@@ -10,16 +10,25 @@ use App\Repository\PowerRepository;
 use App\Repository\ProductPurchaseRepository;
 use App\Repository\ProductSaleDetailsRepository;
 use App\Repository\ProductSaleRepository;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class ProductSaleController
+ * @package App\Controller
+ * @Route("/product/sale")
+ */
 class ProductSaleController extends AbstractController
 {
     /**
-     * @Route("/product/sale", name="all_product_sale")
+     * @Route("/", name="all_product_sale")
      * @param ProductSaleRepository $repository
      * @return Response
      */
@@ -32,7 +41,7 @@ class ProductSaleController extends AbstractController
     }
 
     /**
-     * @Route("/product/sale/new", name="new_sale", options={"expose"=true})
+     * @Route("/new", name="new_sale", options={"expose"=true})
      * @param Request $request
      * @return Response
      */
@@ -46,7 +55,7 @@ class ProductSaleController extends AbstractController
     }
 
     /**
-     * @Route("/product/sale/store-record/ajax", name="store_new_sale_record", options={"expose"=true})
+     * @Route("/store-record/ajax", name="store_new_sale_record", options={"expose"=true})
      * @param CustomerRepository $customerRepository
      * @param ProductPurchaseRepository $productPurchaseRepository
      * @param PowerRepository $powerRepository
@@ -125,7 +134,7 @@ class ProductSaleController extends AbstractController
     }
 
     /**
-     * @Route("/sale/details", name="show_sale_details")
+     * @Route("/details", name="show_sale_details")
      * @param Request $request
      * @param ProductSaleDetailsRepository $repository
      * @return Response
@@ -143,7 +152,7 @@ class ProductSaleController extends AbstractController
     }
 
     /**
-     * @Route("/sale/{id}/delete", name="delete_sale_record")
+     * @Route("/{id}/delete", name="delete_sale_record")
      * @param $id
      * @param ProductSaleRepository $repository
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
@@ -165,7 +174,7 @@ class ProductSaleController extends AbstractController
 
 
     /**
-     * @Route("/sale/product/collect", name="collect_product_customer_and_sale_date", options={"expose"=true})
+     * @Route("/product/collect", name="collect_product_customer_and_sale_date", options={"expose"=true})
      * @param ProductSaleRepository $repository
      * @return JsonResponse
      * @throws \Exception
@@ -182,7 +191,7 @@ class ProductSaleController extends AbstractController
     }
 
     /**
-     * @Route("/sale/product/remove", name="remove_product_from_sale_list", options={"expose"=true})
+     * @Route("/product/remove", name="remove_product_from_sale_list", options={"expose"=true})
      * @param ProductSaleDetailsRepository $saleDetailsRepository
      * @param ProductSaleRepository $saleRepository
      * @param ProductPurchaseRepository $purchaseRepository
@@ -233,7 +242,7 @@ class ProductSaleController extends AbstractController
     }
 
     /**
-     * @Route("/sale/payment", name="sale-payment")
+     * @Route("/payment", name="sale-payment")
      * @param ProductSaleRepository $saleRepository
      * @return JsonResponse
      */
@@ -260,9 +269,76 @@ class ProductSaleController extends AbstractController
 
     }
 
-    public function updateDueAmount()
+    /**
+     * @param Request $request
+     * @param ProductSaleRepository $repository
+     * @return Response
+     * @Route("/collect/due-amount", name="collect_due_amount")
+     */
+    public function updateDueAmount(Request $request, ProductSaleRepository $repository)
     {
+        $form = $this->createFormBuilder()
+            ->add('saleId', EntityType::class,[
+                'class' => ProductSale::class,
+                'choice_label' => 'id',
+                'placeholder' => 'Select receipt no.',
+                'query_builder' => function(EntityRepository $er){
+                return $er->createQueryBuilder('e')
+                    ->where('e.dueAmount > 0')
+                    ->orderBy('e.id','ASC');
+                }
+            ])
+            ->add('dueAmount',TextType::class,[
+                'attr' => [
+                    'disabled' => 'disabled'
+                ]
+            ])
+            ->add('Submit', SubmitType::class,[
+                'attr' => [
+                    'class' => 'btn-block btn-flat btn-facebook'
+                ]
+            ])
+            ->getForm()
+            ;
+        $form->handleRequest($request);
+        if ($form->isSubmitted()){
+            $findSale = $repository->find($form->get('saleId')->getData());
 
+            if ($findSale){
+                $findSale->setDueAmount($findSale->getDueAmount() - $form->get('dueAmount')->getData());
+                $findSale->setUpdatedAt(new \DateTime('now'));
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($findSale);
+                $em->flush();
+                $this->addFlash('update','Database updated!');
+                return $this->redirectToRoute('all_product_sale');
+            }else{
+                $this->addFlash('update','Something Wrong!');
+                return $this->redirectToRoute('all_product_sale');
+            }
+        }
+        return $this->render('product_sale/updateDueAmount.html.twig',[
+            'form' => $form->createView()
+        ]);
+
+    }
+
+    /**
+     * @Route("/{saleId}/due/sale-summary", name="due_amount_sale_summary", options={"expose"=true})
+     * @param $saleId
+     * @param Request $request
+     * @param ProductSaleRepository $repository
+     * @return JsonResponse
+     */
+    public function dueAmountSaleSummary($saleId, Request $request, ProductSaleRepository $repository)
+    {
+        $details = $repository->getSaleSummery($saleId);
+        $details['orderDate'] = $details['orderDate']->format('d-m-Y');
+
+        return new JsonResponse([
+            'status' => 200,
+            'details' => $details
+        ]);
     }
 
 }

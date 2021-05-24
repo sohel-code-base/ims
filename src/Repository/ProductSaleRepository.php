@@ -30,6 +30,14 @@ class ProductSaleRepository extends ServiceEntityRepository
 
     }
 
-
+    public function getSaleSummery($saleId)
+    {
+        $qb = $this->createQueryBuilder('e');
+        $qb->join('e.customer', 'customer');
+        $qb->select('e.saleDate AS orderDate', 'e.totalPrice', 'e.dueAmount');
+        $qb->addSelect('customer.name AS customerName','customer.phone AS customerPhone', 'customer.address AS customerAddress');
+        $qb->where('e.id = :saleId')->setParameter('saleId', $saleId);
+        return $qb->getQuery()->getOneOrNullResult();
+    }
 
 }

@@ -24,8 +24,9 @@ class ProductPurchaseRepository extends ServiceEntityRepository
 
         $qb = $this->createQueryBuilder('e');
         $qb->join('e.product','product');
-        $qb->join('product.category','category');
-        $qb->join('category.subCategories','subCat');
+        $qb->join('product.subCategory','subCat');
+        $qb->join('subCat.category','category');
+//        $qb->join('category.subCategories','subCat');
         $qb->leftJoin('e.power','power');
 
         $qb->select('product.name AS productName');

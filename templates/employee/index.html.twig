@@ -90,6 +90,10 @@
                                         <a href="{{ path('edit_employee', {'id': employee.id}) }}" class="btn btn-sm bg-navy btn-flat"><i class="fa fa-edit"><span style="margin-left: 3px;">Edit</span></i></a>
                                         {% if employee.designation != 'Managing Director' %}
                                          <a href="{{ path('delete_employee',{'id': employee.id}) }}" class="btn btn-sm bg-maroon btn-flat delete-record"><i class="fa fa-trash"><span style="margin-left: 3px;">Delete</span></i></a>
+                                        {% else %}
+                                            {% if is_granted('ROLE_DEVELOPER') %}
+                                                <a href="{{ path('delete_employee',{'id': employee.id}) }}" class="btn btn-sm bg-maroon btn-flat delete-record"><i class="fa fa-trash"><span style="margin-left: 3px;">Delete</span></i></a>
+                                            {% endif %}
                                         {% endif %}
                                     </div>
 
