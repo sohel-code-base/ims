@@ -6,10 +6,8 @@ function preview(thisObj, previewArea){
             previewArea.html('<small class="form-text text-danger">Please upload less than 100KB!</small>');
         }else {
             let reader = new FileReader();
-
             reader.onload = function(){
-                previewArea.attr("src", reader.result);
-                previewArea.removeClass('hide');
+                previewArea.html('<img src="'+ reader.result +'" alt="">');
             }
 
             reader.readAsDataURL(file);
@@ -18,11 +16,11 @@ function preview(thisObj, previewArea){
 }
 
 $('#uploadPhoto').on('change', function (e) {
-    let previewArea = $('.preview-user-photo').find('img');
+    let previewArea = $('.preview-user-photo');
     preview($(this), previewArea);
 })
 
 $('#uploadSignature').on('change', function (e) {
-    let previewArea = $('.preview-user-signature').find('img');
+    let previewArea = $('.preview-user-signature');
     preview($(this), previewArea);
 })

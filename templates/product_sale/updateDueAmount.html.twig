@@ -2,6 +2,11 @@
 
 {% block stylesheet %}
     <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
+    <style>
+        .saleSummary table tbody tr td:first-child{
+            width: 25%;
+        }
+    </style>
 {% endblock %}
 
 {% block contentTitle %}
@@ -50,13 +55,8 @@
                 <hr>
                 <div class="row saleSummary">
                     <div class="col-md-8 col-md-offset-2">
-                        <style>
-                            table tbody tr td:first-child{
-                                width: 25%;
-                            }
-                        </style>
                         <table class="table table-bordered">
-                            <thead class="thead-dark">
+                            <thead class="bg-primary">
                             <tr>
                                 <th colspan="2" class="text-center">Details</th>
                                 <th class="text-center">Due Amount</th>

@@ -52,8 +52,6 @@ class EmployeeController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-//            dd($form->getData());
-
             $userPhoto = $form->get('photo')->getData();
             $userSignature = $form->get('signature')->getData();
 
@@ -125,15 +123,12 @@ class EmployeeController extends AbstractController
 
             if ($userPhoto){
                 $fileName = $form->get('fullName')->getData() . '-photo' . '.' . $userPhoto->getClientOriginalExtension();
-//                $userPhoto->move($this->getParameter('uploads_dir') . '/photo/', $fileName);
                 move_uploaded_file($userPhoto->getPathname(), $this->getParameter('uploads_dir') . '/photo/' . $fileName);
                 $findEmployee->setPhoto($fileName);
             }
 
             if ($userSignature){
-//                dd($userSignature->getPathname());
                 $fileName = $form->get('username')->getData() . '-signature' . '.' . $userSignature->getClientOriginalExtension();
-//                $userSignature->move($this->getParameter('uploads_dir') . '/signature/', $fileName);
                 move_uploaded_file($userSignature->getPathname(), $this->getParameter('uploads_dir') . '/signature/' . $fileName);
                 $findEmployee->setSignature($fileName);
             }
