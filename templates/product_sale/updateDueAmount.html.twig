@@ -16,8 +16,15 @@
 
     <!-- Main content -->
     <section class="content">
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type }} alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <i class="icon fa fa-{{ type == 'error' ? 'warning':'check' }}"></i>{{ message|trans }}
+                </div>
+            {% endfor %}
+        {% endfor %}
         <!-- /.box -->
-
         <div class="box">
             <div class="box-header">
 {#                <h3 class="box-title"><i class="fa fa-google-wallet" style="margin-right: 5px;"></i>List </h3>#}

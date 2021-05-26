@@ -311,10 +311,10 @@ class ProductSaleController extends AbstractController
                 $em->persist($findSale);
                 $em->flush();
                 $this->addFlash('update','Database updated!');
-                return $this->redirectToRoute('all_product_sale');
+                return $this->redirectToRoute('collect_due_amount');
             }else{
                 $this->addFlash('update','Something Wrong!');
-                return $this->redirectToRoute('all_product_sale');
+                return $this->redirectToRoute('collect_due_amount');
             }
         }
         return $this->render('product_sale/updateDueAmount.html.twig',[
