@@ -97,7 +97,7 @@
                                         <a href="#" class="btn btn-sm bg-purple btn-flat"  data-toggle="modal" data-target="#product-details-{{ product.id }}"><i class="fa fa-eye"><span style="margin-left: 3px;">Show</span></i></a>
 
                                         {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_DEVELOPER') %}
-                                            <a href="{{ path('edit_purchase_product',{'id':product.id}) }}" class="btn btn-sm bg-navy btn-flat"><i class="fa fa-edit"><span style="margin-left: 3px;">Edit</span></i></a>
+{#                                            <a href="{{ path('edit_purchase_product',{'id':product.id}) }}" class="btn btn-sm bg-navy btn-flat"><i class="fa fa-edit"><span style="margin-left: 3px;">Edit</span></i></a>#}
                                             <a href="{{ path('delete_purchase_product',{'id':product.id}) }}" class="btn btn-sm bg-maroon btn-flat delete-record"><i class="fa fa-trash"><span style="margin-left: 3px;">Delete</span></i></a>
                                         {% endif %}
                                     </div>

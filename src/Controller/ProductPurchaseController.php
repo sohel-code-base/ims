@@ -8,6 +8,7 @@ use App\Form\FilterType;
 use App\Form\ProductPurchaseType;
 use App\Repository\ProductPurchaseArchiveRepository;
 use App\Repository\ProductPurchaseRepository;
+use App\Repository\ProductSaleDetailsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -131,17 +132,18 @@ class ProductPurchaseController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      * @throws \Exception
      */
-    public function editPurchaseProduct(Request $request, ProductPurchaseRepository $repository, $id)
+/*    public function editPurchaseProduct(Request $request, ProductPurchaseRepository $repository, $id)
     {
         $findProduct = $repository->findOneBy(['id' => $id]);
+        $createdAt = $findProduct->getCreatedAt();
         $form = $this->createForm(ProductPurchaseType::class, $findProduct);
         $form->handleRequest($request);
 
         if ($form->isSubmitted()){
             $em = $this->getDoctrine()->getManager();
-//            dd($form->getData());
             $purchaseDateStringToDate = $form->get('purchaseDate')->getData();
 
+            $findProduct->setCreatedAt($createdAt);
             $findProduct->setUpdatedAt(new \DateTime('now'));
             $findProduct->setPurchaseDate(new \DateTime($purchaseDateStringToDate));
             $em->persist($findProduct);
@@ -156,25 +158,27 @@ class ProductPurchaseController extends AbstractController
         return $this->render('product_purchase/edit.html.twig',[
             'form' => $form->createView(),
         ]);
-    }
+    }*/
 
     /**
      * @Route("/product/{id}/delete", name="delete_purchase_product")
-     * @param ProductPurchaseRepository $purchase
      * @param $id
+     * @param ProductPurchaseRepository $purchaseRepository
+     * @param ProductSaleDetailsRepository $saleDetailsRepository
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deletePurchaseProduct(ProductPurchaseRepository $purchase, $id)
+    public function deletePurchaseProduct($id, ProductPurchaseRepository $purchaseRepository, ProductSaleDetailsRepository $saleDetailsRepository)
     {
-        $findProduct = $purchase->findOneBy(['id' => $id]);
-        if($findProduct){
+        $findPurchaseProduct = $purchaseRepository->findOneBy(['id' => $id]);
+        $findSale = $saleDetailsRepository->findOneBy(['product' => $findPurchaseProduct]);
+        if(! $findSale){
             $em = $this->getDoctrine()->getManager();
-            $em->remove($findProduct);
+            $em->remove($findPurchaseProduct);
             $em->flush();
             $this->addFlash('success','Product has been deleted!');
             return $this->redirectToRoute('all_purchase_product');
         }else{
-            $this->addFlash('error','Record not found!');
+            $this->addFlash('error','You can not delete the product that has been sold!');
             return $this->redirectToRoute('all_purchase_product');
         }
     }
