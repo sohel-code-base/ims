@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Expense;
 use App\Form\FilterType;
 use App\Repository\ExpenseRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,38 +19,23 @@ use Symfony\Component\Routing\Annotation\Route;
 class ExpenseController extends AbstractController
 {
     /**
-     * @Route("/", name="expense_list")
-     * @param Request $request
-     * @param ExpenseRepository $repository
-     * @return Response
-     * @throws \Exception
-     */
-    public function index(Request $request, ExpenseRepository $repository): Response
-    {
-        $filterBy = new \DateTime('now');
-
-        $filterForm = $this->createForm(FilterType::class);
-        $filterForm->handleRequest($request);
-
-        if ($filterForm->isSubmitted()){
-            $filterBy = new \DateTime('01-'.$filterForm->get('monthYear')->getData());
-        }
-        $records = [];
-
-
-        return $this->render('expense/index.html.twig', [
-            'filterForm' => $filterForm->createView(),
-            'records' => $records,
-            'filterBy' => $filterBy,
-        ]);
-    }
-
-    /**
      * @Route("/new", name="new_expense")
      */
-    public function newExpense()
+    public function newExpense(Request $request)
     {
+        $data = $request->request->all();
 
+        $expense = new Expense();
+        $expense->setType($data['expenseType']);
+        $expense->setExpenseDate(new \DateTime($data['expenseDate']));
+        $expense->setAmount($data['expenseAmount']);
+        $expense->setCreatedAt(new \DateTime('now'));
+        $expense->setStatus(1);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($expense);
+        $em->flush();
+
+        return new JsonResponse(['status' => 200]);
 
     }
 }

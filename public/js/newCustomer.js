@@ -3,7 +3,7 @@ $(document).ready(function () {
         e.preventDefault();
         let url = $(this).attr('action');
         let type = $(this).attr('method');
-        let  data = {};
+        let data = {};
 
         $(this).find('[name]').each(function (index, value) {
             let name = $(this).attr('name');

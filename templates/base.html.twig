@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="{{ asset('/css/ionicons.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('/css/AdminLTE.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/bootstrap-datepicker.min.css') }}">
+
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{ asset('/css/_all-skins.min.css') }}">
@@ -81,11 +83,12 @@
 <script src="{{ asset('/js/adminlte.min.js') }}"></script>
 <!-- AdminLTE for demo purposes -->
 {#<script src="dist/js/demo.js"></script>#}
+<script src="{{ asset('/js/bootstrap-datepicker.min.js') }}"></script>
 
 <!-- FOSJsRouting -->
 <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-
+<script src="{{ asset('/js/expense.js') }}"></script>
 <script>
     $(function(){
         /** add active class and stay opened when selected */
@@ -102,7 +105,7 @@
             return this.href == url;
         }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
 
-        $("#dp").datepicker({
+        $("#expenseDate").datepicker({
             autoclose: true,
             todayHighlight: true,
             format: 'dd-mm-yyyy',
