@@ -19,11 +19,6 @@ function getProductsByCustomerAndDate(customerId, saleDate) {
         success: function (response) {
             if (response.length !== 0) {
 
-                // Show receipt button
-                productSaleList.find('.show-sale-details').removeClass('hide');
-                productSaleList.find('#totalPrice span').text(response[0].totalPrice);
-                productSaleList.find('tfoot').hide();
-
                 $.each(response, function (key, value) {
                     if (!$.trim(response[key].watt)) {
                         response[key].watt = 'N/A';
@@ -39,8 +34,21 @@ function getProductsByCustomerAndDate(customerId, saleDate) {
                         "</tr>";
                     productSaleList.find('tbody').append(itemTr);
                     productSaleList.find('#dueAmount span').text(response[0].dueAmount);
-                    productSaleList.find('.pay-amount').attr('data-sale-id', response[0].saleId);
+                    productSaleList.find('#totalPrice span').text(response[0].totalPrice);
+                    productSaleList.find('tfoot').hide();
 
+                    if (response[0].dueAmount > 0){
+                        productSaleList.find('#paymentBtn').removeClass('hide');
+                        $('#paymentModal').find('#paymentTransfar').attr('data-sale-id', response[0].saleId);
+                        $('#paymentModal').find('.modal-body .totalPrice').text(response[0].dueAmount + ' TK');
+
+                        productSaleList.find('.show-sale-details').addClass('hide');
+
+                    }else {
+                        productSaleList.find('#paymentBtn').addClass('hide');
+                        // Show receipt button
+                        productSaleList.find('.show-sale-details').removeClass('hide');
+                    }
                 })
             } else {
                 // Hide receipt button
@@ -184,7 +192,7 @@ $(document).on('click', '#addProduct', function (event) {
                         "<td class='removeProductFromSaleList' data-sale-id=" + response.saleId + " data-product-id=" + data['productPurchaseId'] + " data-sale-date=" + data['saleDate'] + " style='cursor: pointer'><i class='fa fa-remove'></i></td>" +
                         "</tr>";
 
-                    productSaleList.find('.pay-amount').attr('data-sale-id', response.saleId);
+                    $('#paymentModal').find('#paymentTransfar').attr('data-sale-id', response.saleId);
                     productSaleList.find('#paymentBtn').removeClass('hide');
                     productSaleList.find('tfoot').remove();
                     productSaleList.find('tbody').append(itemTr);
@@ -279,12 +287,12 @@ $(document).on('keypress', function (e) {
     }
 })
 
-// Update Due amount
+// Pay
 $(document).on('click', '#paymentTransfar', function (e) {
-    let amountField = $('.pay-amount');
-    let payAmount = amountField.val();
-    let url = amountField.attr('data-action');
-    let saleId = amountField.attr('data-sale-id');
+    // let amountField = $('.pay-amount');
+    let payAmount = $('.pay-amount').val();
+    let url = $(this).attr('data-action');
+    let saleId = $(this).attr('data-sale-id');
     if (!$.trim(payAmount)) {
         payAmount = 0;
     }
@@ -295,19 +303,55 @@ $(document).on('click', '#paymentTransfar', function (e) {
         data: {saleId: saleId, payAmount: payAmount},
         success: function (response) {
             if (response.status === 200) {
-                $('#productSaleList').find('#dueAmount span').text(response.dueAmount);
-                $('#productSaleList').find('#paymentBtn').addClass('hide');
-                $('#productSaleList').find('#paymentSection').addClass('hide');
-                $('#productSaleList').find('#thanks').removeClass('hide');
-                $('#productSaleList').find('.show-sale-details').removeClass('hide');
-                $('#productSaleList').find('.removeProductFromSaleList').replaceWith('<td></td>');
+                let $productSaleList = $('#productSaleList');
+                let $paymentModal = $('#paymentModal');
+                $productSaleList.find('#dueAmount span').text(response.dueAmount);
+                $paymentModal.modal('hide');
+
+                if (response.dueAmount > 0){
+                    $('.pay-amount').val('');
+                    $productSaleList.find('#paymentBtn').removeClass('hide');
+                    $paymentModal.find('#paymentTransfar').attr('data-sale-id', saleId);
+                    $paymentModal.find('.modal-body .totalPrice').text(response.dueAmount + ' TK');
+
+                    $productSaleList.find('.show-sale-details').addClass('hide');
+
+                }else {
+                    $productSaleList.find('#paymentBtn').remove();
+                    $productSaleList.find('.show-sale-details').removeClass('hide');
+
+                }
+
+                // $('#productSaleList').find('#paymentSection').addClass('hide');
+                // $('#productSaleList').find('#thanks').removeClass('hide');
+                $productSaleList.find('.removeProductFromSaleList').replaceWith('<td></td>');
+
+                //Payment notification
+                toastr.options = {
+                    "closeButton": false,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": true,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "3000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+                toastr.success("<i class = 'fa fa-handshake-o'></i> Thanks!")
             }
         }
     })
 })
 
-$(document).on('click', '#paymentBtn', function (e) {
-    $('#paymentSection').removeClass('hide');
-    // $('#productSaleForm').find('#addProduct').hide();
-
-})
+// $(document).on('click', '#paymentBtn', function (e) {
+//     $('#paymentSection').removeClass('hide');
+//     // $('#productSaleForm').find('#addProduct').hide();
+//
+// })

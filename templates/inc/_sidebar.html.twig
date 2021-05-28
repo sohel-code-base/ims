@@ -12,7 +12,7 @@
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MAIN NAVIGATION</li>
             <li class="btn-group-lg">
-                <a href="#" class="btn bg-navy-active btn-flat" style="text-align: left">
+                <a href="#" data-toggle="modal" data-target="#expenseModal"  class="btn bg-navy-active btn-flat" style="text-align: left">
                     <i class="fa fa-minus-square"></i> <span>Expense</span>
                 </a>
                 <a href="{{ path('new_sale') }}" class="btn bg-maroon btn-flat" style="text-align: left">
@@ -54,6 +54,18 @@
                 <ul class="treeview-menu">
                     <li><a href="{{ path('all_product_sale') }}"><i class="fa fa-send"></i>Sales Archive</a></li>
                     <li><a href="{{ path('new_sale') }}"><i class="fa fa-share-square"></i>New Sale</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-minus-square"></i> <span>Expense</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="{{ path('expense_list') }}"><i class="fa fa-send"></i>Expense Archive</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#expenseModal"><i class="fa fa-share-square"></i>New Expense</a></li>
                 </ul>
             </li>
 

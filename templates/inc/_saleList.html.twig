@@ -8,16 +8,16 @@
 
                 </div>
             </div>
-            <div class="col-md-5 text-center">
-                <div class="btn-group hide" id="paymentSection">
-                    <input type="number" placeholder="Pay Amount" class="btn btn-default text-black text-bold btn-flat pay-amount" data-action="{{ path('sale-payment') }}" data-sale-id="" value="">
-                    <span id="paymentTransfar" class="btn btn-flat btn-yahoo"><i class="glyphicon glyphicon-transfer"></i></span>
-                </div>
-                <p id="thanks" class="bg-success btn btn-flat btn-block hide" style="pointer-events: none"><i class="fa fa-handshake-o"></i> Thanks!</p>
+            <div class="col-md-5">
+{#                <div class="btn-group hide" id="paymentSection">#}
+{#                    <input type="number" placeholder="Pay Amount" class="btn btn-default text-black text-bold btn-flat pay-amount" data-action="{{ path('sale-payment') }}" data-sale-id="" value="">#}
+{#                    <span id="paymentTransfar" class="btn btn-flat btn-yahoo"><i class="glyphicon glyphicon-transfer"></i></span>#}
+{#                </div>#}
+{#                <p id="thanks" class="bg-success btn btn-flat btn-block hide" style="pointer-events: none"><i class="fa fa-handshake-o"></i> Thanks!</p>#}
             </div>
             <div class="col-md-3 text-right">
                 <div class="btn-group">
-                    <span id="paymentBtn" class="btn btn-warning btn-flat hide">{{ 'Payment'|trans }}</span>
+                    <button id="paymentBtn" data-toggle="modal" data-target="#paymentModal" class="btn btn-warning btn-flat hide" style="cursor: pointer">{{ 'Payment'|trans }}</button>
 
                     <a class="btn bg-purple btn-flat show-sale-details hide" data-toggle="modal" data-target="" data-action="{{ path('show_sale_details') }}" data-customer-id="" data-order-date="" ><i class="fa fa-file-text-o"> Receipt</i></a>
 
@@ -55,3 +55,5 @@
     </div>
     <!-- /.box-body -->
 </div>
+
+{% include 'inc/_paymentModal.html.twig' %}

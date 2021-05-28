@@ -175,7 +175,7 @@ class ProductSaleController extends AbstractController
 
     /**
      * @Route("/product/collect", name="collect_product_customer_and_sale_date", options={"expose"=true})
-     * @param ProductSaleRepository $repository
+     * @param ProductSaleDetailsRepository $repository
      * @return JsonResponse
      * @throws \Exception
      */
@@ -242,7 +242,7 @@ class ProductSaleController extends AbstractController
     }
 
     /**
-     * @Route("/payment", name="sale-payment")
+     * @Route("/payment", name="sale_payment")
      * @param ProductSaleRepository $saleRepository
      * @return JsonResponse
      */

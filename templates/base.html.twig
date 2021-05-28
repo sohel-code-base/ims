@@ -64,6 +64,7 @@
     <!-- /.content-wrapper -->
 
     {% include 'inc/_footer.html.twig' %}
+    {% include 'inc/_expenseModal.html.twig' %}
 
 </div>
 <!-- ./wrapper -->
@@ -100,6 +101,12 @@
         $('ul.treeview-menu a').filter(function() {
             return this.href == url;
         }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
+
+        $("#dp").datepicker({
+            autoclose: true,
+            todayHighlight: true,
+            format: 'dd-mm-yyyy',
+        });
     });
 </script>
 {% block javascripts %}

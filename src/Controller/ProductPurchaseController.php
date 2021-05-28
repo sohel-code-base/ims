@@ -165,14 +165,20 @@ class ProductPurchaseController extends AbstractController
      * @param $id
      * @param ProductPurchaseRepository $purchaseRepository
      * @param ProductSaleDetailsRepository $saleDetailsRepository
+     * @param ProductPurchaseArchiveRepository $archiveRepository
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deletePurchaseProduct($id, ProductPurchaseRepository $purchaseRepository, ProductSaleDetailsRepository $saleDetailsRepository)
+    public function deletePurchaseProduct($id, ProductPurchaseRepository $purchaseRepository, ProductSaleDetailsRepository $saleDetailsRepository, ProductPurchaseArchiveRepository $archiveRepository)
     {
         $findPurchaseProduct = $purchaseRepository->findOneBy(['id' => $id]);
         $findSale = $saleDetailsRepository->findOneBy(['product' => $findPurchaseProduct]);
         if(! $findSale){
             $em = $this->getDoctrine()->getManager();
+
+            $findArchive = $archiveRepository->findOneBy(['product' => $findPurchaseProduct->getProduct(), 'purchaseDate' => $findPurchaseProduct->getPurchaseDate()]);
+            if ($findArchive){
+                $em->remove($findArchive);
+            }
             $em->remove($findPurchaseProduct);
             $em->flush();
             $this->addFlash('success','Product has been deleted!');

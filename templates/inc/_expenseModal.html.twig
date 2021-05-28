@@ -1,0 +1,47 @@
+<!-- Modal for New Customer -->
+<div class="modal fade" id="expenseModal">
+    <div class="modal-dialog modal-sm" style="margin: 160px auto">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{{ 'Expense'|trans }}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <form action="{{ path('new_expense') }}" name="expense" method="post">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="">Type</label>
+                                    <input type="text" name="expenseType" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Date</label>
+                                    <input type="text" name="expenseDate" class="form-control" id="dp">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Amount</label>
+                                    <input type="number" name="expenseAmount" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-md-offset-3">
+                                <div class="form-group">
+                                    <button id="paymentTransfar" type="submit" class="btn btn-flat btn-block btn-yahoo" data-action="{{ path('sale_payment') }}" data-sale-id=""><i class="glyphicon glyphicon-transfer"></i> Pay</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<script>
+
+</script>

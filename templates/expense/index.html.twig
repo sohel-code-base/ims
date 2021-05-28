@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block contentTitle %}
-    Product Archive <small>Purchase History!</small>
+    Expense Archive <small>Expense History!</small>
 {% endblock %}
 {% block body %}
 
@@ -30,15 +30,15 @@
                 <div class="row">
                     <div class="col-md-6 col-md-offset-3 margin-bottom">
                         <form action="{{ path('product_purchase_archive') }}" name="filter" method="post">
-{#                        {{ form_start(filterForm) }}#}
-                        <div class="input-group margin">
-                            {{ form_widget(filterForm.monthYear,{'id': 'datepicker','attr':{'autocomplete': 'off','placeholder': 'e.g. '~'now'|date('F-Y') }}) }}
-                            <span class="input-group-btn">
+                            {#                        {{ form_start(filterForm) }}#}
+                            <div class="input-group margin">
+                                {{ form_widget(filterForm.monthYear,{'id': 'datepicker','attr':{'autocomplete': 'off','placeholder': 'e.g. '~'now'|date('F-Y') }}) }}
+                                <span class="input-group-btn">
                                 {{ form_widget(filterForm.filter, {'attr':{'class':'btn-flat bg-primary', 'style':'margin-left: -3px;border-top-right-radius: 5px;border-bottom-right-radius: 5px;width: 100px;box-shadow: inset 1px -5px 15px -1px #005eaf'}}) }}
                     </span>
-                        </div>
+                            </div>
 
-                        {{ form_rest(filterForm) }}
+                            {{ form_rest(filterForm) }}
                         </form>
                     </div>
                 </div>
@@ -55,26 +55,11 @@
                         <th>{{ 'Purchase Price'|trans }}(tk)</th>
                         <th>{{ 'Quantity'|trans }}(pcs)</th>
                         <th>{{ 'Purchase Date'|trans }}</th>
-{#                        <th width="20%"><i class="fa fa-gear"></i></th>#}
+                        {#                        <th width="20%"><i class="fa fa-gear"></i></th>#}
                     </tr>
                     </thead>
                     <tbody>
-                    {% if records is not empty and records is iterable %}
-                        {% for record in records %}
-                            <tr>
-                                <td>{{ loop.index }}</td>
-                                <td>
-                                    {{ record.productName|default('') }}
-                                    {% if record.watt is not null %}
-                                        <strong>({{ record.watt }} w)</strong>
-                                    {% endif %}
-                                </td>
-                                <td>{{ record.purchasePrice|default(0) }}</td>
-                                <td>{{ record.quantity|default(0) }}</td>
-                                <td>{{ record.purchaseDate|date('d-m-Y') }}</td>
-                            </tr>
-                        {% endfor %}
-                    {% endif %}
+
                     </tbody>
                 </table>
             </div>

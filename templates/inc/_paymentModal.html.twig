@@ -1,0 +1,36 @@
+<!-- Modal for New Customer -->
+<div class="modal fade" id="paymentModal">
+    <div class="modal-dialog modal-sm" style="margin: 160px auto">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{{ 'Payment'|trans }}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <h1 class="text-center text-red text-bold totalPrice" style="margin: 0 0 20px"></h1>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input type="number" placeholder="Pay Amount" class="form-control pay-amount" value="">
+                                </div>
+                            </div>
+                        </div>
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3">
+                            <div class="form-group">
+{#                                <span id="paymentTransfar" class="btn btn-flat btn-yahoo"><i class="glyphicon glyphicon-transfer"></i></span>#}
+
+                                <button id="paymentTransfar" type="submit" class="btn btn-flat btn-block btn-yahoo" data-action="{{ path('sale_payment') }}" data-sale-id=""><i class="glyphicon glyphicon-transfer"></i> Pay</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
