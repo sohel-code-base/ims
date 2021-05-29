@@ -31,11 +31,11 @@ class ProductPurchaseArchiveRepository extends ServiceEntityRepository
 
         $qb->select('product.name AS productName');
         $qb->addSelect('power.watt');
-        $qb->addSelect('e.quantity', 'e.purchasePrice','e.status', 'e.purchaseDate');
+        $qb->addSelect('e.quantity', 'e.purchasePrice','e.status', 'e.purchaseDate', '(e.quantity * e.purchasePrice) AS itemPrice');
 
         $qb->where('e.purchaseDate >= :beginningOfMonth')->setParameter('beginningOfMonth', $beginningOfMonth);
         $qb->andWhere('e.purchaseDate <= :endOfMonth')->setParameter('endOfMonth', $endOfMonth);
-        $qb->orderBy('e.purchaseDate', 'DESC');
+        $qb->orderBy('e.purchaseDate', 'ASC');
         $results = $qb->getQuery()->getArrayResult();
 
         return $results;

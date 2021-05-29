@@ -9,6 +9,8 @@ use App\Form\ProductPurchaseType;
 use App\Repository\ProductPurchaseArchiveRepository;
 use App\Repository\ProductPurchaseRepository;
 use App\Repository\ProductSaleDetailsRepository;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,13 +34,13 @@ class ProductPurchaseController extends AbstractController
     }
 
     /**
-     * @Route("/product/purchase/archive", name="product_purchase_archive")
+     * @Route("/product/purchase/archive/{mode}", defaults={"mode" = null}, name="product_purchase_archive")
      * @param Request $request
      * @param ProductPurchaseArchiveRepository $repository
      * @return Response
      * @throws \Exception
      */
-    public function purchaseArchive(Request $request, ProductPurchaseArchiveRepository $repository)
+    public function purchaseArchive(Request $request, $mode, ProductPurchaseArchiveRepository $repository)
     {
         $filterBy = new \DateTime('now');
 
@@ -46,9 +48,35 @@ class ProductPurchaseController extends AbstractController
         $filterForm->handleRequest($request);
 
         if ($filterForm->isSubmitted()){
-            $filterBy = new \DateTime('01-'.$filterForm->get('monthYear')->getData());
+            $filterBy = new \DateTime($filterForm->get('monthYear')->getData());
         }
         $records = $repository->getProductPurchaseByMonth($filterBy);
+        if ($mode == 'pdf'){
+
+//            dd($_SERVER);
+            $options = new Options();
+            $options->set('defaultFont', 'Courier');
+//            $options->setChroot($this->getParameter('kernel.project_dir'));
+
+            $dompdf = new Dompdf($options);
+            $dompdf->setBasePath($this->getParameter('kernel.project_dir') . '/public');
+            $dompdf->getOptions()->setChroot($this->getParameter('kernel.project_dir') . '/public');
+//            dd($dompdf->getBasePath());
+            $html = $this->renderView('product_purchase/pdf-productPurchaseArchive.html.twig',[
+                'records' => $records,
+            ]);
+            $dompdf->loadHtml($html);
+
+            // (Optional) Setup the paper size and orientation
+            $dompdf->setPaper('A4', 'portrait');
+            // Render the HTML as PDF
+            $dompdf->render();
+
+            // Output the generated PDF to Browser
+            $dompdf->stream($filterBy->format('F-Y') . 'purchase-archive.pdf', [
+                "Attachment" => false
+            ]);
+        }
         return $this->render('product_purchase/productPurchaseArchive.html.twig',[
             'filterForm' => $filterForm->createView(),
             'records' => $records,

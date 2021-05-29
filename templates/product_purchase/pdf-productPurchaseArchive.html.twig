@@ -1,0 +1,87 @@
+<script>
+    window.print();
+</script>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ records[0].purchaseDate|date('F-Y') }} | Product Purchase</title>
+    <link rel="stylesheet" href="{{ asset('/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="../../public/css/bootstrap.min.css">
+    <style>
+        .heading-area{
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .heading-area h3{
+            border-bottom: 2px solid #000000;
+            padding-bottom: 3px;
+        }
+        table tr th, table tr td{
+            border: 1px solid #cccccc;
+        }
+        table thead tr th{
+            font-size: 13px;
+            padding: 2px 5px;
+            background-color: #edf2f7;
+        }
+        table tr td{
+            padding: 2px 5px;
+            font-size: 13px;
+
+        }
+    </style>
+</head>
+<body>
+<div class="heading-area">
+    <h2>{{ 'Sun Electro Industries LTD'|upper|trans }}</h2>
+    <p style="margin: 0; font-weight: 700"><em>{{ 'Marketed By: M/S Islamia Traders'|trans }}</em></p>
+    <p style="margin: 0; font-weight: 600">{{ 'All types of electrical goods are sold wholesale and retail here'|trans }}</p>
+    <p style="margin: 0; font-weight: 600">{{ 'Rajendrapur Cantt. Gazipur Sadar, Gazipur'|trans }}</p>
+    <h3>Product Purchase List ({{ records[0].purchaseDate|date('F-Y') }})</h3>
+</div>
+<table cellpadding="0" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+        <th width="5%">{{ 'S/N'|trans }}</th>
+        <th width="40%">{{ 'Product Name'|trans }}</th>
+        <th width="15%">{{ 'Purchase Price'|trans }}(tk)</th>
+        <th width="15%">{{ 'Quantity'|trans }}(pcs)</th>
+        <th width="15%">{{ 'Purchase Date'|trans }}</th>
+        <th width="10%">{{ 'Item Price'|trans }}(tk)</th>
+        {#                        <th width="20%"><i class="fa fa-gear"></i></th>#}
+    </tr>
+    </thead>
+    {% if records is not empty and records is iterable %}
+        <tbody>
+            {% set totalPrice = 0 %}
+            {% for record in records %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>
+                        {{ record.productName|default('') }}
+                        {% if record.watt is not null %}
+                            <strong>({{ record.watt }} w)</strong>
+                        {% endif %}
+                    </td>
+                    <td align="center">{{ record.purchasePrice|default(0) }}</td>
+                    <td align="center">{{ record.quantity|default(0) }}</td>
+                    <td align="center">{{ record.purchaseDate|date('d-m-Y') }}</td>
+                    <td align="center">{{ record.itemPrice|default(0) }}</td>
+                </tr>
+                {% set totalPrice = totalPrice + record.itemPrice %}
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="5" align="center" style="padding: 5px 2px">Total</th>
+                <th>{{ totalPrice }}TK</th>
+            </tr>
+        </tfoot>
+    {% endif %}
+</table>
+</body>
+</html>
