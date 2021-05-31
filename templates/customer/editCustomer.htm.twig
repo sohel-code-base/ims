@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+{% block title %}Add New Product{% endblock %}
+{% block stylesheet %}
+    <link href="{{ asset('css/bootstrap-toggle.min.css') }}" rel="stylesheet">
+
+{% endblock %}
+{% block contentTitle %}
+    Update Customer <small>This is the location where you can update Customer details!</small>
+{% endblock %}
+{% block body %}
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                {#            <h3 class="box-title">General Elements</h3>#}
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                {{ form_start(form,{'attr':{'id':'addNewCustomerForm'}}) }}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.name, 'Customer Name:') }}
+                            {{ form_widget(form.name,{'attr':{'autocomplete':'off','placeholder':'e.g. Mr. Sajib'}}) }}
+{#                            {{ form_errors(form.name, {'attr': {'class':'help-block'}}) }}#}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.phone, 'Customer Phone:') }}
+                            {{ form_widget(form.phone,{'attr':{'autocomplete':'off','placeholder':'e.g. 0123456789'}}) }}
+{#                            {{ form_errors(form.phone, {'attr': {'class':'help-block'}}) }}#}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            {{ form_label(form.address, 'Address:') }}
+                            {{ form_widget(form.address,{'attr':{'placeholder': 'e.g. Rajendrapur Cantt.'}}) }}
+{#                            {{ form_errors(form.address, {'attr': {'class':'help-block'}}) }}#}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 col-md-offset-5 ">
+                        <div class="form-group">
+                            {{ form_widget(form.status, {'attr':{'checked':'checked'}}) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 pull-right">
+                        <div class="form-group">
+                            {{ form_widget(form.Submit, {'label': 'Save', 'attr':{'class': 'btn-flat btn-primary pull-right text-white w-10'}}) }}
+                        </div>
+                    </div>
+                </div>
+
+                            {{ form_end(form) }}
+            </div>
+            <!-- /.box-body -->
+        </div>
+
+    </section>
+{% endblock %}
+{% block javascripts %}
+
+    <script src="{{ asset('js/bootstrap-toggle.min.js') }}"></script>
+{% endblock %}

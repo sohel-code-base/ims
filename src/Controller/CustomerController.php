@@ -5,16 +5,22 @@ namespace App\Controller;
 use App\Entity\Customer;
 use App\Form\CustomerType;
 use App\Repository\CustomerRepository;
+use App\Repository\ProductSaleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class CustomerController
+ * @package App\Controller
+ * @Route("/customer")
+ */
 class CustomerController extends AbstractController
 {
     /**
-     * @Route("/customer", name="all_customer")
+     * @Route("/", name="all_customer")
      * @param CustomerRepository $repository
      * @return Response
      */
@@ -27,7 +33,7 @@ class CustomerController extends AbstractController
     }
 
     /**
-     * @Route("/customer/new/{from}", defaults={"from" = null}, methods={"GET","POST"}, name="new_customer")
+     * @Route("/new/{from}", defaults={"from" = null}, methods={"GET","POST"}, name="new_customer")
      * @param Request $request
      * @param $from
      * @return Response
@@ -71,12 +77,70 @@ class CustomerController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/customer/details", name="new_sale_customer_details", options={"expose"=true})
+     * @Route("/{id}/edit", name="edit_customer")
+     * @param Request $request
+     * @param $id
+     * @param CustomerRepository $repository
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function editCustomer(Request $request, $id, CustomerRepository $repository)
+    {
+        $findCustomer = $repository->find($id);
+        if ($findCustomer){
+
+            $form = $this->createForm(CustomerType::class, $findCustomer)->remove('createdAt')->remove('updatedAt');
+            $form->handleRequest($request);
+
+            if($form->isSubmitted()){
+                $em = $this->getDoctrine()->getManager();
+                $findCustomer->setUpdatedAt(new \DateTime('now'));
+                $em->persist($findCustomer);
+                $em->flush();
+                $this->addFlash('success', 'Customer details updated!');
+                return $this->redirectToRoute('all_customer');
+            }
+
+            return $this->render('customer/editCustomer.htm.twig', [
+                'form' => $form->createView(),
+            ]);
+        }
+    }
+
+    /**
+     * @Route("/{id}/delete", name="delete_customer")
+     * @param $id
+     * @param CustomerRepository $repository
+     * @param ProductSaleRepository $saleRepository
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteCustomer($id, CustomerRepository $repository, ProductSaleRepository $saleRepository)
+    {
+        $findCustomer = $repository->find($id);
+        if ($findCustomer){
+            $findCustomerInSaleList = $saleRepository->findBy(['customer' => $findCustomer]);
+            if (!$findCustomerInSaleList){
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($findCustomer);
+                $em->flush();
+
+                $this->addFlash('success', 'Customer has been deleted!');
+                return $this->redirectToRoute('all_customer');
+            } else {}
+            $this->addFlash('error', 'Customers who have already purchased product cannot be deleted!');
+            return $this->redirectToRoute('all_customer');
+        } else {
+            $this->addFlash('error', 'Customer not found!');
+            return $this->redirectToRoute('all_customer');
+        }
+    }
+
+    /**
+     * @Route("/{id}/details", name="new_sale_customer_details", options={"expose"=true})
      * @param $id
      * @param CustomerRepository $repository
      * @return JsonResponse
      */
-    public function getCustomerDetails($id, CustomerRepository $repository)
+    public function customerDetails($id, CustomerRepository $repository)
     {
         $findCustomer = $repository->findOneBy(['id' => $id]);
         if ($findCustomer){
@@ -90,4 +154,6 @@ class CustomerController extends AbstractController
             return new JsonResponse('failed!');
         }
     }
+
+    
 }

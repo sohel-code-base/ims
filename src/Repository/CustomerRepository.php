@@ -22,7 +22,7 @@ class CustomerRepository extends ServiceEntityRepository
     public function getAllCustomers(){
         $qb= $this->createQueryBuilder('e');
 
-        $qb->select('e.name','e.phone','e.address','e.status');
+        $qb->select('e.id','e.name','e.phone','e.address','e.status');
 
         $results = $qb->getQuery()->getArrayResult();
         return $results;
