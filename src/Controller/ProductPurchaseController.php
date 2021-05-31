@@ -17,7 +17,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-
+/**
+ * Class ProductPurchaseController
+ * @package App\Controller
+ * @Route("/")
+ */
 class ProductPurchaseController extends AbstractController
 {
     /**
@@ -34,14 +38,14 @@ class ProductPurchaseController extends AbstractController
     }
 
     /**
-     * @Route("/product/purchase/archive/{mode}", defaults={"mode" = null}, name="product_purchase_archive")
+     * @Route("product/purchase/archive", name="product_purchase_archive")
      * @param Request $request
      * @param $mode
      * @param ProductPurchaseArchiveRepository $repository
      * @return Response
      * @throws \Exception
      */
-    public function purchaseArchive(Request $request, $mode, ProductPurchaseArchiveRepository $repository)
+    public function purchaseArchive(Request $request, ProductPurchaseArchiveRepository $repository)
     {
         $filterBy = new \DateTime('now');
 
@@ -52,17 +56,30 @@ class ProductPurchaseController extends AbstractController
             $filterBy = new \DateTime($filterForm->get('monthYear')->getData());
         }
         $records = $repository->getProductPurchaseByMonth($filterBy);
-        if ($mode == 'pdf'){
 
-//            dd($_SERVER);
+        return $this->render('product_purchase/productPurchaseArchive.html.twig',[
+            'filterForm' => $filterForm->createView(),
+            'records' => $records,
+            'filterBy' => $filterBy,
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param ProductPurchaseArchiveRepository $repository
+     * @throws \Exception
+     * @Route("product/purchase/archive/pdf", name="product_purchase_archive_pdf")
+     */
+    public function purchaseArchivePdf(Request $request, ProductPurchaseArchiveRepository $repository)
+    {
+        $filterBy = new \DateTime($request->query->get('month'));
+
+        $records = $repository->getProductPurchaseByMonth($filterBy);
+
             $options = new Options();
             $options->set('defaultFont', 'Courier');
-//            $options->setChroot($this->getParameter('kernel.project_dir'));
 
             $dompdf = new Dompdf($options);
-            $dompdf->setBasePath($this->getParameter('kernel.project_dir') . '/public');
-            $dompdf->getOptions()->setChroot($this->getParameter('kernel.project_dir') . '/public');
-//            dd($dompdf->getBasePath());
             $html = $this->renderView('product_purchase/pdf-productPurchaseArchive.html.twig',[
                 'records' => $records,
             ]);
@@ -77,16 +94,11 @@ class ProductPurchaseController extends AbstractController
             $dompdf->stream($filterBy->format('F-Y') . 'purchase-archive.pdf', [
                 "Attachment" => false
             ]);
-        }
-        return $this->render('product_purchase/productPurchaseArchive.html.twig',[
-            'filterForm' => $filterForm->createView(),
-            'records' => $records,
-            'filterBy' => $filterBy,
-        ]);
+            die();
     }
 
     /**
-     * @Route("/product/purchase", name="product_purchase")
+     * @Route("product/purchase/new", name="product_purchase")
      * @param Request $request
      * @param ProductPurchaseRepository $purchaseRepository
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
@@ -152,45 +164,8 @@ class ProductPurchaseController extends AbstractController
         ]);
     }
 
-
     /**
-     * @Route("/product/{id}/edit", name="edit_purchase_product")
-     * @param Request $request
-     * @param ProductPurchaseRepository $repository
-     * @param $id
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
-     * @throws \Exception
-     */
-/*    public function editPurchaseProduct(Request $request, ProductPurchaseRepository $repository, $id)
-    {
-        $findProduct = $repository->findOneBy(['id' => $id]);
-        $createdAt = $findProduct->getCreatedAt();
-        $form = $this->createForm(ProductPurchaseType::class, $findProduct);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted()){
-            $em = $this->getDoctrine()->getManager();
-            $purchaseDateStringToDate = $form->get('purchaseDate')->getData();
-
-            $findProduct->setCreatedAt($createdAt);
-            $findProduct->setUpdatedAt(new \DateTime('now'));
-            $findProduct->setPurchaseDate(new \DateTime($purchaseDateStringToDate));
-            $em->persist($findProduct);
-            $em->flush();
-            $this->addFlash('update', 'Record has been updated successfully!');
-            return $this->redirectToRoute('all_purchase_product');
-        }
-
-        $purchaseDateToString = $form->get('purchaseDate')->getData()->format('d-m-Y');
-        $form->get('purchaseDate')->setData($purchaseDateToString);
-
-        return $this->render('product_purchase/edit.html.twig',[
-            'form' => $form->createView(),
-        ]);
-    }*/
-
-    /**
-     * @Route("/product/{id}/delete", name="delete_purchase_product")
+     * @Route("product/purchase/{id}/delete", name="delete_purchase_product")
      * @param $id
      * @param ProductPurchaseRepository $purchaseRepository
      * @param ProductSaleDetailsRepository $saleDetailsRepository
@@ -199,35 +174,40 @@ class ProductPurchaseController extends AbstractController
      */
     public function deletePurchaseProduct($id, ProductPurchaseRepository $purchaseRepository, ProductSaleDetailsRepository $saleDetailsRepository, ProductPurchaseArchiveRepository $archiveRepository)
     {
-        $findPurchaseProduct = $purchaseRepository->findOneBy(['id' => $id]);
-        $findSale = $saleDetailsRepository->findOneBy(['product' => $findPurchaseProduct]);
-        if(! $findSale){
-            $em = $this->getDoctrine()->getManager();
+        $findPurchaseProduct = $purchaseRepository->find($id);
+        if ($findPurchaseProduct){
+            $findSale = $saleDetailsRepository->findOneBy(['product' => $findPurchaseProduct]);
+            if(! $findSale){
+                $em = $this->getDoctrine()->getManager();
 
-            $findArchive = $archiveRepository->findOneBy(['product' => $findPurchaseProduct->getProduct(), 'purchaseDate' => $findPurchaseProduct->getPurchaseDate()]);
-            if ($findArchive){
-                $em->remove($findArchive);
+                $findArchive = $archiveRepository->findOneBy(['product' => $findPurchaseProduct->getProduct(), 'purchaseDate' => $findPurchaseProduct->getPurchaseDate()]);
+                if ($findArchive){
+                    $em->remove($findArchive);
+                }
+                $em->remove($findPurchaseProduct);
+                $em->flush();
+                $this->addFlash('success','Product has been deleted!');
+                return $this->redirectToRoute('all_purchase_product');
+            }else{
+                $this->addFlash('error','You can not delete the product that has been sold!');
+                return $this->redirectToRoute('all_purchase_product');
             }
-            $em->remove($findPurchaseProduct);
-            $em->flush();
-            $this->addFlash('success','Product has been deleted!');
-            return $this->redirectToRoute('all_purchase_product');
-        }else{
-            $this->addFlash('error','You can not delete the product that has been sold!');
+        } else {
+            $this->addFlash('error','Not Found!');
             return $this->redirectToRoute('all_purchase_product');
         }
+
     }
 
-
     /**
-     * @Route("/{id}/product/details", methods={"GET"}, name="new_sale_product_details", options={"expose"=true})
+     * @Route("product/purchase/{id}/details", methods={"GET"}, name="new_sale_product_details", options={"expose"=true})
      * @param $id
      * @param ProductPurchaseRepository $repository
      * @return JsonResponse
      */
     public function getProductDetailsOnProductSelect($id, ProductPurchaseRepository $repository)
     {
-        $findProduct = $repository->findOneBy(['id' => $id]);
+        $findProduct = $repository->find($id);
         if ($findProduct){
             $returnData = [
                 'id' => $findProduct->getId(),

@@ -43,13 +43,19 @@
 <table cellpadding="0" cellspacing="0" width="100%">
     <thead>
     <tr>
-        <th width="5%">{{ 'S/N'|trans }}</th>
-        <th width="40%">{{ 'Product Name'|trans }}</th>
-        <th width="15%">{{ 'Purchase Price'|trans }}(tk)</th>
-        <th width="15%">{{ 'Quantity'|trans }}(pcs)</th>
+        <th>{{ 'S/N'|trans }}</th>
+        <th width="35%">{{ 'Product Name'|trans }}</th>
+        <th>{{ 'Purchase Price'|trans }}(tk)</th>
+        <th>{{ 'Quantity'|trans }}(pcs)</th>
         <th width="15%">{{ 'Purchase Date'|trans }}</th>
-        <th width="10%">{{ 'Item Price'|trans }}(tk)</th>
-        {#                        <th width="20%"><i class="fa fa-gear"></i></th>#}
+        <th>{{ 'Item Price'|trans }}(tk)</th>
+
+{#        <th width="5%">{{ 'S/N'|trans }}</th>#}
+{#        <th width="35%">{{ 'Product Name'|trans }}</th>#}
+{#        <th width="15%">{{ 'Purchase Price'|trans }}(tk)</th>#}
+{#        <th width="15%">{{ 'Quantity'|trans }}(pcs)</th>#}
+{#        <th width="15%">{{ 'Purchase Date'|trans }}</th>#}
+{#        <th width="15%">{{ 'Item Price'|trans }}(tk)</th>#}
     </tr>
     </thead>
     {% if records is not empty and records is iterable %}
@@ -74,8 +80,8 @@
         </tbody>
         <tfoot>
             <tr>
-                <th colspan="5" align="center" style="padding: 5px 2px">Total</th>
-                <th>{{ totalPrice }}TK</th>
+                <th colspan="5" align="center" style="padding: 5px">Total</th>
+                <th style="padding: 5px">{{ (totalPrice)|number_format(2) }}TK</th>
             </tr>
         </tfoot>
     {% endif %}

@@ -61,6 +61,7 @@ class ProductSaleController extends AbstractController
      * @Route("/archive/pdf", name="product_sale_archive_pdf")
      * @param Request $request
      * @param ProductSaleRepository $repository
+     * @throws \Exception
      */
     public function productSaleArchivePdf(Request $request, ProductSaleRepository $repository)
     {
