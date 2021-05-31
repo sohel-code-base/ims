@@ -5,9 +5,9 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ records[0].purchaseDate|date('F-Y') }} | Product Purchase</title>
+    <title>{{ allSales[0].orderDate|date('F-Y') }} | Product Sale</title>
 {#    <link rel="stylesheet" href="{{ asset('/css/bootstrap.min.css') }}">#}
-{#    <link rel="stylesheet" href="../../public/css/bootstrap.min.css">#}
+{#    <link rel="stylesheet" href="css/bootstrap.min.css">#}
     <style>
         .heading-area{
             text-align: center;
@@ -38,45 +38,38 @@
     <p style="margin: 0; font-weight: 700"><em>{{ 'Marketed By: M/S Islamia Traders'|trans }}</em></p>
     <p style="margin: 0; font-weight: 600">{{ 'All types of electrical goods are sold wholesale and retail here'|trans }}</p>
     <p style="margin: 0; font-weight: 600">{{ 'Rajendrapur Cantt. Gazipur Sadar, Gazipur'|trans }}</p>
-    <h3>Product Purchase List ({{ records[0].purchaseDate|date('F-Y') }})</h3>
+    <h3>Product Sale List ({{ allSales[0].orderDate|date('F-Y') }})</h3>
 </div>
 <table cellpadding="0" cellspacing="0" width="100%">
     <thead>
     <tr>
-        <th width="5%">{{ 'S/N'|trans }}</th>
-        <th width="40%">{{ 'Product Name'|trans }}</th>
-        <th width="15%">{{ 'Purchase Price'|trans }}(tk)</th>
-        <th width="15%">{{ 'Quantity'|trans }}(pcs)</th>
-        <th width="15%">{{ 'Purchase Date'|trans }}</th>
-        <th width="10%">{{ 'Item Price'|trans }}(tk)</th>
-        {#                        <th width="20%"><i class="fa fa-gear"></i></th>#}
+        <th width="10" class="text-center">{{ 'S/N'|trans }}</th>
+        <th>{{ 'Customer Name'|trans }}</th>
+        <th>{{ 'Customer Phone'|trans }}</th>
+        <th>{{ 'Total Amount (tk)'|trans }}</th>
+        <th>{{ 'Sale Date'|trans }}</th>
     </tr>
     </thead>
-    {% if records is not empty and records is iterable %}
+    {% if allSales is not empty and allSales is iterable %}
+        {% set total = 0 %}
         <tbody>
-            {% set totalPrice = 0 %}
-            {% for record in records %}
+            {% for sale in allSales %}
                 <tr>
                     <td>{{ loop.index }}</td>
-                    <td>
-                        {{ record.productName|default('') }}
-                        {% if record.watt is not null %}
-                            <strong>({{ record.watt }} w)</strong>
-                        {% endif %}
-                    </td>
-                    <td align="center">{{ record.purchasePrice|default(0) }}</td>
-                    <td align="center">{{ record.quantity|default(0) }}</td>
-                    <td align="center">{{ record.purchaseDate|date('d-m-Y') }}</td>
-                    <td align="center">{{ record.itemPrice|default(0) }}</td>
+                    <td>{{ sale.customerName|default('N/A') }}</td>
+                    <td>{{ sale.customerPhone|default('N/A') }}</td>
+                    <td align="right">{{ sale.totalPrice|default(0) }}</td>
+                    <td align="right">{{ sale.orderDate|date('d-m-Y')|default('N/A') }}</td>
                 </tr>
-                {% set totalPrice = totalPrice + record.itemPrice %}
+                {% set total = total + sale.totalPrice %}
             {% endfor %}
         </tbody>
         <tfoot>
-            <tr>
-                <th colspan="5" align="center" style="padding: 5px 2px">Total</th>
-                <th>{{ totalPrice }}TK</th>
-            </tr>
+        <tr>
+            <th colspan="3" align="center"> Total </th>
+            <th align="right">{{ (total)|number_format(2,'.') }} TK</th>
+            <th></th>
+        </tr>
         </tfoot>
     {% endif %}
 </table>

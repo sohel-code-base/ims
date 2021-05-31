@@ -19,12 +19,17 @@ class ProductSaleRepository extends ServiceEntityRepository
         parent::__construct($registry, ProductSale::class);
     }
 
-    public function getSaleRecords()
+    public function getSaleRecords($filterBy)
     {
+        $beginningOfMonth = $filterBy->format('Y-m-01');
+        $endOfMonth = $filterBy->format('Y-m-t');
+
         $qb = $this->createQueryBuilder('e');
         $qb->join('e.customer', 'customer');
         $qb->select('e.id AS saleId','e.saleDate AS orderDate', 'e.status', 'e.totalPrice', 'e.dueAmount');
-        $qb->addSelect('customer.name AS customerName','customer.id AS customerId');
+        $qb->addSelect('customer.name AS customerName','customer.id AS customerId', 'customer.phone AS customerPhone');
+        $qb->where('e.saleDate >= :beginningOfMonth')->setParameter('beginningOfMonth', $beginningOfMonth);
+        $qb->andWhere('e.saleDate <= :endOfMonth')->setParameter('endOfMonth', $endOfMonth);
         $qb->orderBy('e.saleDate', 'DESC');
         return $qb->getQuery()->getArrayResult();
 

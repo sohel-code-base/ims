@@ -3,13 +3,13 @@
 {% block stylesheet %}
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('/css/dataTables.bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('/css/animate.min.css') }}">
+{#    <link rel="stylesheet" href="{{ asset('/css/animate.min.css') }}">#}
     <link rel="stylesheet" href="{{ asset('/css/custom.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/saleDetailsPrint.css') }}">
 {% endblock %}
 
 {% block contentTitle %}
-    Sale Archive <small>Previous sales</small>
+    Sale Archive <small>Sale List</small>
 {% endblock %}
 {% block body %}
 
@@ -37,6 +37,35 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3 margin-bottom">
+                        <form action="{{ path('product_sale_archive') }}" name="filter" method="post">
+                            {#                        {{ form_start(filterForm) }}#}
+                            <div class="input-group margin">
+                                {{ form_widget(filterForm.monthYear,{'id': 'datepicker','attr':{'autocomplete': 'off','placeholder': 'e.g. '~'now'|date('F-Y') }}) }}
+                                <span class="input-group-btn">
+                                {{ form_widget(filterForm.filter, {'attr':{'class':'btn-flat bg-primary', 'style':'margin-left: -3px;border-top-right-radius: 5px;border-bottom-right-radius: 5px;width: 100px;box-shadow: inset 1px -5px 15px -1px #005eaf'}}) }}
+                    </span>
+                            </div>
+
+                            {{ form_rest(filterForm) }}
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="bg-primary">
+                            <h4 class="text-left text-white box-header text-bold" style="display: inline-block; margin: 0; padding: 8px;">{{ filterBy|date('F-Y') }}</h4>
+                            {% if allSales is not empty %}
+                                <div class="btn-group pull-right">
+                                    <a href="{{ path('product_sale_archive_pdf',{month:filterBy|date('d-m-Y')}) }}" target="_blank" class="btn btn-flat bg-navy"><i class="fa fa-download"></i> PDF</a>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+
                 <table id="productTable" class="table">
                     <thead>
                     <tr>
@@ -47,7 +76,7 @@
                         <th>{{ 'Due Amount'|trans }}</th>
                         <th>{{ 'Status'|trans }}</th>
                         <th>{{ 'Sale Date'|trans }}</th>
-                        <th width="20%"><i class="fa fa-gear"></i></th>
+                        <th width="20%" class="text-right"><i class="fa fa-gear"></i></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -69,11 +98,6 @@
                                            data-customer-id="{{ sale.customerId }}"
                                            data-order-date="{{ sale.orderDate|date('Y-m-d') }}"><i
                                                     class="fa fa-file-text-o"> Details</i></a>
-
-{#                                        <a href="" class="btn btn-sm bg-navy btn-flat"><i class="fa fa-edit"> Edit</i></a>#}
-                                        {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_DEVELOPER") %}
-                                            <a href="{{ path('delete_sale_record',{'id': sale.saleId}) }}" class="btn btn-sm bg-maroon btn-flat delete-record"><i class="fa fa-trash"> Delete</i></a>
-                                        {% endif %}
                                     </div>
 
                                 </td>
@@ -103,25 +127,25 @@
     <script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('/js/dataTables.bootstrap.min.js') }}"></script>
     <script src="{{ asset('/js/saleDetails.js') }}"></script>
-    <script src="{{ asset('/js/sweetalert2.min.js') }}"></script>
-    <script src="{{ asset('/js/deleteConfirmationAlert.js') }}"></script>
+{#    <script src="{{ asset('/js/sweetalert2.min.js') }}"></script>#}
+{#    <script src="{{ asset('/js/deleteConfirmationAlert.js') }}"></script>#}
     <!-- DataTable Activation script -->
     <script>
+        $("#datepicker").datepicker( {
+            format: "MM-yyyy",
+            // viewMode: "months",
+            minViewMode: "months",
+        });
         $(function () {
             $('#productTable').DataTable({
-                "columnDefs": [{
-                    "targets": -1,
-                    "orderable": false
-                }]
+                'paging'      : true,
+                'lengthChange': false,
+                'searching'   : false,
+                'ordering'    : false,
+                'info'        : true,
+                'autoWidth'   : false
             })
-        });
-
-        /*        if (typeof jQuery != 'undefined') {
-                    // jQuery is loaded => print the version
-                    alert(jQuery.fn.jquery);
-                }*/
-
-
+        })
     </script>
 
 {% endblock %}

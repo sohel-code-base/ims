@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\ProductSale;
 use App\Entity\ProductSaleDetails;
+use App\Form\FilterType;
 use App\Form\ProductSaleType;
 use App\Repository\CustomerRepository;
 use App\Repository\PowerRepository;
@@ -11,6 +12,8 @@ use App\Repository\ProductPurchaseRepository;
 use App\Repository\ProductSaleDetailsRepository;
 use App\Repository\ProductSaleRepository;
 use Doctrine\ORM\EntityRepository;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -28,16 +31,61 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductSaleController extends AbstractController
 {
     /**
-     * @Route("/", name="all_product_sale")
+     * @Route("/archive", name="product_sale_archive")
+     * @param Request $request
      * @param ProductSaleRepository $repository
      * @return Response
+     * @throws \Exception
      */
-    public function index(ProductSaleRepository $repository): Response
+    public function index(Request $request, ProductSaleRepository $repository): Response
     {
-        $allSales = $repository->getSaleRecords();
+
+        $filterBy = new \DateTime('now');
+
+        $filterForm = $this->createForm(FilterType::class);
+        $filterForm->handleRequest($request);
+
+        if ($filterForm->isSubmitted()){
+            $filterBy = new \DateTime($filterForm->get('monthYear')->getData());
+        }
+        $allSales = $repository->getSaleRecords($filterBy);
+
         return $this->render('product_sale/index.html.twig', [
             'allSales' => $allSales,
+            'filterForm' => $filterForm->createView(),
+            'filterBy' => $filterBy,
         ]);
+    }
+
+    /**
+     * @Route("/archive/pdf", name="product_sale_archive_pdf")
+     * @param Request $request
+     * @param ProductSaleRepository $repository
+     */
+    public function productSaleArchivePdf(Request $request, ProductSaleRepository $repository)
+    {
+        $filterBy = new \DateTime($request->query->get('month'));
+        $allSales = $repository->getSaleRecords($filterBy);
+
+        $options = new Options();
+        $options->set('defaultFont', 'Courier');
+
+        $dompdf = new Dompdf($options);
+        $html = $this->renderView('product_sale/pdf-productSale.html.twig',[
+            'allSales' => $allSales,
+        ]);
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'portrait');
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        $dompdf->stream($filterBy->format('F-Y') . 'sale.pdf', [
+            "Attachment" => false
+        ]);
+        die();
     }
 
     /**
@@ -149,27 +197,6 @@ class ProductSaleController extends AbstractController
         $saleDetails = $repository->getProductByCustomerAndSaleDate($customerId, $saleDate);
 
         return new JsonResponse($saleDetails);
-    }
-
-    /**
-     * @Route("/{id}/delete", name="delete_sale_record")
-     * @param $id
-     * @param ProductSaleRepository $repository
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function deleteRecord($id, ProductSaleRepository $repository)
-    {
-        $findRecord = $repository->find($id);
-        if ($findRecord){
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($findRecord);
-            $em->flush();
-            $this->addFlash('success', 'Record has been deleted successfully!');
-            return $this->redirectToRoute('all_product_sale');
-        }else{
-            $this->addFlash('error','Record not found!');
-            return $this->redirectToRoute('all_product_sale');
-        }
     }
 
 

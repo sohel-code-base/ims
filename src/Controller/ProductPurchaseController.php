@@ -36,6 +36,7 @@ class ProductPurchaseController extends AbstractController
     /**
      * @Route("/product/purchase/archive/{mode}", defaults={"mode" = null}, name="product_purchase_archive")
      * @param Request $request
+     * @param $mode
      * @param ProductPurchaseArchiveRepository $repository
      * @return Response
      * @throws \Exception
