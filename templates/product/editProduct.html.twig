@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+{% block title %}Add New Product{% endblock %}
+{% block stylesheet %}
+    <link href="{{ asset('css/bootstrap-toggle.min.css') }}" rel="stylesheet">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
+
+{% endblock %}
+{% block contentTitle %}
+    Update Item Info <small>This is the location where you can update Item Details!</small>
+{% endblock %}
+{% block body %}
+
+<!-- Main content -->
+<section class="content">
+
+    <div class="box box-primary">
+        <div class="box-header with-border">
+{#            <h3 class="box-title">General Elements</h3>#}
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            {{ form_start(form,{'attr':{'id':'addNewProductForm'}}) }}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form_label(form.name, 'Product Name:') }}
+                        {{ form_widget(form.name,{'attr':{'placeholder':'e.g. Light'}}) }}
+                        {{ form_errors(form.name, {'attr': {'class':'help-block'}}) }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form_label(form.subCategory, 'Sub-Category:') }}
+                        {{ form_widget(form.subCategory,{'attr':{'class':'select2'}}) }}
+                        {{ form_errors(form.subCategory, {'attr': {'class':'help-block'}}) }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 col-md-offset-5 ">
+                    <div class="form-group">
+                    {{ form_widget(form.status, {'attr':{'checked':'checked'}}) }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 pull-right">
+                    <div class="form-group">
+                    {{ form_widget(form.Submit, {'label': 'Update', 'attr':{'class': 'btn-flat btn-primary pull-right text-white w-10'}}) }}
+                    </div>
+                </div>
+            </div>
+
+{#            {{ form_end(form) }}#}
+        </div>
+        <!-- /.box-body -->
+    </div>
+
+</section>
+{% endblock %}
+{% block javascripts %}
+
+    <script src="{{ asset('js/bootstrap-toggle.min.js') }}"></script>
+    <!-- Select2 -->
+    <script src="{{ asset('js/select2.full.min.js') }}"></script>
+    <script>
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2()
+        })
+
+    </script>
+{% endblock %}
+
+
+
