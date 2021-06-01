@@ -33,7 +33,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/new", methods={"POST"}, name="new_product")
+     * @Route("/new", name="new_product")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
@@ -57,9 +57,12 @@ class ProductController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
     /**
      * @Route("/{id}/edit", methods={"GET","POST"}, name="edit_product")
      * @param Request $request
+     * @param $id
+     * @param ProductRepository $repository
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function editItem(Request $request, $id, ProductRepository $repository)
@@ -87,6 +90,8 @@ class ProductController extends AbstractController
     /**
      * @param $id
      * @param ProductRepository $productRepository
+     * @param ProductPurchaseRepository $purchaseRepository
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @Route("/{id}/delete", name="delete_product")
      */
     public function deleteItem($id, ProductRepository $productRepository, ProductPurchaseRepository $purchaseRepository)

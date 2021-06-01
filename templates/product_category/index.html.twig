@@ -12,8 +12,15 @@
 {% block body %}
     <!-- Main content -->
     <section class="content">
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type }} alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <i class="icon fa fa-{{ type == 'error' ? 'warning':'check' }}"></i>{{ message|trans }}
+                </div>
+            {% endfor %}
+        {% endfor %}
         <!-- /.box -->
-
         <div class="box">
             <div class="box-header">
                 <h3 class="box-title"><i class="fa fa-th-list" style="margin-right: 5px;"></i>Category List</h3>
@@ -41,12 +48,9 @@
                                 <td>{{ category.name|default('') }} {{ category.status == 0 ? "<span class='bg-orange btn-flat text-white btn-xs'>Currently Unavailable!" : "" }}</td>
                                 <td>
                                     <div class="btn-group pull-right">
-                                        <a href="javascript:" class="btn btn-sm bg-navy btn-flat"><i class="fa fa-edit"><span
-                                                        style="margin-left: 3px;">Edit</span></i></a>
+                                        <a href="{{ path('edit_category', {id:category.id}) }}" class="btn btn-sm bg-navy btn-flat"><i class="fa fa-edit"><span style="margin-left: 3px;">Edit</span></i></a>
                                         {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_DEVELOPER") %}
-                                            <a href="javascript:" class="btn btn-sm bg-maroon btn-flat delete-record"><i
-                                                    class="fa fa-trash"><span
-                                                        style="margin-left: 3px;">Delete</span></i></a>
+                                            <a href="{{ path('delete_category', {id:category.id}) }}" class="btn btn-sm bg-maroon btn-flat delete-record"><i class="fa fa-trash"><span style="margin-left: 3px;">Delete</span></i></a>
                                         {% endif %}
                                     </div>
 
