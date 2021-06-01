@@ -6,6 +6,11 @@
 {#    <link rel="stylesheet" href="{{ asset('/css/animate.min.css') }}">#}
     <link rel="stylesheet" href="{{ asset('/css/custom.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/saleDetailsPrint.css') }}">
+    <style>
+        div#productTable_filter{
+            margin-top: 10px;
+        }
+    </style>
 {% endblock %}
 
 {% block contentTitle %}
@@ -131,21 +136,21 @@
 {#    <script src="{{ asset('/js/deleteConfirmationAlert.js') }}"></script>#}
     <!-- DataTable Activation script -->
     <script>
+
         $("#datepicker").datepicker( {
             format: "MM-yyyy",
             // viewMode: "months",
             minViewMode: "months",
         });
-        $(function () {
-            $('#productTable').DataTable({
-                'paging'      : true,
-                'lengthChange': false,
-                'searching'   : false,
-                'ordering'    : false,
-                'info'        : true,
-                'autoWidth'   : false
-            })
-        })
+        $('#productTable').DataTable({
+            'paging'      : true,
+            'lengthChange': false,
+            'searching'   : true,
+            'ordering'    : false,
+            'info'        : true,
+            'autoWidth'   : false
+        });
+
     </script>
 
 {% endblock %}
