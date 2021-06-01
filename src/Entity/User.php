@@ -100,9 +100,15 @@ class User implements UserInterface
      */
     private $productSales;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Expense::class, mappedBy="employee")
+     */
+    private $expenses;
+
     public function __construct()
     {
         $this->productSales = new ArrayCollection();
+        $this->expenses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -341,6 +347,36 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($productSale->getEmployee() === $this) {
                 $productSale->setEmployee(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Expense[]
+     */
+    public function getExpenses(): Collection
+    {
+        return $this->expenses;
+    }
+
+    public function addExpense(Expense $expense): self
+    {
+        if (!$this->expenses->contains($expense)) {
+            $this->expenses[] = $expense;
+            $expense->setEmployee($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExpense(Expense $expense): self
+    {
+        if ($this->expenses->removeElement($expense)) {
+            // set the owning side to null (unless already changed)
+            if ($expense->getEmployee() === $this) {
+                $expense->setEmployee(null);
             }
         }
 

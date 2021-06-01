@@ -19,6 +19,16 @@ class ExpenseRepository extends ServiceEntityRepository
         parent::__construct($registry, Expense::class);
     }
 
+    public function getExpenseMonthWise($filterBy)
+    {
+//        dd($filterBy->format('Y-m-d'));
+        $qb = $this->createQueryBuilder('e');
+        $qb->select('SUM(e.amount) AS totalExpense');
+        $qb->where("DATE_FORMAT(e.expenseDate, '%Y-%m') = :monthYear")->setParameter('monthYear', $filterBy->format('Y-m'));
+        $result = $qb->getQuery()->getOneOrNullResult();
+        return array_shift($result );
+    }
+
     // /**
     //  * @return Expense[] Returns an array of Expense objects
     //  */

@@ -7,6 +7,7 @@ use App\Entity\ProductSaleDetails;
 use App\Form\FilterType;
 use App\Form\ProductSaleType;
 use App\Repository\CustomerRepository;
+use App\Repository\ExpenseRepository;
 use App\Repository\PowerRepository;
 use App\Repository\ProductPurchaseRepository;
 use App\Repository\ProductSaleDetailsRepository;
@@ -61,12 +62,14 @@ class ProductSaleController extends AbstractController
      * @Route("/archive/pdf", name="product_sale_archive_pdf")
      * @param Request $request
      * @param ProductSaleRepository $repository
+     * @param ExpenseRepository $expenseRepository
      * @throws \Exception
      */
-    public function productSaleArchivePdf(Request $request, ProductSaleRepository $repository)
+    public function productSaleArchivePdf(Request $request, ProductSaleRepository $repository, ExpenseRepository $expenseRepository)
     {
         $filterBy = new \DateTime($request->query->get('month'));
         $allSales = $repository->getSaleRecords($filterBy);
+        $expense = $expenseRepository->getExpenseMonthWise($filterBy);
 
         $options = new Options();
         $options->set('defaultFont', 'Courier');
@@ -74,6 +77,7 @@ class ProductSaleController extends AbstractController
         $dompdf = new Dompdf($options);
         $html = $this->renderView('product_sale/pdf-productSale.html.twig',[
             'allSales' => $allSales,
+            'expense' => $expense,
         ]);
         $dompdf->loadHtml($html);
 

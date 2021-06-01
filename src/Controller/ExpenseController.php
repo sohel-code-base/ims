@@ -20,6 +20,9 @@ class ExpenseController extends AbstractController
 {
     /**
      * @Route("/new", name="new_expense")
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Exception
      */
     public function newExpense(Request $request)
     {
@@ -31,6 +34,7 @@ class ExpenseController extends AbstractController
         $expense->setAmount($data['expenseAmount']);
         $expense->setCreatedAt(new \DateTime('now'));
         $expense->setStatus(1);
+        $expense->setEmployee($this->getUser());
         $em = $this->getDoctrine()->getManager();
         $em->persist($expense);
         $em->flush();

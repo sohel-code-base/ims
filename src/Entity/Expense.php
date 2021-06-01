@@ -47,6 +47,12 @@ class Expense
      */
     private $updatedAt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="expenses")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $employee;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,6 +126,18 @@ class Expense
     public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getEmployee(): ?User
+    {
+        return $this->employee;
+    }
+
+    public function setEmployee(?User $employee): self
+    {
+        $this->employee = $employee;
 
         return $this;
     }
