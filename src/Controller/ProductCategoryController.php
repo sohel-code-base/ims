@@ -60,12 +60,12 @@ class ProductCategoryController extends AbstractController
      * @Route("/{id}/edit", name="edit_category")
      * @param Request $request
      * @param $id
-     * @param CategoryRepository $categoryRepository
+     * @param CategoryRepository $repository
      * @return Response
      */
-    public function editCategory(Request $request, $id, CategoryRepository $categoryRepository): Response
+    public function editCategory(Request $request, $id, CategoryRepository $repository): Response
     {
-        $findCategory = $categoryRepository->find($id);
+        $findCategory = $repository->find($id);
         $form = $this->createForm(ProductCategoryType::class, $findCategory)->remove('createdAt');
         $form->handleRequest($request);
 
