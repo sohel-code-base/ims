@@ -193,6 +193,7 @@ $(document).on('click', '#addProduct', function (event) {
                         "</tr>";
 
                     $('#paymentModal').find('#paymentTransfar').attr('data-sale-id', response.saleId);
+                    $('#paymentModal').find('.totalPrice').text(response.totalPrice + ' TK');
                     productSaleList.find('#paymentBtn').removeClass('hide');
                     productSaleList.find('tfoot').remove();
                     productSaleList.find('tbody').append(itemTr);

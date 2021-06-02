@@ -28,7 +28,6 @@ class EmployeeController extends AbstractController
     public function index(UserRepository $userRepository): Response
     {
         $employees = $userRepository->getActiveEmployee();
-
         return $this->render('employee/index.html.twig', [
             'employees' => $employees,
         ]);

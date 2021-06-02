@@ -2,7 +2,9 @@
     body * {
         visibility: hidden;
     }
-
+    .signature-area{
+        padding-top: 0px;
+    }
     .modal * {
         visibility: visible;
         overflow: visible;

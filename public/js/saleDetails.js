@@ -58,17 +58,17 @@ $(document).ready(function () {
                 })
                 productTotalAmount = "<tr><td colspan='5' border='0'></td></tr><tr>" +
                     "<td colspan='3' align='left'> Pay Amount:  <strong>" + (response[0].totalPrice - response[0].dueAmount) + " tk</strong>" + "&nbsp;&nbsp;" + "Due Amount: <strong>" + response[0].dueAmount + " tk" + "</strong></td>" +
-                    "<td style='font-weight: bold' align='left'> Total Amount </td>" +
+                    "<td style='font-weight: bold' align='right'> Total Amount </td>" +
                     "<td style='font-weight: bold' align='right'>" + response[0].totalPrice + " tk" + "</td>" +
                     "</tr>";
 
                 employeeDetails = '<div class="text-right seller-signature"><img src=/uploads/signature/' + response[0].employeeSignature + ' /><p><strong>' + response[0].employeeName + '</strong></p></div>';
 
-                $('.signature-area').find('.seller-signature').remove();
-                $('.signature-area').prepend(employeeDetails);
+
                 detailsModal.find('.modal-body tbody.productDetails').append(productTotalAmount);
                 detailsModal.find('.modal-body tbody.customerDetails').append(customerDetails);
-
+                $('.signature-area').find('.seller-signature').remove();
+                $('.signature-area').prepend(employeeDetails);
                 detailsModal.modal('show');
             }
         })
