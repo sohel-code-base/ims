@@ -117,18 +117,20 @@
 
                 </ul>
             </li>
-            <li class="treeview">
-                <a href="#">
-                    <i class="glyphicon glyphicon-user"></i> <span>Employee / User</span>
-                    <span class="pull-right-container">
+            {% if is_granted('ROLE_DEVELOPER') or is_granted('ROLE_ADMIN') %}
+                <li class="treeview">
+                    <a href="#">
+                        <i class="glyphicon glyphicon-user"></i> <span>Employee / User</span>
+                        <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="{{ path('all_employee') }}"><i class="fa fa-list"></i>All Employee</a></li>
-                    <li><a href="{{ path('app_register') }}"><i class="fa fa-user-plus"></i>New Employee</a></li>
-                </ul>
-            </li>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{ path('all_employee') }}"><i class="fa fa-list"></i>All Employee</a></li>
+                        <li><a href="{{ path('app_register') }}"><i class="fa fa-user-plus"></i>New Employee</a></li>
+                    </ul>
+                </li>
+            {% endif %}
             <li>
                 <a href="{{ path('collect_due_amount') }}">
                     <i class="glyphicon glyphicon-usd"></i> <span>Due Payment</span>

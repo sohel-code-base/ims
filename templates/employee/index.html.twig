@@ -134,6 +134,10 @@
                                                         {% endfor %}
                                                     </h4>
                                                     <h4><strong>Address: </strong>{{ employee.address|default('') }}</h4>
+                                                    <h4><strong>Signature: </strong></h4>
+                                                    {% if employee.signature is not null %}
+                                                        <img src="{{ asset('/uploads/signature/') ~ employee.signature }}" alt="Employee signature">
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                         </div>

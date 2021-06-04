@@ -41,6 +41,10 @@
                             {% endfor %}
                         </h4>
                         <h4><strong>Address: </strong>{{ app.user.address }}</h4>
+                        <h4><strong>Signature: </strong></h4>
+                        {% if app.user.signature is not null %}
+                            <img src="{{ asset('/uploads/signature/') ~ app.user.signature }}" alt="Employee signature">
+                        {% endif %}
                     </div>
                     <div class="col-md-2"></div>
                 </div>

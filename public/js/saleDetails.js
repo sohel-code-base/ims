@@ -62,8 +62,19 @@ $(document).ready(function () {
                     "<td style='font-weight: bold' align='right'>" + response[0].totalPrice + " tk" + "</td>" +
                     "</tr>";
 
-                employeeDetails = '<div class="text-right seller-signature"><img src=/uploads/signature/' + response[0].employeeSignature + ' /><p><strong>' + response[0].employeeName + '</strong></p></div>';
+                let employeeSignature;
+                if (response[0].employeeSignature !== null){
+                    employeeSignature = '<img src=/uploads/signature/' + response[0].employeeSignature + ' />';
+                }else {
+                    employeeSignature = '';
+                }
+                employeeDetails = '<div class="text-right seller-signature">' +
+                    employeeSignature +
+                    '<p><strong>' + response[0].employeeName + '</strong></p><' +
+                    '/div>';
 
+
+                console.log(response[0].employeeSignature);
 
                 detailsModal.find('.modal-body tbody.productDetails').append(productTotalAmount);
                 detailsModal.find('.modal-body tbody.customerDetails').append(customerDetails);
