@@ -41,5 +41,6 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
          - { path: /employee/profile, roles: [ROLE_USER] }
+         - { path: /archive/pdf, roles: [ROLE_ADMIN, ROLE_DEVELOPER] }
          - { path: /employee, roles: [ROLE_ADMIN, ROLE_DEVELOPER] }
          - { path: ^(?!/login), roles: ROLE_USER }

@@ -45,7 +45,7 @@
                     <div class="col-md-12">
                         <div class="bg-primary">
                             <h4 class="text-left text-white box-header text-bold" style="display: inline-block; margin: 0; padding: 8px;">{{ filterBy|date('F-Y') }}</h4>
-                            {% if records is not empty %}
+                            {% if records is not empty and (is_granted('ROLE_DEVELOPER') or is_granted('ROLE_ADMIN')) %}
                                 <div class="btn-group pull-right">
                                     <a href="{{ path('product_purchase_archive_pdf',{month: filterBy|date('d-m-Y')}) }}" target="_blank" class="btn btn-flat bg-navy"><i class="fa fa-download"></i> PDF</a>
                                 </div>
