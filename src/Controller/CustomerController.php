@@ -71,7 +71,7 @@ class CustomerController extends AbstractController
         }
 
 
-        return $this->render('customer/addCustomer.htm.twig', [
+        return $this->render('addCustomer.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -100,7 +100,7 @@ class CustomerController extends AbstractController
                 return $this->redirectToRoute('all_customer');
             }
 
-            return $this->render('customer/editCustomer.htm.twig', [
+            return $this->render('editCustomer.html.twig', [
                 'form' => $form->createView(),
             ]);
         }
