@@ -11,14 +11,20 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MAIN NAVIGATION</li>
-            <li class="btn-group-lg">
-                <a href="#" data-toggle="modal" data-target="#expenseModal" class="btn bg-navy-active btn-flat"
-                   style="text-align: left">
-                    <i class="fa fa-minus-square"></i> <span>Expense</span>
-                </a>
-                <a href="{{ path('new_sale') }}" class="btn bg-maroon btn-flat" style="text-align: left">
-                    <i class="fa fa-shopping-cart"></i> <span>Sale</span>
-                </a>
+{#            <li class="btn-group-lg">#}
+{#                <a href="#" data-toggle="modal" data-target="#expenseModal" class="btn bg-navy-active btn-flat"#}
+{#                   style="text-align: left">#}
+{#                    <i class="fa fa-minus-square"></i> <span>Expense</span>#}
+{#                </a>#}
+{#                <a href="{{ path('new_sale') }}" class="btn bg-maroon btn-flat" style="text-align: left">#}
+{#                    <i class="fa fa-shopping-cart"></i> <span>Sale</span>#}
+{#                </a>#}
+{#            </li>#}
+            <li>
+                <a href="#" data-toggle="modal" data-target="#expenseModal" class="bg-blue-active"><i class="fa fa-minus-square"></i> <span>Expense</span></a>
+            </li>
+            <li>
+                <a href="{{ path('new_sale') }}" class="bg-maroon"><i class="fa fa-shopping-cart"></i> <span>Sale</span></a>
             </li>
             <li class="treeview">
                 <a href="#">
