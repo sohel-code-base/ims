@@ -1,5 +1,4 @@
-# Store Management System
-## A Store Management System for different store.
+# Inventory Management System
 ### Powered By:
 - [Symfony](https://symfony.com/)
 - [Bootstrap](https://getbootstrap.com/)
