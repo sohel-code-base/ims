@@ -18,8 +18,8 @@ class User implements UserInterface
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="guid", unique=true)
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -111,7 +111,7 @@ class User implements UserInterface
         $this->expenses = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }

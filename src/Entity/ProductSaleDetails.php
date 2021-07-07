@@ -12,8 +12,8 @@ class ProductSaleDetails
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="guid", unique=true)
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -39,7 +39,7 @@ class ProductSaleDetails
      */
     private $perPcsPrice;
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
